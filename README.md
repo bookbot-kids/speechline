@@ -1,4 +1,4 @@
-# SpeechLine
+# 🎙️ SpeechLine
 
 <p align="center">
     <a href="https://github.com/bookbot-kids/speechline/blob/main/LICENSE.md">
