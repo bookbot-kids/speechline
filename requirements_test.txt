@@ -1,3 +1,12 @@
+torch
+torchaudio
+transformers
+datasets[audio]
+librosa
+pandas
+boto3==1.18.37
+botocore==1.21.37
+
 importlib_metadata<5
 flake8==3.9.2
 tox==3.24.3
@@ -5,6 +14,5 @@ pytest==6.2.5
 pytest-cov==2.12.1
 mkdocstrings==0.19.1
 mkdocstrings-python==0.8.3
-mypy===0.910
-boto3==1.18.37
+mkdocs-material
 moto
