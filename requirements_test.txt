@@ -8,3 +8,4 @@ mkdocstrings-python==0.8.3
 mypy===0.910
 boto3==1.18.37
 moto
+pandas>=1.4.3
