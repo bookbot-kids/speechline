@@ -5,6 +5,7 @@ pytest==6.2.5
 pytest-cov==2.12.1
 mkdocstrings==0.19.1
 mkdocstrings-python==0.8.3
+mkdocs-material
 mypy===0.910
 boto3==1.18.37
 moto

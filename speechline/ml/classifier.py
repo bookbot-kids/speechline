@@ -10,9 +10,6 @@ import torch
 import numpy as np
 import pandas as pd
 
-from speechline.ml.dataset import prepare_dataframe
-
-
 class AudioClassifier:
     def __init__(self, model_checkpoint: str) -> None:
         """Initializes a HuggingFace audio classifier and feature extractor.
