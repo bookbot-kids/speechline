@@ -21,6 +21,7 @@ theme:
         name: Switch to light mode
   features:
     - navigation.sections
+    - navigation.expand
 
 plugins:
   - search
@@ -45,3 +46,12 @@ markdown_extensions:
 
 watch:
   - speechline
+
+nav:
+  - Home: index.md
+  - References:
+      - ML:
+          - Audio Classifier: reference/ml/classifier.md
+      - Utils:
+          - S3: reference/utils/s3.md
+          - aac-to-wav Audio Converter: reference/utils/aac_to_wav.md
