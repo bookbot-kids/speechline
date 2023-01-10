@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Optional
 import os
 import boto3
 
@@ -22,7 +23,7 @@ class S3Client:
         self.resource = boto3.resource("s3", region_name=region_name)
 
     def download_s3_folder(
-        self, bucket_name: str, s3_folder: str, local_dir: str = None
+        self, bucket_name: str, s3_folder: str, local_dir: Optional[str] = None
     ) -> None:
         """
         Download the contents of a folder directory in an S3 bucket.
@@ -33,7 +34,7 @@ class S3Client:
                 Name of the s3 bucket
             s3_folder (str):
                 Folder path in the s3 bucket
-            local_dir (str, optional):
+            local_dir (Optional[str], optional):
                 Relative or absolute directory path in the local file system.
                 Defaults to None.
         """

@@ -39,10 +39,13 @@ class Wav2Vec2Transcriber(AudioModule):
         """
         model = AutoModelForCTC.from_pretrained(model_checkpoint)
         processor = AutoProcessor.from_pretrained(model_checkpoint)
-        super().__init__(model, processor.feature_extractor, processor.tokenizer)
+        feature_extractor = processor.feature_extractor
+        tokenizer = processor.tokenizer
+        super().__init__(model, feature_extractor, tokenizer)
 
     def decode_phonemes(self, ids: torch.Tensor) -> str:
-        """CTC-like decoding. First removes consecutive duplicates, then removes special tokens.
+        """CTC-like decoding of phonemes.
+        First removes consecutive duplicates, then removes special tokens.
 
         Args:
             ids (torch.Tensor): Predicted token ids to be decoded.
@@ -51,14 +54,16 @@ class Wav2Vec2Transcriber(AudioModule):
             str: Decoded phoneme transcription.
         """
         # removes consecutive duplicates
-        ids = [id_ for id_, _ in groupby(ids)]
+        deduplicated_ids = [id_ for id_, _ in groupby(ids)]
 
         special_token_ids = self.tokenizer.all_special_ids + [
             self.tokenizer.word_delimiter_token_id
         ]
         # converts id to token, skipping special tokens
         phonemes = [
-            self.tokenizer.decode(id_) for id_ in ids if id_ not in special_token_ids
+            self.tokenizer.decode(id_)
+            for id_ in deduplicated_ids
+            if id_ not in special_token_ids
         ]
 
         # joins phonemes
@@ -93,7 +98,7 @@ class Wav2Vec2Transcriber(AudioModule):
 
         logits, *_ = trainer.predict(encoded_dataset)
         predicted_ids = np.argmax(logits, axis=-1)
-        transcription = [self.decode_phonemes(id) for id in predicted_ids]
+        transcription: List[str] = [self.decode_phonemes(id) for id in predicted_ids]
         return transcription
 
 
@@ -106,9 +111,11 @@ class WhisperTranscriber(AudioModule):
         """
         model = AutoModelForSpeechSeq2Seq.from_pretrained(model_checkpoint)
         processor = AutoProcessor.from_pretrained(model_checkpoint)
-        super().__init__(model, processor.feature_extractor, processor.tokenizer)
+        feature_extractor = processor.feature_extractor
+        tokenizer = processor.tokenizer
+        super().__init__(model, feature_extractor, tokenizer)
 
-    def predict(self, dataset: Dataset, batch_size: int = 128):
+    def predict(self, dataset: Dataset, batch_size: int = 128) -> List[str]:
         """Performs batched inference on `dataset`.
 
         Args:
@@ -135,7 +142,7 @@ class WhisperTranscriber(AudioModule):
         )
 
         predicted_ids, *_ = trainer.predict(encoded_dataset)
-        transcription = self.tokenizer.batch_decode(
+        transcription: List[str] = self.tokenizer.batch_decode(
             predicted_ids, skip_special_tokens=True
         )
         return transcription

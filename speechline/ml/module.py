@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional
+from typing import Optional, Any
 import pandas as pd
-import torch
 from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureExtractor
 from datasets import Dataset, Audio
 
@@ -24,7 +23,7 @@ class AudioModule:
         self,
         model: PreTrainedModel,
         feature_extractor: SequenceFeatureExtractor,
-        tokenizer: Optional[PreTrainedTokenizer] = None,
+        tokenizer: PreTrainedTokenizer = None,
     ) -> None:
         """Constructor for base AudioModule. Inherit this class for other audio models.
         Contains implemented methods for audio dataset formatting and preprocessing.
@@ -34,7 +33,7 @@ class AudioModule:
                 Pre-trained audio model for inference.
             feature_extractor (SequenceFeatureExtractor):
                 Pre-trained feature extractor for inference.
-            tokenizer (Optional[PreTrainedTokenizer], optional):
+            tokenizer (PreTrainedTokenizer, optional):
                 Optional pre-trained tokenizer for logits decoding. Defaults to None.
         """
         self.model = model
@@ -60,7 +59,7 @@ class AudioModule:
         self,
         batch: Dataset,
         max_duration: Optional[int] = None,
-    ) -> torch.Tensor:
+    ) -> Any:
         """Audio dataset preprocessing function. Extracts audio waves as features.
         Allows for optional truncation given a maximum duration.
 
@@ -72,7 +71,7 @@ class AudioModule:
                 Truncates audio if specified. Defaults to None.
 
         Returns:
-            torch.Tensor: Batch of preprocessed audio features.
+            Any: Batch of preprocessed audio features.
         """
         max_length = int(self.sr * max_duration) if max_duration else None
         truncation = True if max_duration else False

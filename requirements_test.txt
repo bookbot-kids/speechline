@@ -17,3 +17,4 @@ mkdocstrings==0.19.1
 mkdocstrings-python==0.8.3
 mkdocs-material
 moto
+mypy==0.991
