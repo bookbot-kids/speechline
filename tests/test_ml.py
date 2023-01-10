@@ -59,8 +59,8 @@ def test_wav2vec2_transcriber(datadir):
     dataset = transcriber.format_audio_dataset(df)
     transcriptions = transcriber.predict(dataset)
     assert transcriptions == [
-        "ɪ t ɪ z n oʊ t ʌ p",
         "h h ɚ i d ʌ m b ɹ ɛ l ə ɪ z d͡ʒ ʌ s t ð ə b ɛ s t",
+        "ɪ t ɪ z n oʊ t ʌ p",
         "s ə b l ɛ n s ɪ p z ə f i t p l i s æ æ p l æ p ə",
     ]
 
@@ -72,7 +72,7 @@ def test_whisper_transcriber(datadir):
     dataset = transcriber.format_audio_dataset(df)
     transcriptions = transcriber.predict(dataset)
     assert transcriptions == [
-        " It is not up.",
         " Her red umbrella is just the best.",
+        " It is not up.",
         " Suppulant Secola, Fitri Sangat Lappar",
     ]

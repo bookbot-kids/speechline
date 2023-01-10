@@ -46,7 +46,7 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
                     - language
                     - language code
     """
-    audios = glob(f"{path_to_files}/*/*.{audio_extension}")
+    audios = sorted(glob(f"{path_to_files}/*/*.{audio_extension}"))
     df = pd.DataFrame({"audio": audios})
     # ID is filename stem (before extension)
     df["id"] = df["audio"].apply(lambda f: Path(f).stem)
