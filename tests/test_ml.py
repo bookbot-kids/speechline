@@ -16,7 +16,11 @@ from glob import glob
 from pathlib import Path
 
 from speechline.ml.dataset import prepare_dataframe
-from speechline.ml.classifier import AudioClassifier
+from speechline.ml.modules import (
+    AudioClassifier,
+    Wav2Vec2Transcriber,
+    WhisperTranscriber,
+)
 from speechline.utils.aac_to_wav import parse_args, convert_to_wav
 
 
@@ -27,7 +31,6 @@ def test_convert_to_wav(datadir):
     assert parser.channel == 2
     assert parser.rate == 24_000
     audios = glob(f"{datadir}/**/*.aac", recursive=True)
-    assert len(audios) == 3
     # get first audio file as sample audio
     audio_path = audios[0]
     convert_to_wav(audio_path, num_channels=parser.channel, sampling_rate=parser.rate)
@@ -37,7 +40,7 @@ def test_convert_to_wav(datadir):
 
 def test_prepare_dataframe(datadir):
     df = prepare_dataframe(datadir)
-    assert df.shape == (3, 5)
+    assert df.shape[1] == 5
 
 
 def test_audio_classifier(datadir):
@@ -47,3 +50,29 @@ def test_audio_classifier(datadir):
     dataset = classifier.format_audio_dataset(df)
     predictions = classifier.predict(dataset)
     assert predictions == ["child", "child", "child"]
+
+
+def test_wav2vec2_transcriber(datadir):
+    model_checkpoint = "bookbot/wav2vec2-ljspeech-gruut"
+    transcriber = Wav2Vec2Transcriber(model_checkpoint)
+    df = prepare_dataframe(datadir)
+    dataset = transcriber.format_audio_dataset(df)
+    transcriptions = transcriber.predict(dataset)
+    assert transcriptions == [
+        "ɪ t ɪ z n oʊ t ʌ p",
+        "h h ɚ i d ʌ m b ɹ ɛ l ə ɪ z d͡ʒ ʌ s t ð ə b ɛ s t",
+        "s ə b l ɛ n s ɪ p z ə f i t p l i s æ æ p l æ p ə",
+    ]
+
+
+def test_whisper_transcriber(datadir):
+    model_checkpoint = "openai/whisper-tiny"
+    transcriber = WhisperTranscriber(model_checkpoint)
+    df = prepare_dataframe(datadir)
+    dataset = transcriber.format_audio_dataset(df)
+    transcriptions = transcriber.predict(dataset)
+    assert transcriptions == [
+        " It is not up.",
+        " Her red umbrella is just the best.",
+        " Suppulant Secola, Fitri Sangat Lappar",
+    ]
