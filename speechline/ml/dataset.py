@@ -54,10 +54,8 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     df["language_code"] = df["audio"].apply(lambda f: Path(f).parent.name)
     df["language"] = df["language_code"].apply(lambda f: f.split("-")[0])
     # ground truth is same filename, except with .txt extension
-    df["ground_truth"] = df["audio"].apply(
-        lambda f: f.replace(f".{audio_extension}", ".txt")
-    )
-    df["ground_truth"] = df["audio"].apply(
-        lambda p: open(p).read() if Path(p).exists() else ""
+    df["ground_truth"] = df["audio"].apply(lambda p: Path(p).with_suffix(".txt"))
+    df["ground_truth"] = df["ground_truth"].apply(
+        lambda p: open(p).read() if p.exists() else ""
     )
     return df
