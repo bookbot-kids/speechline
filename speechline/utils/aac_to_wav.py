@@ -49,8 +49,7 @@ def parse_args(args: List[str]) -> argparse.Namespace:
     parser.add_argument(
         "-r", "--rate", type=int, default=16_000, help="Sample rate of audio output."
     )
-    args = parser.parse_args(args)
-    return args
+    return parser.parse_args(args)
 
 
 def convert_to_wav(
