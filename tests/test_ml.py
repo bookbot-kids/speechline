@@ -16,8 +16,8 @@ from glob import glob
 from pathlib import Path
 
 from speechline.ml.dataset import prepare_dataframe
-from speechline.ml.module import (
-    AudioClassifier,
+from speechline.ml.classifier import Wav2Vec2Classifier
+from speechline.ml.transcriber import (
     Wav2Vec2Transcriber,
     WhisperTranscriber,
 )
@@ -45,7 +45,7 @@ def test_prepare_dataframe(datadir):
 
 def test_audio_classifier(datadir):
     model_checkpoint = "bookbot/distil-wav2vec2-adult-child-cls-52m"
-    classifier = AudioClassifier(model_checkpoint)
+    classifier = Wav2Vec2Classifier(model_checkpoint)
     df = prepare_dataframe(datadir)
     dataset = classifier.format_audio_dataset(df)
     predictions = classifier.predict(dataset)
