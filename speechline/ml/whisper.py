@@ -18,36 +18,14 @@ from transformers import (
     Seq2SeqTrainingArguments,
     Seq2SeqTrainer,
 )
-from datasets import Dataset, Audio
-import torch
-import numpy as np
-import pandas as pd
 
-class WhisperTranscriber:
+from speechline.ml.transcriber import AudioTranscriber
+
+class WhisperTranscriber(AudioTranscriber):
     def __init__(self, model_checkpoint: str) -> None:
-        self.model = WhisperForConditionalGeneration.from_pretrained(model_checkpoint)
-        self.processor = WhisperProcessor.from_pretrained(model_checkpoint)
-        self.feature_extractor = self.processor.feature_extractor
-        self.sr = self.feature_extractor.sampling_rate
-
-    def format_audio_dataset(self, df: pd.DataFrame) -> Dataset:
-        """Formats Pandas `DataFrame` as a datasets `Dataset`.
-        Converts `audio` path column to audio arrays and resamples accordingly.
-
-        Args:
-            df (pd.DataFrame): Pandas
-
-        Returns:
-            Dataset: datasets `Dataset` usable for batch inference.
-        """
-        dataset = Dataset.from_pandas(df)
-        dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
-        return dataset
-
-    def preprocess_function(self, examples: Dataset) -> torch.tensor:
-        audio_arrays = [x["array"] for x in examples["audio"]]
-        inputs = self.feature_extractor(audio_arrays, sampling_rate=self.sr)
-        return inputs
+        model = WhisperForConditionalGeneration.from_pretrained(model_checkpoint)
+        processor = WhisperProcessor.from_pretrained(model_checkpoint)
+        super().__init__(model, processor)
 
     def predict(self, dataset, batch_size: int = 128):
         encoded_dataset = dataset.map(

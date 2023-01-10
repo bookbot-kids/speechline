@@ -16,7 +16,7 @@ from glob import glob
 from pathlib import Path
 
 from speechline.ml.dataset import prepare_dataframe
-from speechline.ml.modules import (
+from speechline.ml.module import (
     AudioClassifier,
     Wav2Vec2Transcriber,
     WhisperTranscriber,

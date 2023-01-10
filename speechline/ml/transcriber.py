@@ -12,26 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from transformers import (
-    WhisperForConditionalGeneration,
-    WhisperProcessor,
-    Seq2SeqTrainingArguments,
-    Seq2SeqTrainer,
-)
+from transformers import PreTrainedModel, ProcessorMixin
 from datasets import Dataset, Audio
 import torch
-import numpy as np
 import pandas as pd
 
-from speechline.ml.dataset import prepare_dataframe
-
-
 class AudioTranscriber:
-    def __init__(self, model_checkpoint: str) -> None:
-        # try instantiate with seq2seq if seq2seq=True, else raise error model is CTC
-        # or just take error given by HF (if exists)
-        self.model = WhisperForConditionalGeneration.from_pretrained(model_checkpoint)
-        self.processor = WhisperProcessor.from_pretrained(model_checkpoint)
+    def __init__(self, model: PreTrainedModel, processor: ProcessorMixin) -> None:
+        self.model = model
+        self.processor = processor
         self.feature_extractor = self.processor.feature_extractor
         self.sr = self.feature_extractor.sampling_rate
 
@@ -53,34 +42,3 @@ class AudioTranscriber:
         audio_arrays = [x["array"] for x in examples["audio"]]
         inputs = self.feature_extractor(audio_arrays, sampling_rate=self.sr)
         return inputs
-
-    def predict(self, dataset, batch_size: int = 128):
-        encoded_dataset = dataset.map(
-            self.preprocess_function, batched=True, desc="Preprocessing Dataset"
-        )
-
-        args = Seq2SeqTrainingArguments(
-            output_dir="./",
-            per_device_eval_batch_size=batch_size,
-            predict_with_generate=True,
-        )
-
-        trainer = Seq2SeqTrainer(
-            model=self.model,
-            args=args,
-            tokenizer=self.feature_extractor,
-        )
-
-        predicted_ids, *_ = trainer.predict(encoded_dataset)
-        transcription = self.processor.batch_decode(
-            predicted_ids, skip_special_tokens=True
-        )
-        return transcription
-
-
-if __name__ == "__main__":
-    transcriber = AudioTranscriber("cahya/whisper-tiny-id")
-    df = prepare_dataframe("tests/test_ml")
-    dataset = transcriber.format_audio_dataset(df)
-    transcriptions = transcriber.predict(dataset)
-    print(transcriptions)
