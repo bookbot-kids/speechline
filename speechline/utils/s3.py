@@ -29,9 +29,13 @@ class S3Client:
         Source: https://stackoverflow.com/a/62945526
 
         Args:
-            bucket (str): Name of the s3 bucket
-            s3_folder (str): Folder path in the s3 bucket
-            local_dir (str, optional): Relative or absolute directory path in the local file system. Defaults to None.
+            bucket (str):
+                Name of the s3 bucket
+            s3_folder (str):
+                Folder path in the s3 bucket
+            local_dir (str, optional):
+                Relative or absolute directory path in the local file system.
+                Defaults to None.
         """
         bucket = self.resource.Bucket(bucket)
         for obj in bucket.objects.filter(Prefix=s3_folder):

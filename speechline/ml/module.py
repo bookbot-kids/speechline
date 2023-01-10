@@ -30,9 +30,12 @@ class AudioModule:
         Contains implemented methods for audio dataset formatting and preprocessing.
 
         Args:
-            model (PreTrainedModel): Pre-trained audio model for inference.
-            feature_extractor (SequenceFeatureExtractor): Pre-trained feature extractor for inference.
-            tokenizer (Optional[PreTrainedTokenizer], optional): Optional pre-trained tokenizer for logits decoding. Defaults to None.
+            model (PreTrainedModel):
+                Pre-trained audio model for inference.
+            feature_extractor (SequenceFeatureExtractor):
+                Pre-trained feature extractor for inference.
+            tokenizer (Optional[PreTrainedTokenizer], optional):
+                Optional pre-trained tokenizer for logits decoding. Defaults to None.
         """
         self.model = model
         self.feature_extractor = feature_extractor
@@ -62,8 +65,11 @@ class AudioModule:
         Allows for optional truncation given a maximum duration.
 
         Args:
-            batch (Dataset): Batch audio dataset to be preprocessed.
-            max_duration (Optional[int], optional): Maximum audio duration in seconds. Truncates audio if specified. Defaults to None.
+            batch (Dataset):
+                Batch audio dataset to be preprocessed.
+            max_duration (Optional[int], optional):
+                Maximum audio duration in seconds.
+                Truncates audio if specified. Defaults to None.
 
         Returns:
             torch.Tensor: Batch of preprocessed audio features.

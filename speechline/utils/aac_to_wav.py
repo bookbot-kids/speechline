@@ -61,7 +61,7 @@ def convert_to_wav(
     Args:
         input_audio_path (str): Path to aac file.
         num_channels (int, optional): Number of output audio channels. Defaults to 1.
-        sampling_rate (int, optional): Sampling rate of output audio. Defaults to 16_000.
+        sampling_rate (int, optional): Output audio sampling rate. Defaults to 16_000.
 
     Returns:
         subprocess.CompletedProcess: Finished subprocess.
@@ -70,7 +70,8 @@ def convert_to_wav(
     output_audio_path = Path(input_audio_path).with_suffix(".wav")
 
     # equivalent to:
-    # `ffmpeg -i {input}.aac -acodec pcm_s16le -ac {num_channels} -ar {sampling_rate} {output}.wav`
+    # ffmpeg -i {input_audio_path} -acodec pcm_s16le -ac {num_channels} \
+    #       -ar {sampling_rate} {output_audio_path}
     job = subprocess.run(
         [
             "ffmpeg",
