@@ -87,7 +87,7 @@ class Wav2Vec2Transcriber(AudioModule):
     ) -> List[Dict[str, Any]]:
         """Perform CTC-based segmentation on transcribed phonemes and probabilities.
         Returns a list of dictionaries containing predicted phoneme and start-end times.
-        Source: https://github.com/lumaku/ctc-segmentation#usage
+        Source: [CTC-Segmentation](https://github.com/lumaku/ctc-segmentation#usage).
 
         Args:
             phonemes (List[str]): List of transcribed phonemes.

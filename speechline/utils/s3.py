@@ -27,7 +27,7 @@ class S3Client:
     ) -> None:
         """
         Download the contents of a folder directory in an S3 bucket.
-        Source: https://stackoverflow.com/a/62945526
+        Source: [StackOverflow](https://stackoverflow.com/a/62945526).
 
         Args:
             bucket_name (str):
