@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 from transformers import (
     AutoModelForCTC,
     AutoModelForSpeechSeq2Seq,
@@ -85,6 +85,17 @@ class Wav2Vec2Transcriber(AudioModule):
     def decode_phoneme_offsets(
         self, phonemes: List[str], probabilities: np.ndarray
     ) -> List[Dict[str, Any]]:
+        """Perform CTC-based segmentation on transcribed phonemes and probabilities.
+        Returns a list of dictionaries containing predicted phoneme and start-end times.
+        Source: https://github.com/lumaku/ctc-segmentation#usage
+
+        Args:
+            phonemes (List[str]): List of transcribed phonemes.
+            probabilities (np.ndarray): Output probabilities per timestep from wav2vec2.
+
+        Returns:
+            List[Dict[str, Any]]: List of phoneme-level timestamps.
+        """
         ground_truth_mat, utt_begin_indices = prepare_text(self.ctc_config, phonemes)
         timings, char_probs, _ = ctc_segmentation(
             self.ctc_config, probabilities, ground_truth_mat
@@ -103,7 +114,7 @@ class Wav2Vec2Transcriber(AudioModule):
         dataset: Dataset,
         batch_size: int = 128,
         output_phoneme_offsets: bool = False,
-    ) -> List[str]:
+    ) -> Union[List[str], List[List[Dict[str, Any]]]]:
         """Performs batched inference on `dataset`.
 
         Args:
@@ -142,7 +153,7 @@ class Wav2Vec2Transcriber(AudioModule):
         phonemes: List[List[str]] = [t.split() for t in transcription]
 
         if output_phoneme_offsets:
-            phoneme_offsets: List[Dict[str, Any]] = [
+            phoneme_offsets: List[List[Dict[str, Any]]] = [
                 self.decode_phoneme_offsets(phn, prob)
                 for phn, prob in zip(phonemes, probabilities)
             ]
