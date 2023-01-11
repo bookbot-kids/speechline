@@ -49,8 +49,7 @@ def parse_args(args: List[str]) -> argparse.Namespace:
     parser.add_argument(
         "-r", "--rate", type=int, default=16_000, help="Sample rate of audio output."
     )
-    args = parser.parse_args(args)
-    return args
+    return parser.parse_args(args)
 
 
 def convert_to_wav(
@@ -61,7 +60,7 @@ def convert_to_wav(
     Args:
         input_audio_path (str): Path to aac file.
         num_channels (int, optional): Number of output audio channels. Defaults to 1.
-        sampling_rate (int, optional): Sampling rate of output audio. Defaults to 16_000.
+        sampling_rate (int, optional): Output audio sampling rate. Defaults to 16_000.
 
     Returns:
         subprocess.CompletedProcess: Finished subprocess.
@@ -70,7 +69,8 @@ def convert_to_wav(
     output_audio_path = Path(input_audio_path).with_suffix(".wav")
 
     # equivalent to:
-    # `ffmpeg -i {input}.aac -acodec pcm_s16le -ac {num_channels} -ar {sampling_rate} {output}.wav`
+    # ffmpeg -i {input_audio_path} -acodec pcm_s16le -ac {num_channels} \
+    #       -ar {sampling_rate} {output_audio_path}
     job = subprocess.run(
         [
             "ffmpeg",

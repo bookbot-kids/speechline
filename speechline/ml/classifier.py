@@ -13,76 +13,44 @@
 # limitations under the License.
 
 from typing import List
+from functools import partial
 from transformers import (
     AutoModelForAudioClassification,
     AutoFeatureExtractor,
     TrainingArguments,
     Trainer,
 )
-from datasets import Dataset, Audio
-import torch
+from datasets import Dataset
 import numpy as np
-import pandas as pd
+
+from speechline.ml.module import AudioModule
 
 
-class AudioClassifier:
+class Wav2Vec2Classifier(AudioModule):
     def __init__(self, model_checkpoint: str) -> None:
-        """Initializes a HuggingFace audio classifier and feature extractor.
+        """Initializes an audio classifier and feature extractor.
 
         Args:
             model_checkpoint (str): HuggingFace model hub checkpoint.
         """
-        self.model = AutoModelForAudioClassification.from_pretrained(model_checkpoint)
-        self.feature_extractor = AutoFeatureExtractor.from_pretrained(model_checkpoint)
-        self.sr = self.feature_extractor.sampling_rate
-
-    def format_audio_dataset(self, df: pd.DataFrame) -> Dataset:
-        """Formats Pandas `DataFrame` as a datasets `Dataset`.
-        Converts `audio` path column to audio arrays and resamples accordingly.
-
-        Args:
-            df (pd.DataFrame): Pandas
-
-        Returns:
-            Dataset: datasets `Dataset` usable for batch inference.
-        """
-        dataset = Dataset.from_pandas(df)
-        dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
-        return dataset
-
-    def preprocess_function(self, examples: Dataset) -> torch.Tensor:
-        """Preprocess function for audio classification.
-        Truncates audio arrays into the designated maximum audio duration used in training.
-
-        Args:
-            examples (Dataset): Audio `Dataset`.
-
-        Returns:
-            torch.Tensor: Batch of preprocessed audio tensors.
-        """
-        max_duration = 3.0  # seconds
-        audio_arrays = [x["array"] for x in examples["audio"]]
-        inputs = self.feature_extractor(
-            audio_arrays,
-            sampling_rate=self.feature_extractor.sampling_rate,
-            max_length=int(self.feature_extractor.sampling_rate * max_duration),
-            truncation=True,
-        )
-        return inputs
+        model = AutoModelForAudioClassification.from_pretrained(model_checkpoint)
+        feature_extractor = AutoFeatureExtractor.from_pretrained(model_checkpoint)
+        super().__init__(model, feature_extractor)
 
     def predict(self, dataset: Dataset, batch_size: int = 128) -> List[str]:
         """Performs batch audio classification (inference) on `dataset`.
-        First preprocesses dataset into tensors, performs batch inference, then returns predictions.
+        Preprocesses datasets, performs batch inference, then returns predictions.
 
         Args:
             dataset (Dataset): Dataset to be inferred.
-            batch_size (int, optional): Per device evaluation batch size. Defaults to 128.
+            batch_size (int, optional): Per device batch size. Defaults to 128.
 
         Returns:
             List[str]: List of predictions (in string of labels).
         """
+
         encoded_dataset = dataset.map(
-            self.preprocess_function,
+            partial(self.preprocess_function, max_duration=3.0),
             batched=True,
             desc="Preprocessing Dataset",
         )
@@ -96,6 +64,6 @@ class AudioClassifier:
         )
 
         logits, *_ = trainer.predict(encoded_dataset)
-        predictions = np.argmax(logits, axis=1).tolist()
-        predictions = [self.model.config.id2label[p] for p in predictions]
+        predicted_ids = np.argmax(logits, axis=1).tolist()
+        predictions = [self.model.config.id2label[p] for p in predicted_ids]
         return predictions
