@@ -117,7 +117,7 @@ class DataLogger:
         return language2duration
 
     def build_payload(
-        self, date: str, label: str, language: str, duration: int
+        self, date: str, label: str, language: str, duration: float
     ) -> Dict[str, Dict[str, Any]]:
         """Builds payload for AirTable record.
         AirTable record has the following structure:
@@ -135,7 +135,7 @@ class DataLogger:
             date (str): Logging date.
             label (str): Audio folder label.
             language (str): Language code (lang-country). E.g. `en-us`.
-            duration (int): Duration in seconds.
+            duration (float): Duration in seconds.
 
         Returns:
             Dict[str, Dict[str, Any]]: AirTable record payload.
@@ -176,9 +176,6 @@ class DataLogger:
 
 
 if __name__ == "__main__":
-    # export AIRTABLE_URL="https://api.airtable.com/v0/app1j9JeeX1jXegnL/Master"
-    # python speechline/utils/data_logger.py --url $AIRTABLE_URL --input_dir tests/test_ml/ --label archive
-    # python speechline/utils/data_logger.py --url $AIRTABLE_URL --input_dir tmp/ --label training
     logger = DataLogger()
     args = logger.parse_args(sys.argv[1:])
     status = logger.log(args.url, args.input_dir, args.label)
