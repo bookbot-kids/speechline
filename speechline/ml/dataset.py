@@ -40,11 +40,11 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         pd.DataFrame:
             DataFrame consisting of:
 
-                - `audio` (audio path)
-                - `id`
-                - `ground_truth`
-                - `language`
-                - `language_code`
+            - `audio` (audio path)
+            - `id`
+            - `ground_truth`
+            - `language`
+            - `language_code`
     """
     audios = sorted(glob(f"{path_to_files}/*/*.{audio_extension}"))
     df = pd.DataFrame({"audio": audios})

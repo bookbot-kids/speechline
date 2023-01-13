@@ -23,6 +23,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
+          sudo sed -i 's/azure\.//' /etc/apt/sources.list
           sudo apt-get update
           sudo apt install ffmpeg
           sudo apt-get install libsndfile1-dev

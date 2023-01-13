@@ -97,7 +97,7 @@ def convert_to_wav(
 
 
 if __name__ == "__main__":
-    parser = parse_args(sys.argv[1:])
-    audios = glob(f"{parser.input_dir}/**/*.aac", recursive=True)
-    fn = partial(convert_to_wav, num_channels=parser.channel, sampling_rate=parser.rate)
+    args = parse_args(sys.argv[1:])
+    audios = glob(f"{args.input_dir}/**/*.aac", recursive=True)
+    fn = partial(convert_to_wav, num_channels=args.channel, sampling_rate=args.rate)
     _ = p_map(fn, audios)
