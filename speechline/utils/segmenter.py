@@ -16,22 +16,41 @@ class AudioSegmenter:
     ) -> List[List[Dict[str, Any]]]:
         """Chunk transcript offsets based on in-between silence duration.
 
-        Example:
-        ```py
-        >> offsets = [
-        >>     {"start_time": 0.0, "end_time": 0.4},
-        >>     {"start_time": 0.4, "end_time": 0.5},
-        >>     {"start_time": 0.6, "end_time": 0.8},
-        >>     {"start_time": 1.1, "end_time": 1.3},
-        >>     {"start_time": 1.5, "end_time": 1.7},
-        >>     {"start_time": 1.7, "end_time": 2.0},
-        >> ]
-        >> segments = self.chunk_offsets(offsets, silence_duration=0.2)
+        ### Example:
+        ```py title="example_chunk_offsets.py"
+        >>> from speechline.utils.segmenter import AudioSegmenter
+        >>> segmenter = AudioSegmenter()
+        >>> offsets = [
+        ...     {"start_time": 0.0, "end_time": 0.4},
+        ...     {"start_time": 0.4, "end_time": 0.5},
+        ...     {"start_time": 0.6, "end_time": 0.8},
+        ...     {"start_time": 1.1, "end_time": 1.3},
+        ...     {"start_time": 1.5, "end_time": 1.7},
+        ...     {"start_time": 1.7, "end_time": 2.0},
+        ... ]
+        >>> segmenter.chunk_offsets(offsets, silence_duration=0.2)
         [
             [
                 {"start_time": 0.0, "end_time": 0.4},
                 {"start_time": 0.4, "end_time": 0.5},
                 {"start_time": 0.6, "end_time": 0.8},
+            ],
+            [
+                {"start_time": 1.1, "end_time": 1.3}
+            ],
+            [
+                {"start_time": 1.5, "end_time": 1.7},
+                {"start_time": 1.7, "end_time": 2.0}
+            ],
+        ]
+        >>> segmenter.chunk_offsets(offsets, silence_duration=0.1)
+        [
+            [
+                {"start_time": 0.0, "end_time": 0.4},
+                {"start_time": 0.4, "end_time": 0.5}
+            ],
+            [
+                {"start_time": 0.6, "end_time": 0.8}
             ],
             [
                 {"start_time": 1.1, "end_time": 1.3}

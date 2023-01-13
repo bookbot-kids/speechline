@@ -58,5 +58,7 @@ nav:
           - Audio Module: reference/ml/module.md
           - Audio Dataset: reference/ml/dataset.md
       - Utils:
-          - S3: reference/utils/s3.md
+          - Audio Segmenter: reference/utils/segmenter.md
+          - I/O: reference/utils/io.md
           - aac-to-wav Audio Converter: reference/utils/aac_to_wav.md
+          - S3: reference/utils/s3.md

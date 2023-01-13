@@ -9,8 +9,13 @@ def export_transcripts_json(
     phoneme_offsets: List[Dict[str, Any]],
 ) -> None:
     """Exports phoneme transcript with offsets as JSON.
-    ```json
+    ```json title="example_output_transcripts.json"
     [
+      {
+        "phoneme": {phoneme},
+        "start_time": {start_time},
+        "end_time": {end_time}
+      },
       {
         "phoneme": {phoneme},
         "start_time": {start_time},
@@ -31,9 +36,11 @@ def export_transcripts_json(
 def export_segment_transcripts_tsv(
     output_tsv_path: str, segment: List[Dict[str, Any]]
 ) -> None:
-    """Export segment transcripts to TSV of structure
-    ```
+    """Export segment transcripts to TSV of structure:
+    ```tsv title="example_output_segment_transcripts.tsv"
     start_time_in_secs\tend_time_in_secs\tlabel
+    start_time_in_secs\tend_time_in_secs\tlabel
+    ...
     ```
 
     Args:
@@ -49,7 +56,9 @@ def export_segment_audio_wav(output_wav_path: str, segment: AudioSegment) -> Non
     """Export segment audio to WAV.
 
     Equivalent to:
-    `ffmpeg -i in.aac -acodec pcm_s16le -ac 1 -ar 16000 out.wav`
+    ```sh title="example_export_segment_audio_wav.sh"
+    ffmpeg -i {segment} -acodec pcm_s16le -ac 1 -ar 16000 {output_wav_path}
+    ```
 
     Args:
         output_wav_path (str): Path to WAV file.
@@ -61,8 +70,9 @@ def export_segment_audio_wav(output_wav_path: str, segment: AudioSegment) -> Non
 
 def get_outdir_path(path: str, outdir: str) -> str:
     """Generate path at output directory.
-    Assumes `path` as: `{inputdir}/{lang}/`
-    Return: `{outdir}/{lang}/`
+
+    Assumes `path` as `{inputdir}/{lang}/*.wav`,
+    and will return `{outdir}/{lang}/*.wav`
 
     Args:
         path (str): Path to file.
@@ -80,8 +90,9 @@ def get_outdir_path(path: str, outdir: str) -> str:
 
 def get_chunk_path(path: str, outdir: str, idx: int, extension: str) -> str:
     """Generate path to chunk at output directory.
-    Assumes `path` as: `{inputdir}/{lang}/{utt_id}.{old_extension}`
-    Return: `{outdir}/{lang}/{utt_id}-{idx}.{extension}`
+
+    Assumes `path` as `{inputdir}/{lang}/{utt_id}.{old_extension}`,
+    and will return `{outdir}/{lang}/{utt_id}-{idx}.{extension}`
 
     Args:
         path (str): Path to file.
