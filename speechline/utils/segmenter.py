@@ -30,7 +30,7 @@ class AudioSegmenter:
     ) -> List[List[Dict[str, Any]]]:
         """Chunk transcript offsets based on in-between silence duration.
 
-        ### Example:
+        ### Example
         ```py title="example_chunk_offsets.py"
         >>> from speechline.utils.segmenter import AudioSegmenter
         >>> segmenter = AudioSegmenter()
