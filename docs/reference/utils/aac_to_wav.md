@@ -2,7 +2,7 @@
 
 ## Usage
 
-```sh
+```sh title="example_aac_to_wav.sh"
 python speechline/utils/aac_to_wav.py [-h] [-c CHANNEL] [-r RATE] input_dir
 ```
 
