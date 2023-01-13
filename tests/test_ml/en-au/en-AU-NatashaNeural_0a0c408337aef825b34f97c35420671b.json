@@ -1,0 +1,47 @@
+[
+  {
+    "phoneme": "\u026a",
+    "start_time": 0.01,
+    "end_time": 0.05
+  },
+  {
+    "phoneme": "t",
+    "start_time": 0.05,
+    "end_time": 0.28
+  },
+  {
+    "phoneme": "\u026a",
+    "start_time": 0.28,
+    "end_time": 0.35
+  },
+  {
+    "phoneme": "z",
+    "start_time": 0.35,
+    "end_time": 0.43
+  },
+  {
+    "phoneme": "n",
+    "start_time": 0.43,
+    "end_time": 0.52
+  },
+  {
+    "phoneme": "o\u028a",
+    "start_time": 0.52,
+    "end_time": 0.57
+  },
+  {
+    "phoneme": "t",
+    "start_time": 0.57,
+    "end_time": 0.62
+  },
+  {
+    "phoneme": "\u028c",
+    "start_time": 0.62,
+    "end_time": 0.75
+  },
+  {
+    "phoneme": "p",
+    "start_time": 0.75,
+    "end_time": 0.93
+  }
+]

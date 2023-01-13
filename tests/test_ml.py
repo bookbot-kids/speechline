@@ -14,11 +14,14 @@
 
 from glob import glob
 from pathlib import Path
+import json
 
 from speechline.ml.dataset import prepare_dataframe
 from speechline.ml.classifier import Wav2Vec2Classifier
 from speechline.ml.transcriber import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.aac_to_wav import parse_args, convert_to_wav
+from speechline.utils.io import export_transcripts_json
+from speechline.utils.segmenter import AudioSegmenter
 
 
 def test_convert_to_wav(datadir):
@@ -49,7 +52,7 @@ def test_audio_classifier(datadir):
     assert predictions == ["child", "child", "child"]
 
 
-def test_wav2vec2_transcriber(datadir):
+def test_wav2vec2_transcriber(datadir, tmpdir):
     model_checkpoint = "bookbot/wav2vec2-ljspeech-gruut"
     transcriber = Wav2Vec2Transcriber(model_checkpoint)
     df = prepare_dataframe(datadir)
@@ -126,6 +129,95 @@ def test_wav2vec2_transcriber(datadir):
             {"phoneme": "æ", "start_time": 2.47, "end_time": 2.53},
             {"phoneme": "p", "start_time": 2.53, "end_time": 2.63},
             {"phoneme": "ə", "start_time": 2.63, "end_time": 2.79},
+        ],
+    ]
+
+    segmenter = AudioSegmenter()
+    segments = []
+    for audio_path, offsets in zip(df["audio"], phoneme_offsets):
+        json_path = Path(audio_path).with_suffix(".json")
+        export_transcripts_json(json_path, offsets)
+        assert json_path.exists()
+        assert json.load(open(json_path)) == offsets
+
+        segment = segmenter.chunk_audio_segments(
+            audio_path, tmpdir, offsets, silence_duration=0.05
+        )
+        segments.append(segment)
+
+    assert sum([len(s) for s in segments]) + len(df) == len(glob(f"{tmpdir}/*/*.wav"))
+    assert segments == [
+        [
+            [
+                {"phoneme": "h", "start_time": 0.0, "end_time": 0.04},
+                {"phoneme": "h", "start_time": 0.04, "end_time": 0.16},
+                {"phoneme": "ɚ", "start_time": 0.16, "end_time": 0.24},
+                {"phoneme": "i", "start_time": 0.24, "end_time": 0.42},
+                {"phoneme": "d", "start_time": 0.42, "end_time": 0.51},
+                {"phoneme": "ʌ", "start_time": 0.51, "end_time": 0.64},
+                {"phoneme": "m", "start_time": 0.64, "end_time": 0.71},
+                {"phoneme": "b", "start_time": 0.71, "end_time": 0.79},
+                {"phoneme": "ɹ", "start_time": 0.79, "end_time": 0.86},
+                {"phoneme": "ɛ", "start_time": 0.86, "end_time": 0.92},
+                {"phoneme": "l", "start_time": 0.92, "end_time": 1.01},
+                {"phoneme": "ə", "start_time": 1.01, "end_time": 1.09},
+                {"phoneme": "ɪ", "start_time": 1.09, "end_time": 1.36},
+                {"phoneme": "z", "start_time": 1.36, "end_time": 1.54},
+                {"phoneme": "d͡ʒ", "start_time": 1.54, "end_time": 1.6},
+                {"phoneme": "ʌ", "start_time": 1.6, "end_time": 1.64},
+                {"phoneme": "s", "start_time": 1.64, "end_time": 1.73},
+                {"phoneme": "t", "start_time": 1.73, "end_time": 1.79},
+                {"phoneme": "ð", "start_time": 1.79, "end_time": 1.86},
+                {"phoneme": "ə", "start_time": 1.86, "end_time": 1.92},
+                {"phoneme": "b", "start_time": 1.92, "end_time": 1.98},
+                {"phoneme": "ɛ", "start_time": 1.98, "end_time": 2.05},
+                {"phoneme": "s", "start_time": 2.05, "end_time": 2.23},
+                {"phoneme": "t", "start_time": 2.23, "end_time": 2.38},
+            ]
+        ],
+        [
+            [
+                {"phoneme": "ɪ", "start_time": 0.0, "end_time": 0.04},
+                {"phoneme": "t", "start_time": 0.04, "end_time": 0.27},
+                {"phoneme": "ɪ", "start_time": 0.27, "end_time": 0.34},
+                {"phoneme": "z", "start_time": 0.34, "end_time": 0.42},
+                {"phoneme": "n", "start_time": 0.42, "end_time": 0.51},
+                {"phoneme": "oʊ", "start_time": 0.51, "end_time": 0.56},
+                {"phoneme": "t", "start_time": 0.56, "end_time": 0.61},
+                {"phoneme": "ʌ", "start_time": 0.61, "end_time": 0.74},
+                {"phoneme": "p", "start_time": 0.74, "end_time": 0.92},
+            ]
+        ],
+        [
+            [
+                {"phoneme": "s", "start_time": 0.0, "end_time": 0.2},
+                {"phoneme": "ə", "start_time": 0.2, "end_time": 0.27},
+                {"phoneme": "b", "start_time": 0.27, "end_time": 0.37},
+                {"phoneme": "l", "start_time": 0.37, "end_time": 0.5},
+                {"phoneme": "ɛ", "start_time": 0.5, "end_time": 0.54},
+                {"phoneme": "n", "start_time": 0.54, "end_time": 0.6},
+                {"phoneme": "s", "start_time": 0.6, "end_time": 0.68},
+                {"phoneme": "ɪ", "start_time": 0.68, "end_time": 0.74},
+                {"phoneme": "p", "start_time": 0.74, "end_time": 0.82},
+                {"phoneme": "z", "start_time": 0.82, "end_time": 0.88},
+                {"phoneme": "ə", "start_time": 0.88, "end_time": 1.05},
+            ],
+            [
+                {"phoneme": "f", "start_time": 0.0, "end_time": 0.52},
+                {"phoneme": "i", "start_time": 0.52, "end_time": 0.59},
+                {"phoneme": "t", "start_time": 0.59, "end_time": 0.67},
+                {"phoneme": "p", "start_time": 0.67, "end_time": 0.71},
+                {"phoneme": "l", "start_time": 0.71, "end_time": 0.75},
+                {"phoneme": "i", "start_time": 0.75, "end_time": 0.81},
+                {"phoneme": "s", "start_time": 0.81, "end_time": 0.94},
+                {"phoneme": "æ", "start_time": 0.94, "end_time": 1.01},
+                {"phoneme": "æ", "start_time": 1.01, "end_time": 1.17},
+                {"phoneme": "p", "start_time": 1.17, "end_time": 1.29},
+                {"phoneme": "l", "start_time": 1.29, "end_time": 1.35},
+                {"phoneme": "æ", "start_time": 1.35, "end_time": 1.41},
+                {"phoneme": "p", "start_time": 1.41, "end_time": 1.51},
+                {"phoneme": "ə", "start_time": 1.51, "end_time": 1.67},
+            ],
         ],
     ]
 
