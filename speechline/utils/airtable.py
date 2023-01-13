@@ -24,10 +24,17 @@ class AirTable:
 
         Args:
             url (str): URL of AirTable table.
+
+        Raises:
+            OSError: `AIRTABLE_API_KEY` environment is not set.
         """
+        airtable_api_key = os.getenv("AIRTABLE_API_KEY")
+        if airtable_api_key is None:
+            raise OSError("AIRTABLE_API_KEY environment is not set.")
+
         self.url = url
         self.headers = {
-            "Authorization": f"Bearer {os.environ['AIRTABLE_API_KEY']}",
+            "Authorization": f"Bearer {airtable_api_key}",
             "Content-Type": "application/json",
         }
 
