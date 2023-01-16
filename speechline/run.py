@@ -111,7 +111,7 @@ class Runner:
             ):
                 json_path = Path(audio_path).with_suffix(".json")
                 # export JSON transcripts
-                export_transcripts_json(json_path, offsets)
+                export_transcripts_json(str(json_path), offsets)
                 # chunk audio into segments
                 segmenter.chunk_audio_segments(
                     audio_path,

@@ -252,6 +252,7 @@ def test_runner(datadir, tmpdir):
     config = Config(args.config)
     runner = Runner(config, args.input_dir, args.output_dir)
     runner.run()
+    assert len(glob(f"{tmpdir}/*/*.wav")) == 7
 
 
 def test_failed_run(datadir, tmpdir):

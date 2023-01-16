@@ -18,7 +18,9 @@ import json
 class Config:
     def __init__(self, path: str) -> None:
         self.config = json.load(open(path))
-        self.__dict__.update(**self.config)
+        self.languages = self.config["languages"]
+        self.models = self.config["models"]
+        self.segmentation = self.config["segmentation"]
         self.validate_config()
 
     def validate_config(self) -> None:
