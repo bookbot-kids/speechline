@@ -6,7 +6,7 @@
     "models": {
         "classifier": {
             "en": "bookbot/distil-wav2vec2-adult-child-cls-52m",
-            "id": "bookbot/distil-wav2vec2-adult-child-cls-52m"
+            "id": "bookbot/distil-wav2vec2-adult-child-id-cls-52m"
         },
         "transcriber": {
             "en": "bookbot/wav2vec2-ljspeech-gruut",
