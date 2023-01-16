@@ -1,0 +1,19 @@
+{
+    "languages": [
+        "en",
+        "id"
+    ],
+    "models": {
+        "classifier": {
+            "en": "bookbot/distil-wav2vec2-adult-child-cls-52m",
+            "id": "bookbot/distil-wav2vec2-adult-child-cls-52m"
+        },
+        "transcriber": {
+            "en": "bookbot/wav2vec2-ljspeech-gruut",
+            "id": "bookbot/wav2vec2-ljspeech-gruut"
+        }
+    },
+    "segmentation": {
+        "silence_duration": 0.05
+    }
+}

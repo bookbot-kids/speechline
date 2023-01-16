@@ -12,16 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 from glob import glob
 from pathlib import Path
 import json
 
+from speechline.run import Runner
 from speechline.ml.dataset import prepare_dataframe
 from speechline.ml.classifier import Wav2Vec2Classifier
 from speechline.ml.transcriber import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.aac_to_wav import parse_args, convert_to_wav
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.segmenter import AudioSegmenter
+from speechline.utils.config import Config
 
 
 def test_convert_to_wav(datadir):
@@ -233,3 +236,41 @@ def test_whisper_transcriber(datadir):
         " It is not up.",
         " Suppulant Secola, Fitri Sangat Lappar",
     ]
+
+
+def test_runner(datadir, tmpdir):
+    args = Runner.parse_args(
+        [
+            "--input_dir",
+            str(datadir),
+            "--output_dir",
+            str(tmpdir),
+            "--config",
+            f"{datadir}/config.json",
+        ]
+    )
+    config = Config(args.config)
+    runner = Runner(config, args.input_dir, args.output_dir)
+    runner.run()
+    assert len(glob(f"{tmpdir}/*/*.wav")) == 7
+
+
+def test_failed_run(datadir, tmpdir):
+    args = Runner.parse_args(
+        [
+            "--input_dir",
+            str(datadir),
+            "--output_dir",
+            str(tmpdir),
+            "--config",
+            f"{datadir}/config.json",
+        ]
+    )
+    config = Config(args.config)
+    # inject unsupported language
+    config.languages = ["zh"]
+    with pytest.raises(AttributeError):
+        config.validate_config()
+
+    runner = Runner(config, args.input_dir, args.output_dir)
+    runner.run()

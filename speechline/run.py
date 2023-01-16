@@ -11,3 +11,135 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from typing import List
+from pathlib import Path
+from tqdm import tqdm
+import argparse
+import sys
+
+from speechline.ml.classifier import Wav2Vec2Classifier
+from speechline.ml.transcriber import Wav2Vec2Transcriber
+from speechline.ml.dataset import prepare_dataframe
+from speechline.utils.segmenter import AudioSegmenter
+from speechline.utils.io import export_transcripts_json
+from speechline.utils.config import Config
+from speechline.utils.logger import logger
+
+
+class Runner:
+    @staticmethod
+    def parse_args(args: List[str]) -> argparse.Namespace:
+        """Utility argument parser function for SpeechLine.
+
+        Args:
+            args (List[str]): List of arguments.
+
+        Returns:
+            argparse.Namespace: Objects with arguments values as attributes.
+        """
+        parser = argparse.ArgumentParser(
+            prog="python speechline/run.py",
+            description="Perform end-to-end speech labeling pipeline.",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--input_dir",
+            type=str,
+            required=True,
+            help="Directory of input audios.",
+        )
+        parser.add_argument(
+            "-o",
+            "--output_dir",
+            type=str,
+            required=True,
+            help="Directory to save pipeline results.",
+        )
+        parser.add_argument(
+            "-c",
+            "--config",
+            type=str,
+            default="examples/config.json",
+            help="SpeechLine configuration file.",
+        )
+        return parser.parse_args(args)
+
+    def __init__(self, config: Config, input_dir: str, output_dir: str) -> None:
+        """Constructor for SpeechLine Runnner.
+
+        Args:
+            config (Config): SpeechLine Config object.
+            input_dir (str): Path to input directory.
+            output_dir (str): Path to output directory.
+        """
+        self.config = config
+        self.languages = self.config.languages
+        self.input_dir = input_dir
+        self.output_dir = output_dir
+
+    def run(self) -> None:
+        """Runs end-to-end SpeechLine pipeline.
+
+        ### Pipeline Overview
+        - Prepare DataFrame of audio data.
+        - For every specified language:
+            - Filters dataset based on language.
+            - Classifies for children's speech audio.
+            - Transcribes children's speech audio.
+            - Segments audio into chunks based on silences.
+        """
+        raw_df = prepare_dataframe(self.input_dir, audio_extension="wav")
+
+        for language in self.languages:
+            # filter dataframe by language
+            df = raw_df[raw_df["language"] == language]
+            if len(df) == 0:
+                logger.info(f"DataFrame for language {language} is empty. Skipping..")
+                continue
+
+            # load classifier model
+            classifier_checkpoint = self.config.models["classifier"][language]
+            classifier = Wav2Vec2Classifier(classifier_checkpoint)
+
+            # perform audio classification
+            # TODO: add minimum length filter for super-short audio?
+            dataset = classifier.format_audio_dataset(df)
+            df["category"] = classifier.predict(dataset)
+
+            # filter audio by category
+            child_speech_df = df[df["category"] == "child"]
+
+            # load transcriber model
+            transcriber_checkpoint = self.config.models["transcriber"][language]
+            transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
+
+            # perform audio transcription
+            dataset = transcriber.format_audio_dataset(child_speech_df)
+            phoneme_offsets = transcriber.predict(dataset, output_phoneme_offsets=True)
+
+            # segment audios based on offsets
+            segmenter = AudioSegmenter()
+            for audio_path, offsets in tqdm(
+                zip(child_speech_df["audio"], phoneme_offsets),
+                desc="Segmenting Audio into Chunks",
+                total=len(child_speech_df),
+            ):
+                json_path = Path(audio_path).with_suffix(".json")
+                # export JSON transcripts
+                export_transcripts_json(str(json_path), offsets)
+                # chunk audio into segments
+                segmenter.chunk_audio_segments(
+                    audio_path,
+                    self.output_dir,
+                    offsets,
+                    silence_duration=self.config.segmentation["silence_duration"],
+                )
+
+
+if __name__ == "__main__":
+    args = Runner.parse_args(sys.argv[1:])
+    config = Config(args.config)
+    runner = Runner(config, args.input_dir, args.output_dir)
+    runner.run()

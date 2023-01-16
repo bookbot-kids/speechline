@@ -2,21 +2,21 @@
   {
     "phoneme": "h",
     "start_time": 0.01,
-    "end_time": 0.05
+    "end_time": 0.15
   },
   {
     "phoneme": "h",
-    "start_time": 0.05,
-    "end_time": 0.17
+    "start_time": 0.15,
+    "end_time": 0.19
   },
   {
     "phoneme": "\u025a",
-    "start_time": 0.17,
-    "end_time": 0.25
+    "start_time": 0.19,
+    "end_time": 0.26
   },
   {
     "phoneme": "i",
-    "start_time": 0.25,
+    "start_time": 0.26,
     "end_time": 0.43
   },
   {
@@ -107,11 +107,11 @@
   {
     "phoneme": "\u025b",
     "start_time": 1.99,
-    "end_time": 2.06
+    "end_time": 2.05
   },
   {
     "phoneme": "s",
-    "start_time": 2.06,
+    "start_time": 2.05,
     "end_time": 2.24
   },
   {
