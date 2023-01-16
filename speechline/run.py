@@ -67,12 +67,29 @@ class Runner:
         return parser.parse_args(args)
 
     def __init__(self, config: Config, input_dir: str, output_dir: str) -> None:
+        """Constructor for SpeechLine Runnner.
+
+        Args:
+            config (Config): SpeechLine Config object.
+            input_dir (str): Path to input directory.
+            output_dir (str): Path to output directory.
+        """
         self.config = config
         self.languages = self.config.languages
         self.input_dir = input_dir
         self.output_dir = output_dir
 
-    def run(self):
+    def run(self) -> None:
+        """Runs end-to-end SpeechLine pipeline.
+
+        ### Pipeline Overview
+        - Prepare DataFrame of audio data.
+        - For every specified language:
+            - Filters dataset based on language.
+            - Classifies for children's speech audio.
+            - Transcribes children's speech audio.
+            - Segments audio into chunks based on silences.
+        """
         raw_df = prepare_dataframe(self.input_dir, audio_extension="wav")
 
         for language in self.languages:

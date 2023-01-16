@@ -17,6 +17,11 @@ import json
 
 class Config:
     def __init__(self, path: str) -> None:
+        """Constructor for SpeechLine Config.
+
+        Args:
+            path (str): Path to JSON config file.
+        """
         self.config = json.load(open(path))
         self.languages = self.config["languages"]
         self.models = self.config["models"]
@@ -24,6 +29,12 @@ class Config:
         self.validate_config()
 
     def validate_config(self) -> None:
+        """Validate provided config file.
+        Ensures all specified languages have supported models.
+
+        Raises:
+            AttributeError: ML Models have not been specified for particular languages.
+        """
         classifier_lang = self.models["classifier"].keys()
         transcriber_lang = self.models["transcriber"].keys()
         missing_lang = (
