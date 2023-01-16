@@ -32,16 +32,16 @@
   {
     "phoneme": "t",
     "start_time": 0.57,
-    "end_time": 0.62
+    "end_time": 0.61
   },
   {
     "phoneme": "\u028c",
-    "start_time": 0.62,
-    "end_time": 0.75
+    "start_time": 0.61,
+    "end_time": 0.76
   },
   {
     "phoneme": "p",
-    "start_time": 0.75,
-    "end_time": 0.93
+    "start_time": 0.76,
+    "end_time": 0.94
   }
 ]
