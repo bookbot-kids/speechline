@@ -29,7 +29,7 @@ def parse_args(args: List[str]) -> argparse.Namespace:
         argparse.Namespace: Objects with arguments values as attributes.
     """
     parser = argparse.ArgumentParser(
-        prog="python speechline/utils/download_s3_bucket.py",
+        prog="python scripts/download_s3_bucket.py",
         description="Download an S3 bucket with folder prefix.",
     )
 

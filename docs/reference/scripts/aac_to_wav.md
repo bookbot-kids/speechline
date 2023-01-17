@@ -3,7 +3,7 @@
 ## Usage
 
 ```sh title="example_aac_to_wav.sh"
-python speechline/utils/aac_to_wav.py [-h] [-c CHANNEL] [-r RATE] input_dir
+python scripts/aac_to_wav.py [-h] [-c CHANNEL] [-r RATE] input_dir
 ```
 
 ```
@@ -22,9 +22,9 @@ optional arguments:
 ## Example
 
 ```sh
-python speechline/utils/aac_to_wav.py -c 1 -r 16000 dropbox/
+python scripts/aac_to_wav.py -c 1 -r 16000 dropbox/
 ```
 
 ---
 
-::: speechline.utils.aac_to_wav
+::: scripts.aac_to_wav
