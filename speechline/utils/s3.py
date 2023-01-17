@@ -96,7 +96,9 @@ class S3Client:
         paths, keys = [], []
         # recursively walk through local directory
         # setup file paths and object keys
-        for root, _, files in os.walk(local_dir):
+        for root, dirs, files in os.walk(local_dir):
+            # skip hidden folders
+            dirs[:] = [d for d in dirs if not d.startswith(".")]
             for file in files:
                 # skip hidden files
                 if not file.startswith("."):
