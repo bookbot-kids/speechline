@@ -2,7 +2,7 @@
 
 ## Usage
 
-```sh title="example_downlaod_s3_bucket.sh"
+```sh title="example_download_s3_bucket.sh"
 python scripts/download_s3_bucket.py [-h] -b BUCKET -p PREFIX -o OUTPUT_DIR [-r REGION]
 ```
 
@@ -23,7 +23,7 @@ optional arguments:
 
 ## Example
 
-```sh title="example_downlaod_s3_bucket.sh"
+```sh title="example_download_s3_bucket.sh"
 python scripts/download_s3_bucket.py --bucket="my_bucket" --prefix="recordings/" --output_dir="downloads/"
 ```
 

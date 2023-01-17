@@ -68,3 +68,4 @@ nav:
           - aac-to-wav Audio Converter: reference/scripts/aac_to_wav.md
           - Audio Data Logger: reference/scripts/data_logger.md
           - S3 Bucket Downloader: reference/scripts/download_s3_bucket.md
+          - S3 Bucket Uploader: reference/scripts/upload_s3_bucket.md
