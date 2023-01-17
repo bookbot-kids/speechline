@@ -94,7 +94,6 @@ class DataLogger:
 
         ### Example
         ```py title="example_get_language_total_audio_duration.py"
-        >>> from speechline.utils.data_logger import DataLogger
         >>> logger = DataLogger()
         >>> logger.get_language_total_audio_duration("dropbox/")
         {'en-au': 3.936, 'id-id': 3.797}

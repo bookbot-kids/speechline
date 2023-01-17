@@ -39,5 +39,6 @@ def test_s3_utils(tmp_path, s3_client, s3_test, bucket_name):
     my_client.download_s3_folder(
         bucket_name, s3_folder=str(testbox), local_dir=tmp_path
     )
+    my_client.upload_folder(bucket_name, "uploads", tmp_path)
     assert foo.read_text() == "foo"
     assert bar.read_text() == "bar"
