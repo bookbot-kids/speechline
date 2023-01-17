@@ -15,6 +15,9 @@
 from typing import Optional
 import os
 import boto3
+from concurrent.futures import ThreadPoolExecutor
+from functools import partial
+from tqdm import tqdm
 
 
 class S3Client:
@@ -59,7 +62,58 @@ class S3Client:
                 continue
             bucket.download_file(obj.key, target)
 
-    def put_object(self, bucket_name: str, key: str, value: str):
+    def upload_folder(self, bucket_name: str, prefix: str, local_dir: str) -> None:
+        """Uploads all files under `local_dir` to S3 bucket with `prefix`.
+        Utilizes parallelism to speed up upload process.
+
+        ### Example
+        ```title="Sample Directory"
+        tmp/
+        └── en-us
+            ├── utt_0.tsv
+            ├── utt_0.wav
+        └── id-id
+            ├── utt_1.tsv
+            └── utt_1.wav
+        ```
+        ```py title="example_upload_folder.py"
+        >>> bucket_name, prefix, local_dir = "my-bucket", "train/", "tmp/"
+        >>> my_client = S3Client()
+        >>> my_client.upload_folder(bucket_name, prefix, local_dir)
+        ```
+        ```title="Result"
+        Uploaded tmp/en-us/utt_0.tsv to s3://my-bucket/train/en-us/utt_0.tsv
+        Uploaded tmp/en-us/utt_0.wav to s3://my-bucket/train/en-us/utt_0.wav
+        Uploaded tmp/id-id/utt_1.tsv to s3://my-bucket/train/id-id/utt_1.tsv
+        Uploaded tmp/id-id/utt_1.wav to s3://my-bucket/train/id-id/utt_1.wav
+        ```
+
+        Args:
+            bucket_name (str): S3 bucket name.
+            prefix (str): Object key's prefix.
+            local_dir (str): Path to local directory.
+        """
+        paths, keys = [], []
+        # recursively walk through local directory
+        # setup file paths and object keys
+        for root, _, files in os.walk(local_dir):
+            for file in files:
+                # skip hidden files
+                if not file.startswith("."):
+                    # path to file in local dir
+                    path = os.path.join(root, file)
+                    # relative path from local dir to file
+                    relpath = os.path.relpath(path, local_dir)
+                    # object key from prefix to relative path
+                    key = os.path.join(prefix, relpath)
+                    paths.append(path)
+                    keys.append(key)
+
+        fn = partial(self.upload_file, bucket_name=bucket_name)
+        with ThreadPoolExecutor() as executor:
+            _ = list(tqdm(executor.map(fn, keys, paths), total=len(keys)))
+
+    def put_object(self, bucket_name: str, key: str, value: str) -> None:
         """Puts `value` (in str) to S3 bucket.
 
         Args:
@@ -68,3 +122,13 @@ class S3Client:
             value (str): String representation of object to put in S3.
         """
         self.client.put_object(Bucket=bucket_name, Key=key, Body=value)
+
+    def upload_file(self, key: str, path: str, bucket_name: str) -> None:
+        """Uploads file at `path` to S3 bucket with `key` as object key.
+
+        Args:
+            key (str): Key to file in bucket.
+            path (str): Path to local file to upload.
+            bucket_name (str): S3 bucket name.
+        """
+        self.client.upload_file(Bucket=bucket_name, Key=key, Filename=path)
