@@ -19,23 +19,24 @@ from datasets import Dataset, Audio
 
 
 class AudioModule:
+    """Base AudioModule. Inherit this class for other audio models.
+    Contains implemented methods for audio dataset formatting and preprocessing.
+
+    Args:
+        model (PreTrainedModel):
+            Pre-trained audio model for inference.
+        feature_extractor (SequenceFeatureExtractor):
+            Pre-trained feature extractor for inference.
+        tokenizer (PreTrainedTokenizer, optional):
+            Optional pre-trained tokenizer for logits decoding. Defaults to None.
+    """
+
     def __init__(
         self,
         model: PreTrainedModel,
         feature_extractor: SequenceFeatureExtractor,
         tokenizer: PreTrainedTokenizer = None,
     ) -> None:
-        """Constructor for base AudioModule. Inherit this class for other audio models.
-        Contains implemented methods for audio dataset formatting and preprocessing.
-
-        Args:
-            model (PreTrainedModel):
-                Pre-trained audio model for inference.
-            feature_extractor (SequenceFeatureExtractor):
-                Pre-trained feature extractor for inference.
-            tokenizer (PreTrainedTokenizer, optional):
-                Optional pre-trained tokenizer for logits decoding. Defaults to None.
-        """
         self.model = model
         self.feature_extractor = feature_extractor
         self.tokenizer = tokenizer

@@ -27,12 +27,13 @@ from speechline.ml.module import AudioModule
 
 
 class Wav2Vec2Classifier(AudioModule):
-    def __init__(self, model_checkpoint: str) -> None:
-        """Initializes an audio classifier and feature extractor.
+    """Audio classifier with feature extractor.
 
-        Args:
-            model_checkpoint (str): HuggingFace model hub checkpoint.
-        """
+    Args:
+        model_checkpoint (str): HuggingFace model hub checkpoint.
+    """
+
+    def __init__(self, model_checkpoint: str) -> None:
         model = AutoModelForAudioClassification.from_pretrained(model_checkpoint)
         feature_extractor = AutoFeatureExtractor.from_pretrained(model_checkpoint)
         super().__init__(model, feature_extractor)

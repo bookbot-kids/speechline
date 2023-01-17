@@ -28,6 +28,14 @@ from speechline.utils.logger import logger
 
 
 class Runner:
+    """SpeechLine Runnner.
+
+    Args:
+        config (Config): SpeechLine Config object.
+        input_dir (str): Path to input directory.
+        output_dir (str): Path to output directory.
+    """
+
     @staticmethod
     def parse_args(args: List[str]) -> argparse.Namespace:
         """Utility argument parser function for SpeechLine.
@@ -67,13 +75,6 @@ class Runner:
         return parser.parse_args(args)
 
     def __init__(self, config: Config, input_dir: str, output_dir: str) -> None:
-        """Constructor for SpeechLine Runnner.
-
-        Args:
-            config (Config): SpeechLine Config object.
-            input_dir (str): Path to input directory.
-            output_dir (str): Path to output directory.
-        """
         self.config = config
         self.languages = self.config.languages
         self.input_dir = input_dir
@@ -100,24 +101,30 @@ class Runner:
                 continue
 
             # load classifier model
-            classifier_checkpoint = self.config.models["classifier"][language]
+            classifier_checkpoint = self.config.classifier["models"][language]
             classifier = Wav2Vec2Classifier(classifier_checkpoint)
 
             # perform audio classification
             # TODO: add minimum length filter for super-short audio?
             dataset = classifier.format_audio_dataset(df)
-            df["category"] = classifier.predict(dataset)
+            df["category"] = classifier.predict(
+                dataset, batch_size=self.config.classifier["batch_size"]
+            )
 
             # filter audio by category
             child_speech_df = df[df["category"] == "child"]
 
             # load transcriber model
-            transcriber_checkpoint = self.config.models["transcriber"][language]
+            transcriber_checkpoint = self.config.transcriber["models"][language]
             transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
 
             # perform audio transcription
             dataset = transcriber.format_audio_dataset(child_speech_df)
-            phoneme_offsets = transcriber.predict(dataset, output_phoneme_offsets=True)
+            phoneme_offsets = transcriber.predict(
+                dataset,
+                batch_size=self.config.transcriber["batch_size"],
+                output_phoneme_offsets=True,
+            )
 
             # segment audios based on offsets
             segmenter = AudioSegmenter()
@@ -134,7 +141,7 @@ class Runner:
                     audio_path,
                     self.output_dir,
                     offsets,
-                    silence_duration=self.config.segmentation["silence_duration"],
+                    silence_duration=self.config.segmenter["silence_duration"],
                 )
 
 

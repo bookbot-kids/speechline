@@ -37,12 +37,13 @@ from speechline.ml.module import AudioModule
 
 
 class Wav2Vec2Transcriber(AudioModule):
-    def __init__(self, model_checkpoint: str) -> None:
-        """Initializes a Wav2Vec2-CTC model for phoneme recognition and its processor.
+    """Wav2Vec2-CTC model for phoneme recognition with its processor.
 
-        Args:
-            model_checkpoint (str): HuggingFace model hub checkpoint.
-        """
+    Args:
+        model_checkpoint (str): HuggingFace model hub checkpoint.
+    """
+
+    def __init__(self, model_checkpoint: str) -> None:
         model = AutoModelForCTC.from_pretrained(model_checkpoint)
         processor = AutoProcessor.from_pretrained(model_checkpoint)
         feature_extractor = processor.feature_extractor
@@ -163,12 +164,13 @@ class Wav2Vec2Transcriber(AudioModule):
 
 
 class WhisperTranscriber(AudioModule):
-    def __init__(self, model_checkpoint: str) -> None:
-        """Initializes a Whisper model for speech recognition and its processor.
+    """Whisper model for seq2seq speech recognition with its processor.
 
-        Args:
-            model_checkpoint (str): HuggingFace model hub checkpoint.
-        """
+    Args:
+        model_checkpoint (str): HuggingFace model hub checkpoint.
+    """
+
+    def __init__(self, model_checkpoint: str) -> None:
         model = AutoModelForSpeechSeq2Seq.from_pretrained(model_checkpoint)
         processor = AutoProcessor.from_pretrained(model_checkpoint)
         feature_extractor = processor.feature_extractor

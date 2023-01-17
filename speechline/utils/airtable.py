@@ -19,15 +19,16 @@ import os
 
 
 class AirTable:
+    """AirTable table interface.
+
+    Args:
+        url (str): URL of AirTable table.
+
+    Raises:
+        OSError: `AIRTABLE_API_KEY` environment is not set.
+    """
+
     def __init__(self, url: str) -> None:
-        """Constructor for AirTable table.
-
-        Args:
-            url (str): URL of AirTable table.
-
-        Raises:
-            OSError: `AIRTABLE_API_KEY` environment is not set.
-        """
         airtable_api_key = os.getenv("AIRTABLE_API_KEY")
         if airtable_api_key is None:
             raise OSError("AIRTABLE_API_KEY environment is not set.")
