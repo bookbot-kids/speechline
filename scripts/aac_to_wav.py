@@ -32,12 +32,16 @@ def parse_args(args: List[str]) -> argparse.Namespace:
         argparse.Namespace: Objects with arguments values as attributes.
     """
     parser = argparse.ArgumentParser(
-        prog="python speechline/utils/aac_to_wav.py",
+        prog="python scripts/aac_to_wav.py",
         description="Batch-convert aac audios in a folder to wav format with ffmpeg.",
     )
 
     parser.add_argument(
-        "input_dir", type=str, help="Directory of input audios to convert."
+        "-i",
+        "--input_dir",
+        type=str,
+        required=True,
+        help="Directory of input audios to convert.",
     )
     parser.add_argument(
         "-c",

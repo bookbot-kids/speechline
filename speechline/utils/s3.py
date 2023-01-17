@@ -18,6 +18,12 @@ import boto3
 
 
 class S3Client:
+    """AWS S3 Client Interface.
+
+    Args:
+        region_name (str, optional): AWS region name. Defaults to "us-east-1".
+    """
+
     def __init__(self, region_name: str = "us-east-1") -> None:
         self.client = boto3.client("s3", region_name=region_name)
         self.resource = boto3.resource("s3", region_name=region_name)
@@ -25,8 +31,7 @@ class S3Client:
     def download_s3_folder(
         self, bucket_name: str, s3_folder: str, local_dir: Optional[str] = None
     ) -> None:
-        """
-        Download the contents of a folder directory in an S3 bucket.
+        """Download the contents of a folder directory in an S3 bucket.
         Source: [StackOverflow](https://stackoverflow.com/a/62945526).
 
         Args:

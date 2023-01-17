@@ -35,7 +35,7 @@ class DataLogger:
             argparse.Namespace: Objects with arguments values as attributes.
         """
         parser = argparse.ArgumentParser(
-            prog="python speechline/utils/data_logger.py",
+            prog="python scripts/data_logger.py",
             description="Log region-grouped total audio duration to AirTable.",
         )
 

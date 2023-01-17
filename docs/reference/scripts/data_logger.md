@@ -3,7 +3,7 @@
 ## Usage
 
 ```sh title="example_data_logger.sh"
-python speechline/utils/data_logger.py [-h] -u URL -i INPUT_DIR -l LABEL
+python scripts/data_logger.py [-h] -u URL -i INPUT_DIR -l LABEL
 ```
 
 ```
@@ -23,10 +23,10 @@ optional arguments:
 ```sh title="example_data_logger.sh"
 export AIRTABLE_API_KEY="AIRTABLE_API_KEY"
 export AIRTABLE_URL="AIRTABLE_TABLE_URL"
-python speechline/utils/data_logger.py --url $AIRTABLE_URL --input_dir dropbox/ --label archive
-python speechline/utils/data_logger.py --url $AIRTABLE_URL --input_dir training/ --label training
+python scripts/data_logger.py --url $AIRTABLE_URL --input_dir dropbox/ --label archive
+python scripts/data_logger.py --url $AIRTABLE_URL --input_dir training/ --label training
 ```
 
 ---
 
-::: speechline.utils.data_logger.DataLogger
+::: scripts.data_logger.DataLogger

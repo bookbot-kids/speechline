@@ -3,17 +3,16 @@
 ## Usage
 
 ```sh title="example_aac_to_wav.sh"
-python speechline/utils/aac_to_wav.py [-h] [-c CHANNEL] [-r RATE] input_dir
+python scripts/aac_to_wav.py [-h] -i INPUT_DIR [-c CHANNEL] [-r RATE]
 ```
 
 ```
 Batch-convert aac audios in a folder to wav format with ffmpeg.
 
-positional arguments:
-  input_dir             Directory of input audios to convert.
-
 optional arguments:
   -h, --help            show this help message and exit
+  -i INPUT_DIR, --input_dir INPUT_DIR
+                        Directory of input audios to convert.
   -c CHANNEL, --channel CHANNEL
                         Number of audio channels in output.
   -r RATE, --rate RATE  Sample rate of audio output.
@@ -22,9 +21,9 @@ optional arguments:
 ## Example
 
 ```sh
-python speechline/utils/aac_to_wav.py -c 1 -r 16000 dropbox/
+python scripts/aac_to_wav.py --input_dir="dropbox/" -c 1 -r 16000 
 ```
 
 ---
 
-::: speechline.utils.aac_to_wav
+::: scripts.aac_to_wav

@@ -17,7 +17,7 @@ import requests
 from glob import glob
 
 from speechline.utils.airtable import AirTable
-from speechline.utils.data_logger import DataLogger
+from scripts.data_logger import DataLogger
 
 
 class MockSuccessfulResponse:

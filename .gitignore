@@ -1,4 +1,6 @@
 tmp/
+dropbox/
+training/
 
 .DS_Store
 */.DS_Store
