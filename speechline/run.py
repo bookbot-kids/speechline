@@ -142,6 +142,9 @@ class Runner:
                     self.output_dir,
                     offsets,
                     silence_duration=self.config.segmenter["silence_duration"],
+                    minimum_chunk_duration=self.config.segmenter[
+                        "minimum_chunk_duration"
+                    ],
                 )
 
 

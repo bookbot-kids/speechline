@@ -127,6 +127,7 @@ class AudioSegmenter:
         outdir: str,
         phoneme_offsets: List[Dict[str, Any]],
         silence_duration: float = 0.1,
+        minimum_chunk_duration: float = 1.0,
     ) -> List[List[Dict[str, Any]]]:
         """Chunks an audio file based on its phoneme offsets.
         Generates and exports WAV audio chunks and aligned TSV phoneme transcripts.
@@ -142,11 +143,18 @@ class AudioSegmenter:
             silence_duration (float, optional):
                 Minimum in-between silence duration (in seconds) to consider as gaps.
                 Defaults to 0.1 seconds.
+            minimum_chunk_duration (float, optional):
+                Minimum chunk duration (in seconds) to be exported.
+                Defaults to 1.0 seconds.
 
         Returns:
             List[List[Dict[str, Any]]]: List of phoneme offsets for every segment.
         """
         segments = self.chunk_offsets(phoneme_offsets, silence_duration)
+        # skip empty segments (undetected transcripts)
+        if len(segments[0]) == 0:
+            return [[{}]]
+
         audio = AudioSegment.from_file(audio_path)
         audio_segments: List[AudioSegment] = [
             audio[s[0]["start_time"] * 1000 : s[-1]["end_time"] * 1000]
@@ -162,6 +170,10 @@ class AudioSegmenter:
         for idx, (segment, audio_segment) in enumerate(
             zip(shifted_segments, audio_segments)
         ):
+            # skip export if audio segment does not meet minimum chunk duration
+            if len(audio_segment) < minimum_chunk_duration * 1000:
+                continue
+
             # export TSV transcripts and WAV audio segment
             output_tsv_path = get_chunk_path(audio_path, outdir, idx, "tsv")
             export_segment_transcripts_tsv(output_tsv_path, segment)

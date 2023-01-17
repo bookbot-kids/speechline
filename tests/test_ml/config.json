@@ -18,6 +18,7 @@
         "batch_size": 16
     },
     "segmenter": {
-        "silence_duration": 0.05
+        "silence_duration": 0.05,
+        "minimum_chunk_duration": 0.5
     }
 }
