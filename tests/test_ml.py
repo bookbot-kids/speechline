@@ -145,7 +145,11 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         assert json.load(open(json_path)) == offsets
 
         segment = segmenter.chunk_audio_segments(
-            audio_path, tmpdir, offsets, silence_duration=0.05
+            audio_path,
+            tmpdir,
+            offsets,
+            silence_duration=0.05,
+            minimum_chunk_duration=0.5,
         )
         segments.append(segment)
 
