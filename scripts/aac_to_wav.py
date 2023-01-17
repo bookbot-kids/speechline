@@ -37,7 +37,11 @@ def parse_args(args: List[str]) -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "input_dir", type=str, help="Directory of input audios to convert."
+        "-i",
+        "--input_dir",
+        type=str,
+        required=True,
+        help="Directory of input audios to convert.",
     )
     parser.add_argument(
         "-c",
