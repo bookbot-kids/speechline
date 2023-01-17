@@ -145,7 +145,7 @@ class AudioSegmenter:
                 Defaults to 0.1 seconds.
             minimum_chunk_duration (float, optional):
                 Minimum chunk duration (in seconds) to be exported.
-                Defaults to 1.0 seconds.
+                Defaults to 1.0 second.
 
         Returns:
             List[List[Dict[str, Any]]]: List of phoneme offsets for every segment.
