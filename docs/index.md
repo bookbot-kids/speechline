@@ -2,26 +2,40 @@
 
 <p align="center">
     <a href="https://github.com/bookbot-kids/speechline/blob/main/LICENSE.md">
-        <img alt="GitHub" src="https://img.shields.io/github/license/bookbot-kids/speechline.svg?color=blue">
+        <img alt="GitHub" src="https://img.shields.io/badge/License-Apache--2.0-blue">
     </a>
     <a href="https://bookbot-kids.github.io/speechline/">
-        <img alt="Documentation" src="https://img.shields.io/website/http/bookbot-kids.github.io/speechline.svg?down_color=red&down_message=offline&up_message=online">
+        <img alt="Documentation" src="https://img.shields.io/website?down_color=red&down_message=Offline&label=Website&up_color=green&up_message=Online&url=https%3A%2F%2Fbookbot-kids.github.io%2Fspeechline%2F">
     </a>
     <a href="https://github.com/bookbot-kids/speechline/actions/workflows/tests.yml">
         <img alt="Tests" src="https://github.com/bookbot-kids/speechline/actions/workflows/tests.yml/badge.svg">
     </a>
     <a href="https://codecov.io/gh/bookbot-kids/speechline">
-        <img alt="Code Coverage" src="https://img.shields.io/codecov/c/github/bookbot-kids/speechline">
+        <img alt="Code Coverage" src="https://img.shields.io/codecov/c/github/bookbot-kids/speechline?label=Coverage&logo=codecov">
     </a>
     <a href="https://github.com/bookbot-kids/speechline/blob/main/CODE_OF_CONDUCT.md">
         <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg">
     </a>
     <a href="https://github.com/bookbot-kids/speechline/blob/main/CONTRIBUTING.md">
-        <img alt="contributing guidelines" src="https://img.shields.io/badge/contributing-guidelines-brightgreen">
+        <img alt="contributing guidelines" src="https://img.shields.io/badge/Contributing-Guidelines-brightgreen">
+    </a>
+    <a href="https://discord.gg/gqwTPyPxa6">
+        <img alt="chat on Discord" src="https://img.shields.io/discord/1001447685645148169?logo=discord&label=Discord%20Chat">
     </a>
 </p>
 
 SpeechLine is a speech labeling pipeline that handles end-to-end, offline, batch audio categorization, transcription, segmentation, and logging.
+
+<figure markdown>
+  ![Logo](./assets/logo-medium.png){ width=400; }
+</figure>
+
+## Pipeline Overview
+
+<figure markdown>
+  ![Logo](./assets/diagram-light.svg#only-light)
+  ![Logo](./assets/diagram-dark.svg#only-dark)
+</figure>
 
 ## Installation
 
@@ -30,6 +44,10 @@ git clone https://github.com/bookbot-kids/speechline.git
 cd speechline
 pip install .
 ```
+
+## How to Use
+
+- [SpeechLine on AWS SageMaker](./examples/sagemaker)
 
 ## Contributors
 

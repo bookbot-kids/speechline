@@ -1,19 +1,16 @@
 {
     "languages": [
-        "en",
-        "id"
+        "en"
     ],
     "classifier": {
         "models": {
-            "en": "bookbot/distil-wav2vec2-adult-child-cls-52m",
-            "id": "bookbot/distil-wav2vec2-adult-child-id-cls-52m"
+            "en": "bookbot/distil-wav2vec2-adult-child-cls-52m"
         },
         "batch_size": 128
     },
     "transcriber": {
         "models": {
-            "en": "bookbot/wav2vec2-ljspeech-gruut",
-            "id": "bookbot/wav2vec2-ljspeech-gruut"
+            "en": "bookbot/wav2vec2-ljspeech-gruut"
         },
         "batch_size": 16
     },
