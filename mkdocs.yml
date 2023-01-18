@@ -7,15 +7,15 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: pink
+      accent: pink
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: pink
+      accent: pink
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
@@ -23,6 +23,7 @@ theme:
     - navigation.sections
     # - navigation.expand
     - navigation.tabs
+    - content.code.annotate
 
 plugins:
   - search
@@ -44,12 +45,21 @@ markdown_extensions:
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
+  - attr_list
+  - md_in_html
 
 watch:
   - speechline
 
 nav:
-  - Home: index.md
+  - SpeechLine:
+      - Home: index.md
+      - Project Charter: PROJECT_CHARTER.md
+      - Code of Conduct: CODE_OF_CONDUCT.md
+      - Contributing Guidelines: CONTRIBUTING.md
+  - Examples:
+      - Running SpeechLine:
+          - AWS SageMaker: examples/sagemaker.md
   - API Reference:
       - Runner: reference/runner.md
       - ML Models:
