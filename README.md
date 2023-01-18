@@ -23,9 +23,9 @@
 
 SpeechLine is a speech labeling pipeline that handles end-to-end, offline, batch audio categorization, transcription, segmentation, and logging.
 
-<center>
-    <img src="./docs/assets/logo-medium.png" alt="logo" width="400"/>
-</center>
+<p align="center">
+    <img src="./docs/assets/logo-medium.png" alt="logo" width="300"/>
+</p>
 
 ## Pipeline Overview
 
