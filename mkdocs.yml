@@ -52,7 +52,11 @@ watch:
   - speechline
 
 nav:
-  - Home: index.md
+  - SpeechLine:
+      - Home: index.md
+      - Project Charter: PROJECT_CHARTER.md
+      - Code of Conduct: CODE_OF_CONDUCT.md
+      - Contributing Guidelines: CONTRIBUTING.md
   - Examples:
       - Running SpeechLine:
           - AWS SageMaker: examples/sagemaker.md
