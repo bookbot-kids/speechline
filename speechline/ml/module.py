@@ -76,7 +76,7 @@ class AudioModule:
         """
         max_length = int(self.sr * max_duration) if max_duration else None
         truncation = True if max_duration else False
-        audio_arrays = [x["array"] for x in batch["audio"]]
+        audio_arrays = batch["audio"]["array"]
         inputs = self.feature_extractor(
             audio_arrays,
             sampling_rate=self.sr,

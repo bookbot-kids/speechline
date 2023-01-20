@@ -91,6 +91,7 @@ class Runner:
             - Transcribes children's speech audio.
             - Segments audio into chunks based on silences.
         """
+        logger.info("Preparing DataFrame..")
         raw_df = prepare_dataframe(self.input_dir, audio_extension="wav")
 
         for language in self.languages:

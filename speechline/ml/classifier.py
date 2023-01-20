@@ -52,7 +52,6 @@ class Wav2Vec2Classifier(AudioModule):
 
         encoded_dataset = dataset.map(
             partial(self.preprocess_function, max_duration=3.0),
-            batched=True,
             desc="Preprocessing Dataset",
         )
 
