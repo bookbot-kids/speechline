@@ -188,7 +188,7 @@ class WhisperTranscriber(AudioModule):
             List[str]: List of transcriptions.
         """
         encoded_dataset = dataset.map(
-            self.preprocess_function, desc="Preprocessing Dataset"
+            self.preprocess_function, batched=True, desc="Preprocessing Dataset"
         )
 
         args = Seq2SeqTrainingArguments(
