@@ -94,6 +94,3 @@ class AudioModule:
 
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
-            logger.info(
-                f"PyTorch CUDA Allocated Memory: {torch.cuda.memory_allocated()}"
-            )
