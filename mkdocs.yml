@@ -39,6 +39,7 @@ markdown_extensions:
   - tables
   - pymdownx.highlight:
       anchor_linenums: true
+      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
@@ -47,6 +48,9 @@ markdown_extensions:
       custom_checkbox: true
   - attr_list
   - md_in_html
+
+extra_css:
+  - css/code_select.css
 
 watch:
   - speechline

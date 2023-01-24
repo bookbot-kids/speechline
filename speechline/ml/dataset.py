@@ -34,10 +34,10 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     ```
 
     Args:
-        path_to_files (str): Path to files.
+        path_to_files (`str`): Path to files.
 
     Returns:
-        pd.DataFrame:
+        `pd.DataFrame`:
             DataFrame consisting of:
 
             - `audio` (audio path)
