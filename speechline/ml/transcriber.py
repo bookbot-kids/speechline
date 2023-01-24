@@ -136,7 +136,7 @@ class Wav2Vec2Transcriber(AudioModule):
         args = TrainingArguments(
             output_dir="./",
             per_device_eval_batch_size=batch_size,
-            fp16=True,
+            fp16=torch.cuda.is_available(),
         )
 
         trainer = Trainer(
