@@ -16,6 +16,7 @@ from typing import Optional, Any
 import pandas as pd
 from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureExtractor
 from datasets import Dataset, Audio
+import torch
 
 
 class AudioModule:
@@ -84,3 +85,10 @@ class AudioModule:
             truncation=truncation,
         )
         return inputs
+
+    def clear_memory(self) -> None:
+        del self.model
+
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            assert torch.cuda.memory_allocated() == 0

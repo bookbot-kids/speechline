@@ -67,5 +67,4 @@ class Wav2Vec2Classifier(AudioModule):
         logits, *_ = trainer.predict(encoded_dataset)
         predicted_ids = np.argmax(logits, axis=1).tolist()
         predictions = [self.model.config.id2label[p] for p in predicted_ids]
-        del self.model
         return predictions
