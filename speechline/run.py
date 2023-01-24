@@ -111,7 +111,7 @@ class Runner:
             df["category"] = classifier.predict(
                 dataset, batch_size=self.config.classifier["batch_size"]
             )
-            
+
             # remove model from memory after inference
             classifier.clear_memory()
 

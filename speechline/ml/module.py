@@ -18,8 +18,6 @@ from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureEx
 from datasets import Dataset, Audio
 import torch
 
-from speechline.utils.logger import logger
-
 
 class AudioModule:
     """Base AudioModule. Inherit this class for other audio models.
@@ -89,7 +87,10 @@ class AudioModule:
         return inputs
 
     def clear_memory(self) -> None:
-        """Clears model from memory (including GPU, if available)."""
+        """Clears model from memory.
+        Optionally also clears CUDA cache, if GPU is available.
+        Source: [PyTorch Forums](https://discuss.pytorch.org/t/how-to-delete-a-tensor-in-gpu-to-free-up-memory/48879). # noqa: E501
+        """
         del self.model
 
         if torch.cuda.is_available():
