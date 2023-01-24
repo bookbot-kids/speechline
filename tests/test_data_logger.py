@@ -81,7 +81,7 @@ def test_successful_data_logger(monkeypatch, mock_response, datadir):
     args = logger.parse_args(["--url", url, "--input_dir", datadir, "--label", label])
     # TODO: get_audio_duration not tested due to using multithreading
     # even though `.log` method calls it
-    assert logger.get_audio_duration(glob(f"{datadir}/**/*.wav")[0]) == 2.38
+    assert logger.get_audio_duration(sorted(glob(f"{datadir}/**/*.wav"))[0]) == 2.38
     # test successful response via mock_response
     success = logger.log(args.url, args.input_dir, args.label)
     assert success is True
