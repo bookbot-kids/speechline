@@ -18,6 +18,8 @@ from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureEx
 from datasets import Dataset, Audio
 import torch
 
+from speechline.utils.logger import logger
+
 
 class AudioModule:
     """Base AudioModule. Inherit this class for other audio models.
@@ -87,8 +89,11 @@ class AudioModule:
         return inputs
 
     def clear_memory(self) -> None:
+        """Clears model from memory (including GPU, if available)."""
         del self.model
 
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
-            assert torch.cuda.memory_allocated() == 0
+            logger.info(
+                f"PyTorch CUDA Allocated Memory: {torch.cuda.memory_allocated()}"
+            )
