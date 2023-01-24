@@ -40,7 +40,7 @@ class Wav2Vec2Transcriber(AudioModule):
     """Wav2Vec2-CTC model for phoneme recognition with its processor.
 
     Args:
-        model_checkpoint (str): HuggingFace model hub checkpoint.
+        model_checkpoint (`str`): HuggingFace model hub checkpoint.
     """
 
     def __init__(self, model_checkpoint: str) -> None:
@@ -60,10 +60,10 @@ class Wav2Vec2Transcriber(AudioModule):
         First removes consecutive duplicates, then removes special tokens.
 
         Args:
-            ids (torch.Tensor): Predicted token ids to be decoded.
+            ids (`torch.Tensor`): Predicted token ids to be decoded.
 
         Returns:
-            str: Decoded phoneme transcription.
+            `str`: Decoded phoneme transcription.
         """
         # removes consecutive duplicates
         deduplicated_ids = [id_ for id_, _ in groupby(ids)]
@@ -91,11 +91,13 @@ class Wav2Vec2Transcriber(AudioModule):
         Source: [CTC-Segmentation](https://github.com/lumaku/ctc-segmentation#usage).
 
         Args:
-            phonemes (List[str]): List of transcribed phonemes.
-            probabilities (np.ndarray): Output probabilities per timestep from wav2vec2.
+            phonemes (`List[str]`):
+                List of transcribed phonemes.
+            probabilities (`np.ndarray`):
+                Output probabilities per timestep from wav2vec2.
 
         Returns:
-            List[Dict[str, Any]]: List of phoneme-level timestamps.
+            `List[Dict[str, Any]]`: List of phoneme-level timestamps.
         """
         ground_truth_mat, utt_begin_indices = prepare_text(self.ctc_config, phonemes)
         timings, char_probs, _ = ctc_segmentation(
@@ -119,15 +121,17 @@ class Wav2Vec2Transcriber(AudioModule):
         """Performs batched inference on `dataset`.
 
         Args:
-            dataset (Dataset):
+            dataset (`Dataset`):
                 Dataset to be inferred.
-            batch_size (int, optional):
+            batch_size (`int`, optional):
                 Batch size during inference. Defaults to 128.
-            output_phoneme_offsets (bool, optional):
+            output_phoneme_offsets (`bool`, optional):
                 Whether to output phoneme-level timestamps. Defaults to False.
 
         Returns:
-            List[str]: List of transcriptions.
+            `Union[List[str], List[List[Dict[str, Any]]]]`:
+                Defaults to list of transcriptions.
+                If `output_phoneme_offsets` is `True`, return list of phoneme offsets.
         """
         encoded_dataset = dataset.map(
             self.preprocess_function, batched=True, desc="Preprocessing Dataset"
@@ -167,7 +171,7 @@ class WhisperTranscriber(AudioModule):
     """Whisper model for seq2seq speech recognition with its processor.
 
     Args:
-        model_checkpoint (str): HuggingFace model hub checkpoint.
+        model_checkpoint (`str`): HuggingFace model hub checkpoint.
     """
 
     def __init__(self, model_checkpoint: str) -> None:
@@ -181,11 +185,11 @@ class WhisperTranscriber(AudioModule):
         """Performs batched inference on `dataset`.
 
         Args:
-            dataset (Dataset): Dataset to be inferred.
-            batch_size (int, optional): Batch size during inference. Defaults to 128.
+            dataset (`Dataset`): Dataset to be inferred.
+            batch_size (`int`, optional): Batch size during inference. Defaults to 128.
 
         Returns:
-            List[str]: List of transcriptions.
+            `List[str]`: List of transcriptions.
         """
         encoded_dataset = dataset.map(
             self.preprocess_function, batched=True, desc="Preprocessing Dataset"

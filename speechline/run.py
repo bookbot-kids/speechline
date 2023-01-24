@@ -91,6 +91,7 @@ class Runner:
             - Transcribes children's speech audio.
             - Segments audio into chunks based on silences.
         """
+        logger.info("Preparing DataFrame..")
         raw_df = prepare_dataframe(self.input_dir, audio_extension="wav")
 
         for language in self.languages:
@@ -111,6 +112,9 @@ class Runner:
                 dataset, batch_size=self.config.classifier["batch_size"]
             )
 
+            # remove model from memory after inference
+            classifier.clear_memory()
+
             # filter audio by category
             child_speech_df = df[df["category"] == "child"]
 
@@ -125,6 +129,9 @@ class Runner:
                 batch_size=self.config.transcriber["batch_size"],
                 output_phoneme_offsets=True,
             )
+
+            # remove model from memory after inference
+            transcriber.clear_memory()
 
             # segment audios based on offsets
             segmenter = AudioSegmenter()

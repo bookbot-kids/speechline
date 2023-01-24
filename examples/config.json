@@ -12,7 +12,7 @@
         "models": {
             "en": "bookbot/wav2vec2-ljspeech-gruut"
         },
-        "batch_size": 16
+        "batch_size": 4
     },
     "segmenter": {
         "silence_duration": 0.2,
