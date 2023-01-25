@@ -239,7 +239,7 @@ def test_whisper_transcriber(datadir):
     assert transcriptions == [
         " Her red umbrella is just the best.",
         " It is not up.",
-        " Suppulant Secola, Fitri Sangat Lappar",
+        " Sepulang sekolah, fitri sangat lapar.",
     ]
 
 
