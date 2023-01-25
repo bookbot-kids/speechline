@@ -30,7 +30,7 @@ class Wav2Vec2Classifier(AudioModule):
     """Audio classifier with feature extractor.
 
     Args:
-        model_checkpoint (`str`): HuggingFace model hub checkpoint.
+        model_checkpoint (str): HuggingFace model hub checkpoint.
     """
 
     def __init__(self, model_checkpoint: str) -> None:
@@ -43,11 +43,11 @@ class Wav2Vec2Classifier(AudioModule):
         Preprocesses datasets, performs batch inference, then returns predictions.
 
         Args:
-            dataset (`Dataset`): Dataset to be inferred.
-            batch_size (`int`, optional): Per device batch size. Defaults to 1.
+            dataset (Dataset): Dataset to be inferred.
+            batch_size (int, optional): Per device batch size. Defaults to 1.
 
         Returns:
-            `List[str]`: List of predictions (in string of labels).
+            List[str]: List of predictions (in string of labels).
         """
 
         encoded_dataset = dataset.map(

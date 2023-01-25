@@ -50,7 +50,7 @@ markdown_extensions:
   - md_in_html
 
 extra_css:
-  - css/code_select.css
+  - css/extras.css
 
 watch:
   - speechline

@@ -1,5 +1,0 @@
-/* Don't allow to select >>> in ```pycon``` code blocks */
-.language-pycon .gp,
-.language-pycon .go {
-    user-select: none;
-}
