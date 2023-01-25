@@ -38,13 +38,13 @@ class Wav2Vec2Classifier(AudioModule):
         feature_extractor = AutoFeatureExtractor.from_pretrained(model_checkpoint)
         super().__init__(model, feature_extractor)
 
-    def predict(self, dataset: Dataset, batch_size: int = 128) -> List[str]:
+    def predict(self, dataset: Dataset, batch_size: int = 1) -> List[str]:
         """Performs batch audio classification (inference) on `dataset`.
         Preprocesses datasets, performs batch inference, then returns predictions.
 
         Args:
             dataset (`Dataset`): Dataset to be inferred.
-            batch_size (`int`, optional): Per device batch size. Defaults to 128.
+            batch_size (`int`, optional): Per device batch size. Defaults to 1.
 
         Returns:
             `List[str]`: List of predictions (in string of labels).

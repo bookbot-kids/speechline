@@ -22,16 +22,8 @@ from transformers import (
     Seq2SeqTrainingArguments,
     Seq2SeqTrainer,
 )
-from ctc_segmentation import (
-    CtcSegmentationParameters,
-    prepare_text,
-    ctc_segmentation,
-    determine_utterance_segments,
-)
 from datasets import Dataset
-import torch
 import numpy as np
-from itertools import groupby
 
 from speechline.ml.module import AudioModule
 
@@ -48,74 +40,13 @@ class Wav2Vec2Transcriber(AudioModule):
         processor = AutoProcessor.from_pretrained(model_checkpoint)
         feature_extractor = processor.feature_extractor
         tokenizer = processor.tokenizer
-        inv_vocab = {v: k for k, v in tokenizer.get_vocab().items()}
-        char_list = [inv_vocab[i] for i in range(len(inv_vocab))]
         super().__init__(model, feature_extractor, tokenizer)
-
-        self.ctc_config = CtcSegmentationParameters(char_list=char_list)
-        self.ctc_config.index_duration = model.config.inputs_to_logits_ratio / self.sr
-
-    def decode_phonemes(self, ids: torch.Tensor) -> str:
-        """CTC-like decoding of phonemes.
-        First removes consecutive duplicates, then removes special tokens.
-
-        Args:
-            ids (`torch.Tensor`): Predicted token ids to be decoded.
-
-        Returns:
-            `str`: Decoded phoneme transcription.
-        """
-        # removes consecutive duplicates
-        deduplicated_ids = [id_ for id_, _ in groupby(ids)]
-
-        special_token_ids = self.tokenizer.all_special_ids + [
-            self.tokenizer.word_delimiter_token_id
-        ]
-        # converts id to token, skipping special tokens
-        phonemes = [
-            self.tokenizer.decode(id_)
-            for id_ in deduplicated_ids
-            if id_ not in special_token_ids
-        ]
-
-        # joins phonemes
-        prediction = " ".join(phonemes)
-
-        return prediction
-
-    def decode_phoneme_offsets(
-        self, phonemes: List[str], probabilities: np.ndarray
-    ) -> List[Dict[str, Any]]:
-        """Perform CTC-based segmentation on transcribed phonemes and probabilities.
-        Returns a list of dictionaries containing predicted phoneme and start-end times.
-        Source: [CTC-Segmentation](https://github.com/lumaku/ctc-segmentation#usage).
-
-        Args:
-            phonemes (`List[str]`):
-                List of transcribed phonemes.
-            probabilities (`np.ndarray`):
-                Output probabilities per timestep from wav2vec2.
-
-        Returns:
-            `List[Dict[str, Any]]`: List of phoneme-level timestamps.
-        """
-        ground_truth_mat, utt_begin_indices = prepare_text(self.ctc_config, phonemes)
-        timings, char_probs, _ = ctc_segmentation(
-            self.ctc_config, probabilities, ground_truth_mat
-        )
-        segments = determine_utterance_segments(
-            self.ctc_config, utt_begin_indices, char_probs, timings, phonemes
-        )
-        phoneme_offsets = [
-            {"phoneme": p, "start_time": round(s[0], 3), "end_time": round(s[1], 3)}
-            for p, s in zip(phonemes, segments)
-        ]
-        return phoneme_offsets
+        self.time_offset = self.model.config.inputs_to_logits_ratio / self.sr
 
     def predict(
         self,
         dataset: Dataset,
-        batch_size: int = 128,
+        batch_size: int = 1,
         output_phoneme_offsets: bool = False,
     ) -> Union[List[str], List[List[Dict[str, Any]]]]:
         """Performs batched inference on `dataset`.
@@ -124,7 +55,8 @@ class Wav2Vec2Transcriber(AudioModule):
             dataset (`Dataset`):
                 Dataset to be inferred.
             batch_size (`int`, optional):
-                Batch size during inference. Defaults to 128.
+                Batch size during inference. Defaults to 1.
+                Using a batch size >1 may hurt the performance of the model.
             output_phoneme_offsets (`bool`, optional):
                 Whether to output phoneme-level timestamps. Defaults to False.
 
@@ -132,6 +64,34 @@ class Wav2Vec2Transcriber(AudioModule):
             `Union[List[str], List[List[Dict[str, Any]]]]`:
                 Defaults to list of transcriptions.
                 If `output_phoneme_offsets` is `True`, return list of phoneme offsets.
+
+        ### Example
+        ```pycon title="example_transcriber_predict.py"
+        >>> from speechline.ml.transcriber import Wav2Vec2Transcriber
+        >>> from datasets import Dataset, Audio
+        >>> transcriber = Wav2Vec2Transcriber("bookbot/wav2vec2-ljspeech-gruut")
+        >>> dataset = Dataset.from_dict({"audio": ["sample.wav"]}).cast_column(
+        ...     "audio", Audio(sampling_rate=transcriber.sr)
+        ... )
+        >>> transcripts = transcriber.predict(dataset)
+        >>> transcripts
+        ["ɪ t ɪ z n oʊ t ʌ p"]
+        >>> phoneme_offsets = transcriber.predict(dataset, output_phoneme_offsets=True)
+        >>> phoneme_offsets
+        [
+            [
+                {"phoneme": "ɪ", "start_time": 0.0, "end_time": 0.02},
+                {"phoneme": "t", "start_time": 0.26, "end_time": 0.3},
+                {"phoneme": "ɪ", "start_time": 0.34, "end_time": 0.36},
+                {"phoneme": "z", "start_time": 0.42, "end_time": 0.44},
+                {"phoneme": "n", "start_time": 0.5, "end_time": 0.54},
+                {"phoneme": "oʊ", "start_time": 0.54, "end_time": 0.58},
+                {"phoneme": "t", "start_time": 0.58, "end_time": 0.62},
+                {"phoneme": "ʌ", "start_time": 0.76, "end_time": 0.78},
+                {"phoneme": "p", "start_time": 0.92, "end_time": 0.94},
+            ]
+        ]
+        ```
         """
         encoded_dataset = dataset.map(
             self.preprocess_function, batched=True, desc="Preprocessing Dataset"
@@ -149,22 +109,30 @@ class Wav2Vec2Transcriber(AudioModule):
         )
 
         logits, *_ = trainer.predict(encoded_dataset)
-        logits = torch.from_numpy(logits)
-
-        probabilities = torch.nn.functional.softmax(logits, dim=-1).numpy()
         predicted_ids = np.argmax(logits, axis=-1)
+        outputs = self.tokenizer.batch_decode(predicted_ids, output_char_offsets=True)
 
-        transcription: List[str] = [self.decode_phonemes(id) for id in predicted_ids]
-        phonemes: List[List[str]] = [t.split() for t in transcription]
+        phoneme_offsets: List[List[Dict[str, Any]]] = [
+            [
+                {
+                    "phoneme": o["char"],
+                    "start_time": round(o["start_offset"] * self.time_offset, 3),
+                    "end_time": round(o["end_offset"] * self.time_offset, 3),
+                }
+                for o in offset
+                if o["char"] != " "
+            ]
+            for offset in outputs.char_offsets
+        ]
+
+        transcripts: List[str] = [
+            " ".join(o["phoneme"] for o in offset) for offset in phoneme_offsets
+        ]
 
         if output_phoneme_offsets:
-            phoneme_offsets: List[List[Dict[str, Any]]] = [
-                self.decode_phoneme_offsets(phn, prob)
-                for phn, prob in zip(phonemes, probabilities)
-            ]
             return phoneme_offsets
         else:
-            return transcription
+            return transcripts
 
 
 class WhisperTranscriber(AudioModule):
@@ -181,12 +149,12 @@ class WhisperTranscriber(AudioModule):
         tokenizer = processor.tokenizer
         super().__init__(model, feature_extractor, tokenizer)
 
-    def predict(self, dataset: Dataset, batch_size: int = 128) -> List[str]:
+    def predict(self, dataset: Dataset, batch_size: int = 1) -> List[str]:
         """Performs batched inference on `dataset`.
 
         Args:
             dataset (`Dataset`): Dataset to be inferred.
-            batch_size (`int`, optional): Batch size during inference. Defaults to 128.
+            batch_size (`int`, optional): Batch size during inference. Defaults to 1.
 
         Returns:
             `List[str]`: List of transcriptions.

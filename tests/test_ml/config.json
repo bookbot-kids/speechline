@@ -15,10 +15,10 @@
             "en": "bookbot/wav2vec2-ljspeech-gruut",
             "id": "bookbot/wav2vec2-ljspeech-gruut"
         },
-        "batch_size": 16
+        "batch_size": 1
     },
     "segmenter": {
-        "silence_duration": 0.05,
-        "minimum_chunk_duration": 0.5
+        "silence_duration": 0.3,
+        "minimum_chunk_duration": 0.7
     }
 }
