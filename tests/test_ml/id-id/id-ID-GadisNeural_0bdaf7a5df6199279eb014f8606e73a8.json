@@ -1,127 +1,127 @@
 [
   {
     "phoneme": "s",
-    "start_time": 0.01,
-    "end_time": 0.21
+    "start_time": 0.0,
+    "end_time": 0.02
   },
   {
     "phoneme": "\u0259",
-    "start_time": 0.21,
-    "end_time": 0.28
+    "start_time": 0.26,
+    "end_time": 0.3
   },
   {
     "phoneme": "b",
-    "start_time": 0.28,
-    "end_time": 0.38
+    "start_time": 0.36,
+    "end_time": 0.4
   },
   {
     "phoneme": "l",
-    "start_time": 0.38,
-    "end_time": 0.51
+    "start_time": 0.5,
+    "end_time": 0.52
   },
   {
     "phoneme": "\u025b",
-    "start_time": 0.51,
-    "end_time": 0.55
+    "start_time": 0.54,
+    "end_time": 0.56
   },
   {
     "phoneme": "n",
-    "start_time": 0.55,
-    "end_time": 0.61
+    "start_time": 0.6,
+    "end_time": 0.62
   },
   {
     "phoneme": "s",
-    "start_time": 0.61,
-    "end_time": 0.69
+    "start_time": 0.68,
+    "end_time": 0.7
   },
   {
     "phoneme": "\u026a",
-    "start_time": 0.69,
-    "end_time": 0.75
+    "start_time": 0.74,
+    "end_time": 0.76
   },
   {
     "phoneme": "p",
-    "start_time": 0.75,
-    "end_time": 0.83
+    "start_time": 0.82,
+    "end_time": 0.84
   },
   {
     "phoneme": "z",
-    "start_time": 0.83,
-    "end_time": 0.89
+    "start_time": 0.88,
+    "end_time": 0.9
   },
   {
     "phoneme": "\u0259",
-    "start_time": 0.89,
-    "end_time": 1.06
+    "start_time": 1.04,
+    "end_time": 1.08
   },
   {
     "phoneme": "f",
-    "start_time": 1.12,
-    "end_time": 1.64
+    "start_time": 1.62,
+    "end_time": 1.66
   },
   {
     "phoneme": "i",
-    "start_time": 1.64,
-    "end_time": 1.71
+    "start_time": 1.7,
+    "end_time": 1.72
   },
   {
     "phoneme": "t",
-    "start_time": 1.71,
-    "end_time": 1.79
+    "start_time": 1.78,
+    "end_time": 1.8
   },
   {
     "phoneme": "p",
-    "start_time": 1.79,
-    "end_time": 1.83
+    "start_time": 1.8,
+    "end_time": 1.82
   },
   {
     "phoneme": "l",
-    "start_time": 1.83,
-    "end_time": 1.87
+    "start_time": 1.86,
+    "end_time": 1.88
   },
   {
     "phoneme": "i",
-    "start_time": 1.87,
-    "end_time": 1.93
+    "start_time": 1.92,
+    "end_time": 1.94
   },
   {
     "phoneme": "s",
-    "start_time": 1.93,
-    "end_time": 2.06
+    "start_time": 2.04,
+    "end_time": 2.08
   },
   {
     "phoneme": "\u00e6",
-    "start_time": 2.06,
-    "end_time": 2.13
+    "start_time": 2.12,
+    "end_time": 2.14
   },
   {
     "phoneme": "\u00e6",
-    "start_time": 2.13,
-    "end_time": 2.29
+    "start_time": 2.28,
+    "end_time": 2.3
   },
   {
     "phoneme": "p",
-    "start_time": 2.29,
-    "end_time": 2.41
+    "start_time": 2.4,
+    "end_time": 2.42
   },
   {
     "phoneme": "l",
-    "start_time": 2.41,
-    "end_time": 2.47
+    "start_time": 2.46,
+    "end_time": 2.48
   },
   {
     "phoneme": "\u00e6",
-    "start_time": 2.47,
-    "end_time": 2.53
+    "start_time": 2.52,
+    "end_time": 2.54
   },
   {
     "phoneme": "p",
-    "start_time": 2.53,
-    "end_time": 2.63
+    "start_time": 2.62,
+    "end_time": 2.64
   },
   {
     "phoneme": "\u0259",
-    "start_time": 2.63,
-    "end_time": 2.79
+    "start_time": 2.78,
+    "end_time": 2.8
   }
 ]
