@@ -56,6 +56,7 @@ class Wav2Vec2Transcriber(AudioModule):
                 Dataset to be inferred.
             batch_size (`int`, optional):
                 Batch size during inference. Defaults to 1.
+                Using a batch size >1 may hurt the performance of the model.
             output_phoneme_offsets (`bool`, optional):
                 Whether to output phoneme-level timestamps. Defaults to False.
 
@@ -63,6 +64,34 @@ class Wav2Vec2Transcriber(AudioModule):
             `Union[List[str], List[List[Dict[str, Any]]]]`:
                 Defaults to list of transcriptions.
                 If `output_phoneme_offsets` is `True`, return list of phoneme offsets.
+
+        ### Example
+        ```pycon title="example_transcriber_predict.py"
+        >>> from speechline.ml.transcriber import Wav2Vec2Transcriber
+        >>> from datasets import Dataset, Audio
+        >>> transcriber = Wav2Vec2Transcriber("bookbot/wav2vec2-ljspeech-gruut")
+        >>> dataset = Dataset.from_dict({"audio": ["sample.wav"]}).cast_column(
+        ...     "audio", Audio(sampling_rate=transcriber.sr)
+        ... )
+        >>> transcripts = transcriber.predict(dataset)
+        >>> transcripts
+        ["ɪ t ɪ z n oʊ t ʌ p"]
+        >>> phoneme_offsets = transcriber.predict(dataset, output_phoneme_offsets=True)
+        >>> phoneme_offsets
+        [
+            [
+                {"phoneme": "ɪ", "start_time": 0.0, "end_time": 0.02},
+                {"phoneme": "t", "start_time": 0.26, "end_time": 0.3},
+                {"phoneme": "ɪ", "start_time": 0.34, "end_time": 0.36},
+                {"phoneme": "z", "start_time": 0.42, "end_time": 0.44},
+                {"phoneme": "n", "start_time": 0.5, "end_time": 0.54},
+                {"phoneme": "oʊ", "start_time": 0.54, "end_time": 0.58},
+                {"phoneme": "t", "start_time": 0.58, "end_time": 0.62},
+                {"phoneme": "ʌ", "start_time": 0.76, "end_time": 0.78},
+                {"phoneme": "p", "start_time": 0.92, "end_time": 0.94},
+            ]
+        ]
+        ```
         """
         encoded_dataset = dataset.map(
             self.preprocess_function, batched=True, desc="Preprocessing Dataset"
