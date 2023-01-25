@@ -110,11 +110,6 @@ class Wav2Vec2Transcriber(AudioModule):
 
         logits, *_ = trainer.predict(encoded_dataset)
         predicted_ids = np.argmax(logits, axis=-1)
-        # replace all padding tokens with word delimiter token for CTC-decoding
-        predicted_ids[
-            predicted_ids == self.tokenizer.pad_token_id
-        ] = self.tokenizer.word_delimiter_token_id
-
         outputs = self.tokenizer.batch_decode(predicted_ids, output_char_offsets=True)
 
         phoneme_offsets: List[List[Dict[str, Any]]] = [
