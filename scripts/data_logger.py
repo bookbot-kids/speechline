@@ -93,7 +93,7 @@ class DataLogger:
         """Map language folders in `input_dir` to their respective total audio duration.
 
         ### Example
-        ```py title="example_get_language_total_audio_duration.py"
+        ```pycon title="example_get_language_total_audio_duration.py"
         >>> logger = DataLogger()
         >>> logger.get_language_total_audio_duration("dropbox/")
         {'en-au': 3.936, 'id-id': 3.797}
@@ -120,7 +120,7 @@ class DataLogger:
     ) -> Dict[str, Dict[str, Any]]:
         """Builds payload for AirTable record.
         AirTable record has the following structure:
-        ```py
+        ```pycon
         >>> {
         ...     "date": {YYYY-MM-DD},
         ...     "label": {label},

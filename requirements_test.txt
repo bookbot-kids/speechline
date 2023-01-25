@@ -6,7 +6,7 @@ pytest-cov==2.12.1
 mkdocs==1.4.2
 mkdocs-material==9.0.3
 mkdocstrings==0.19.1
-mkdocstrings-python==0.8.3
+mkdocstrings-python-legacy==0.2.3
 Pygments==2.14.0
 moto
 mypy==0.991

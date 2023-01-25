@@ -76,7 +76,7 @@ class S3Client:
             ├── utt_1.tsv
             └── utt_1.wav
         ```
-        ```py title="example_upload_folder.py"
+        ```pycon title="example_upload_folder.py"
         >>> bucket_name, prefix, local_dir = "my-bucket", "train/", "tmp/"
         >>> my_client = S3Client()
         >>> my_client.upload_folder(bucket_name, prefix, local_dir)

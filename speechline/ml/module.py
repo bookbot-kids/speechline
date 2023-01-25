@@ -24,11 +24,11 @@ class AudioModule:
     Contains implemented methods for audio dataset formatting and preprocessing.
 
     Args:
-        model (`PreTrainedModel`):
+        model (PreTrainedModel):
             Pre-trained audio model for inference.
-        feature_extractor (`SequenceFeatureExtractor`):
+        feature_extractor (SequenceFeatureExtractor):
             Pre-trained feature extractor for inference.
-        tokenizer (`PreTrainedTokenizer`, optional):
+        tokenizer (PreTrainedTokenizer, optional):
             Optional pre-trained tokenizer for logits decoding. Defaults to None.
     """
 
@@ -48,10 +48,10 @@ class AudioModule:
         Converts `audio` path column to audio arrays and resamples accordingly.
 
         Args:
-            df (`pd.DataFrame`): Pandas
+            df (pd.DataFrame): Pandas DataFrame to convert to `Dataset`.
 
         Returns:
-            `Dataset`: datasets `Dataset` usable for batch inference.
+            Dataset: datasets `Dataset` usable for batch inference.
         """
         dataset = Dataset.from_pandas(df)
         dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
@@ -66,14 +66,14 @@ class AudioModule:
         Allows for optional truncation given a maximum duration.
 
         Args:
-            batch (`Dataset`):
+            batch (Dataset):
                 Batch audio dataset to be preprocessed.
-            max_duration (`Optional[int]`, optional):
+            max_duration (Optional[int], optional):
                 Maximum audio duration in seconds.
                 Truncates audio if specified. Defaults to None.
 
         Returns:
-            `Any`: Batch of preprocessed audio features.
+            Any: Batch of preprocessed audio features.
         """
         max_length = int(self.sr * max_duration) if max_duration else None
         truncation = True if max_duration else False

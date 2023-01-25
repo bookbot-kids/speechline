@@ -32,7 +32,7 @@ class Wav2Vec2Transcriber(AudioModule):
     """Wav2Vec2-CTC model for phoneme recognition with its processor.
 
     Args:
-        model_checkpoint (`str`): HuggingFace model hub checkpoint.
+        model_checkpoint (str): HuggingFace model hub checkpoint.
     """
 
     def __init__(self, model_checkpoint: str) -> None:
@@ -52,16 +52,16 @@ class Wav2Vec2Transcriber(AudioModule):
         """Performs batched inference on `dataset`.
 
         Args:
-            dataset (`Dataset`):
+            dataset (Dataset):
                 Dataset to be inferred.
-            batch_size (`int`, optional):
+            batch_size (int, optional):
                 Batch size during inference. Defaults to 1.
                 Using a batch size >1 may hurt the performance of the model.
-            output_phoneme_offsets (`bool`, optional):
+            output_phoneme_offsets (bool, optional):
                 Whether to output phoneme-level timestamps. Defaults to False.
 
         Returns:
-            `Union[List[str], List[List[Dict[str, Any]]]]`:
+            Union[List[str], List[List[Dict[str, Any]]]]:
                 Defaults to list of transcriptions.
                 If `output_phoneme_offsets` is `True`, return list of phoneme offsets.
 
@@ -139,7 +139,7 @@ class WhisperTranscriber(AudioModule):
     """Whisper model for seq2seq speech recognition with its processor.
 
     Args:
-        model_checkpoint (`str`): HuggingFace model hub checkpoint.
+        model_checkpoint (str): HuggingFace model hub checkpoint.
     """
 
     def __init__(self, model_checkpoint: str) -> None:
@@ -153,11 +153,11 @@ class WhisperTranscriber(AudioModule):
         """Performs batched inference on `dataset`.
 
         Args:
-            dataset (`Dataset`): Dataset to be inferred.
-            batch_size (`int`, optional): Batch size during inference. Defaults to 1.
+            dataset (Dataset): Dataset to be inferred.
+            batch_size (int, optional): Batch size during inference. Defaults to 1.
 
         Returns:
-            `List[str]`: List of transcriptions.
+            List[str]: List of transcriptions.
         """
         encoded_dataset = dataset.map(
             self.preprocess_function, batched=True, desc="Preprocessing Dataset"

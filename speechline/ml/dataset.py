@@ -34,17 +34,20 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     ```
 
     Args:
-        path_to_files (`str`): Path to files.
+        path_to_files (str):
+            Path to files.
+        audio_extension (str, optional):
+            Audio extension of files to include. Defaults to "wav".
 
     Returns:
-        `pd.DataFrame`:
+        pd.DataFrame:
             DataFrame consisting of:
 
-            - `audio` (audio path)
-            - `id`
-            - `ground_truth`
-            - `language`
-            - `language_code`
+        - `audio` (audio path)
+        - `id`
+        - `ground_truth`
+        - `language`
+        - `language_code`
     """
     audios = sorted(glob(f"{path_to_files}/*/*.{audio_extension}"))
     df = pd.DataFrame({"audio": audios})
