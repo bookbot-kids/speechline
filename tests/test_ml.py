@@ -18,9 +18,9 @@ from pathlib import Path
 import json
 
 from speechline.run import Runner
-from speechline.ml.dataset import prepare_dataframe
 from speechline.ml.classifier import Wav2Vec2Classifier
 from speechline.ml.transcriber import Wav2Vec2Transcriber, WhisperTranscriber
+from speechline.utils.dataset import prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.segmenter import AudioSegmenter
 from speechline.utils.config import Config
@@ -44,7 +44,7 @@ def test_convert_to_wav(datadir):
 
 def test_prepare_dataframe(datadir):
     df = prepare_dataframe(datadir)
-    assert df.shape[1] == 5
+    assert df.shape[1] == 4
 
 
 def test_audio_classifier(datadir):

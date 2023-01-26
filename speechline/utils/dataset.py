@@ -25,12 +25,9 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     path_to_files
     ├── langX
     │   ├── a.{audio_extension}
-    │   ├── a.txt
-    │   ├── b.{audio_extension}
-    │   └── b.txt
+    │   └── b.{audio_extension}
     └── langY
-        ├── c.{audio_extension}
-        └── c.txt
+        └── c.{audio_extension}
     ```
 
     Args:
@@ -45,7 +42,6 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
 
         - `audio` (audio path)
         - `id`
-        - `ground_truth`
         - `language`
         - `language_code`
     """
@@ -56,9 +52,4 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     # language code is immediate parent directory
     df["language_code"] = df["audio"].apply(lambda f: Path(f).parent.name)
     df["language"] = df["language_code"].apply(lambda f: f.split("-")[0])
-    # ground truth is same filename, except with .txt extension
-    df["ground_truth"] = df["audio"].apply(lambda p: Path(p).with_suffix(".txt"))
-    df["ground_truth"] = df["ground_truth"].apply(
-        lambda p: open(p).read() if p.exists() else ""
-    )
     return df

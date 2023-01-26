@@ -70,7 +70,7 @@ nav:
           - Audio Classifier: reference/ml/classifier.md
           - Audio Transcriber: reference/ml/transcriber.md
       - Base Classes:
-          - Audio Dataset: reference/ml/dataset.md
+          - Audio Dataset: reference/utils/dataset.md
           - Audio Module: reference/ml/module.md
       - Utilities:
           - AirTable Interface: reference/utils/airtable.md
