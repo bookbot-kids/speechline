@@ -1,3 +1,4 @@
+importlib_metadata<5
 black
 isort
 flake8
