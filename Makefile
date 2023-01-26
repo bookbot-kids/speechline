@@ -28,4 +28,4 @@ cov:
 # runs all tests for the library
 
 test:
-		tox -p auto
+		tox -r

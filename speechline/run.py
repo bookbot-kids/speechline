@@ -15,7 +15,7 @@
 import argparse
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Any
 
 from tqdm import tqdm
 
@@ -125,11 +125,11 @@ class Runner:
 
             # perform audio transcription
             dataset = transcriber.format_audio_dataset(child_speech_df)
-            phoneme_offsets = transcriber.predict(
+            phoneme_offsets: List[List[Dict[str, Any]]] = transcriber.predict(
                 dataset,
                 batch_size=self.config.transcriber["batch_size"],
                 output_phoneme_offsets=True,
-            )
+            )  # type: ignore
 
             # remove model from memory after inference
             transcriber.clear_memory()
