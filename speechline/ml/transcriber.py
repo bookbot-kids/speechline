@@ -22,7 +22,7 @@ from transformers import (
     Seq2SeqTrainingArguments,
     Seq2SeqTrainer,
 )
-from datasets import Dataset
+from datasets import Dataset, DatasetDict
 import numpy as np
 
 from speechline.ml.module import AudioModule
@@ -45,14 +45,14 @@ class Wav2Vec2Transcriber(AudioModule):
 
     def predict(
         self,
-        dataset: Dataset,
+        dataset: Union[Dataset, DatasetDict],
         batch_size: int = 1,
         output_phoneme_offsets: bool = False,
     ) -> Union[List[str], List[List[Dict[str, Any]]]]:
         """Performs batched inference on `dataset`.
 
         Args:
-            dataset (Dataset):
+            dataset (Union[Dataset, DatasetDict]):
                 Dataset to be inferred.
             batch_size (int, optional):
                 Batch size during inference. Defaults to 1.
@@ -94,7 +94,12 @@ class Wav2Vec2Transcriber(AudioModule):
         ```
         """
         encoded_dataset = dataset.map(
-            self.preprocess_function, batched=True, desc="Preprocessing Dataset"
+            self.preprocess_function,
+            batched=True,
+            desc="Preprocessing Dataset",
+            fn_kwargs={
+                "feature_extractor": self.feature_extractor,
+            },
         )
 
         args = TrainingArguments(
@@ -149,18 +154,25 @@ class WhisperTranscriber(AudioModule):
         tokenizer = processor.tokenizer
         super().__init__(model, feature_extractor, tokenizer)
 
-    def predict(self, dataset: Dataset, batch_size: int = 1) -> List[str]:
+    def predict(
+        self, dataset: Union[Dataset, DatasetDict], batch_size: int = 1
+    ) -> List[str]:
         """Performs batched inference on `dataset`.
 
         Args:
-            dataset (Dataset): Dataset to be inferred.
+            dataset (Union[Dataset, DatasetDict]): Dataset to be inferred.
             batch_size (int, optional): Batch size during inference. Defaults to 1.
 
         Returns:
             List[str]: List of transcriptions.
         """
         encoded_dataset = dataset.map(
-            self.preprocess_function, batched=True, desc="Preprocessing Dataset"
+            self.preprocess_function,
+            batched=True,
+            desc="Preprocessing Dataset",
+            fn_kwargs={
+                "feature_extractor": self.feature_extractor,
+            },
         )
 
         args = Seq2SeqTrainingArguments(

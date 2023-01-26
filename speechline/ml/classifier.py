@@ -12,15 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
-from functools import partial
+from typing import List, Union
 from transformers import (
     AutoModelForAudioClassification,
     AutoFeatureExtractor,
     TrainingArguments,
     Trainer,
 )
-from datasets import Dataset
+from datasets import Dataset, DatasetDict
 import numpy as np
 
 from speechline.ml.module import AudioModule
@@ -38,12 +37,14 @@ class Wav2Vec2Classifier(AudioModule):
         feature_extractor = AutoFeatureExtractor.from_pretrained(model_checkpoint)
         super().__init__(model, feature_extractor)
 
-    def predict(self, dataset: Dataset, batch_size: int = 1) -> List[str]:
+    def predict(
+        self, dataset: Union[Dataset, DatasetDict], batch_size: int = 1
+    ) -> List[str]:
         """Performs batch audio classification (inference) on `dataset`.
         Preprocesses datasets, performs batch inference, then returns predictions.
 
         Args:
-            dataset (Dataset): Dataset to be inferred.
+            dataset (Union[Dataset, DatasetDict]): Dataset to be inferred.
             batch_size (int, optional): Per device batch size. Defaults to 1.
 
         Returns:
@@ -51,9 +52,13 @@ class Wav2Vec2Classifier(AudioModule):
         """
 
         encoded_dataset = dataset.map(
-            partial(self.preprocess_function, max_duration=3.0),
+            self.preprocess_function,
             batched=True,
             desc="Preprocessing Dataset",
+            fn_kwargs={
+                "feature_extractor": self.feature_extractor,
+                "max_duration": 3.0,
+            },
         )
 
         args = TrainingArguments(output_dir="./", per_device_eval_batch_size=batch_size)

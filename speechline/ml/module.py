@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, Any
+from typing import Optional, Any, Union
 import pandas as pd
 from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureExtractor
-from datasets import Dataset, Audio
+from datasets import Dataset, DatasetDict, Audio, config, load_from_disk
 import torch
 
 
@@ -43,7 +43,7 @@ class AudioModule:
         self.tokenizer = tokenizer
         self.sr = self.feature_extractor.sampling_rate
 
-    def format_audio_dataset(self, df: pd.DataFrame) -> Dataset:
+    def format_audio_dataset(self, df: pd.DataFrame) -> Union[Dataset, DatasetDict]:
         """Formats Pandas `DataFrame` as a datasets `Dataset`.
         Converts `audio` path column to audio arrays and resamples accordingly.
 
@@ -51,23 +51,27 @@ class AudioModule:
             df (pd.DataFrame): Pandas DataFrame to convert to `Dataset`.
 
         Returns:
-            Dataset: datasets `Dataset` usable for batch inference.
+            Union[Dataset, DatasetDict]: datasets `Dataset` usable for batch inference.
         """
         dataset = Dataset.from_pandas(df)
         dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
-        return dataset
+        dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
+        saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
+        return saved_dataset
 
+    @staticmethod
     def preprocess_function(
-        self,
         batch: Dataset,
+        feature_extractor: SequenceFeatureExtractor,
         max_duration: Optional[int] = None,
     ) -> Any:
         """Audio dataset preprocessing function. Extracts audio waves as features.
-        Allows for optional truncation given a maximum duration.
 
         Args:
             batch (Dataset):
                 Batch audio dataset to be preprocessed.
+            feature_extractor (SequenceFeatureExtractor):
+                Feature extractor for audio waves.
             max_duration (Optional[int], optional):
                 Maximum audio duration in seconds.
                 Truncates audio if specified. Defaults to None.
@@ -75,12 +79,13 @@ class AudioModule:
         Returns:
             Any: Batch of preprocessed audio features.
         """
-        max_length = int(self.sr * max_duration) if max_duration else None
-        truncation = True if max_duration else False
+        sr = feature_extractor.sampling_rate
+        max_length = int(sr * max_duration) if max_duration else None
+        truncation = max_duration is not None
         audio_arrays = [x["array"] for x in batch["audio"]]
-        inputs = self.feature_extractor(
+        inputs = feature_extractor(
             audio_arrays,
-            sampling_rate=self.sr,
+            sampling_rate=sr,
             max_length=max_length,
             truncation=truncation,
         )
