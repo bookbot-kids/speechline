@@ -22,7 +22,7 @@ from transformers import (
 from datasets import Dataset, DatasetDict
 import numpy as np
 
-from speechline.ml.module import AudioModule
+from .module import AudioModule
 
 
 class Wav2Vec2Classifier(AudioModule):

@@ -16,7 +16,7 @@ from typing import List, Dict, Any
 from pydub import AudioSegment
 import os
 
-from speechline.utils.io import (
+from .io import (
     get_outdir_path,
     get_chunk_path,
     export_segment_transcripts_tsv,

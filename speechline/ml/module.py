@@ -54,9 +54,9 @@ class AudioModule:
             Union[Dataset, DatasetDict]: datasets `Dataset` usable for batch inference.
         """
         dataset = Dataset.from_pandas(df)
-        dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
         dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
         saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
+        saved_dataset = saved_dataset.cast_column("audio", Audio(sampling_rate=self.sr))
         return saved_dataset
 
     @staticmethod

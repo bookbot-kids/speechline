@@ -18,13 +18,13 @@ from tqdm import tqdm
 import argparse
 import sys
 
-from speechline.ml.classifier import Wav2Vec2Classifier
-from speechline.ml.transcriber import Wav2Vec2Transcriber
-from speechline.ml.dataset import prepare_dataframe
-from speechline.utils.segmenter import AudioSegmenter
-from speechline.utils.io import export_transcripts_json
-from speechline.utils.config import Config
-from speechline.utils.logger import logger
+from .ml.classifier import Wav2Vec2Classifier
+from .ml.transcriber import Wav2Vec2Transcriber
+from .utils.dataset import prepare_dataframe
+from .utils.segmenter import AudioSegmenter
+from .utils.io import export_transcripts_json
+from .utils.config import Config
+from .utils.logger import logger
 
 
 class Runner:
