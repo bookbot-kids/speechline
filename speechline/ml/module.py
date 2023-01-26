@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, Any
+from typing import Optional, Any, Union
 import pandas as pd
 from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureExtractor
-from datasets import Dataset, Audio, config, load_from_disk
+from datasets import Dataset, DatasetDict, Audio, config, load_from_disk
 import torch
 
 
@@ -43,7 +43,7 @@ class AudioModule:
         self.tokenizer = tokenizer
         self.sr = self.feature_extractor.sampling_rate
 
-    def format_audio_dataset(self, df: pd.DataFrame) -> Dataset:
+    def format_audio_dataset(self, df: pd.DataFrame) -> Union[Dataset, DatasetDict]:
         """Formats Pandas `DataFrame` as a datasets `Dataset`.
         Converts `audio` path column to audio arrays and resamples accordingly.
 
@@ -51,13 +51,13 @@ class AudioModule:
             df (pd.DataFrame): Pandas DataFrame to convert to `Dataset`.
 
         Returns:
-            Dataset: datasets `Dataset` usable for batch inference.
+            Union[Dataset, DatasetDict]: datasets `Dataset` usable for batch inference.
         """
         dataset = Dataset.from_pandas(df)
         dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
-        dataset.save_to_disk(config.HF_DATASETS_CACHE)
-        dataset = load_from_disk(config.HF_DATASETS_CACHE)
-        return dataset
+        dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
+        saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
+        return saved_dataset
 
     @staticmethod
     def preprocess_function(
