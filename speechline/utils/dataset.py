@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
 from glob import glob
 from pathlib import Path
+
+import pandas as pd
 
 
 def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.DataFrame:

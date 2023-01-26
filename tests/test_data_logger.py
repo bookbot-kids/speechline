@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-import requests
 from glob import glob
 
-from speechline.utils.airtable import AirTable
+import pytest
+import requests
+
 from scripts.data_logger import DataLogger
+from speechline.utils.airtable import AirTable
 
 
 class MockSuccessfulResponse:

@@ -12,19 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
-from pathlib import Path
-from tqdm import tqdm
 import argparse
 import sys
+from pathlib import Path
+from typing import List
+
+from tqdm import tqdm
 
 from .ml.classifier import Wav2Vec2Classifier
 from .ml.transcriber import Wav2Vec2Transcriber
-from .utils.dataset import prepare_dataframe
-from .utils.segmenter import AudioSegmenter
-from .utils.io import export_transcripts_json
 from .utils.config import Config
+from .utils.dataset import prepare_dataframe
+from .utils.io import export_transcripts_json
 from .utils.logger import logger
+from .utils.segmenter import AudioSegmenter
 
 
 class Runner:

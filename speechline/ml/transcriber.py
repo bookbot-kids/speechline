@@ -12,18 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Dict, Any, Union
+from typing import Any, Dict, List, Union
+
+import numpy as np
+from datasets import Dataset, DatasetDict
 from transformers import (
     AutoModelForCTC,
     AutoModelForSpeechSeq2Seq,
     AutoProcessor,
-    TrainingArguments,
-    Trainer,
-    Seq2SeqTrainingArguments,
     Seq2SeqTrainer,
+    Seq2SeqTrainingArguments,
+    Trainer,
+    TrainingArguments,
 )
-from datasets import Dataset, DatasetDict
-import numpy as np
 
 from .module import AudioModule
 

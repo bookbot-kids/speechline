@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Dict, Any
-from pydub import AudioSegment
 import os
+from typing import Any, Dict, List
+
+from pydub import AudioSegment
 
 from .io import (
-    get_outdir_path,
-    get_chunk_path,
-    export_segment_transcripts_tsv,
     export_segment_audio_wav,
+    export_segment_transcripts_tsv,
+    get_chunk_path,
+    get_outdir_path,
 )
 
 

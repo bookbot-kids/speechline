@@ -13,9 +13,10 @@
 # limitations under the License.
 
 import os
-import pytest
-import boto3
 from distutils import dir_util
+
+import boto3
+import pytest
 from moto import mock_s3
 
 
