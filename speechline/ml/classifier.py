@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from typing import List
-from functools import partial
 from transformers import (
     AutoModelForAudioClassification,
     AutoFeatureExtractor,
@@ -51,9 +50,13 @@ class Wav2Vec2Classifier(AudioModule):
         """
 
         encoded_dataset = dataset.map(
-            partial(self.preprocess_function, max_duration=3.0),
+            self.preprocess_function,
             batched=True,
             desc="Preprocessing Dataset",
+            fn_kwargs={
+                "feature_extractor": self.feature_extractor,
+                "max_duration": 3.0,
+            },
         )
 
         args = TrainingArguments(output_dir="./", per_device_eval_batch_size=batch_size)

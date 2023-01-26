@@ -94,7 +94,12 @@ class Wav2Vec2Transcriber(AudioModule):
         ```
         """
         encoded_dataset = dataset.map(
-            self.preprocess_function, batched=True, desc="Preprocessing Dataset"
+            self.preprocess_function,
+            batched=True,
+            desc="Preprocessing Dataset",
+            fn_kwargs={
+                "feature_extractor": self.feature_extractor,
+            },
         )
 
         args = TrainingArguments(
@@ -160,7 +165,12 @@ class WhisperTranscriber(AudioModule):
             List[str]: List of transcriptions.
         """
         encoded_dataset = dataset.map(
-            self.preprocess_function, batched=True, desc="Preprocessing Dataset"
+            self.preprocess_function,
+            batched=True,
+            desc="Preprocessing Dataset",
+            fn_kwargs={
+                "feature_extractor": self.feature_extractor,
+            },
         )
 
         args = Seq2SeqTrainingArguments(

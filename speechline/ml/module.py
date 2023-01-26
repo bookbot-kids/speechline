@@ -57,30 +57,33 @@ class AudioModule:
         dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
         return dataset
 
+    @staticmethod
     def preprocess_function(
-        self,
         batch: Dataset,
+        feature_extractor: SequenceFeatureExtractor,
         max_duration: Optional[int] = None,
     ) -> Any:
         """Audio dataset preprocessing function. Extracts audio waves as features.
-        Allows for optional truncation given a maximum duration.
 
         Args:
-            batch (Dataset):
+            batch (Dataset): 
                 Batch audio dataset to be preprocessed.
-            max_duration (Optional[int], optional):
+            feature_extractor (SequenceFeatureExtractor):
+                Feature extractor for audio waves.
+            max_duration (Optional[int], optional): 
                 Maximum audio duration in seconds.
                 Truncates audio if specified. Defaults to None.
 
         Returns:
             Any: Batch of preprocessed audio features.
         """
-        max_length = int(self.sr * max_duration) if max_duration else None
-        truncation = True if max_duration else False
+        sr = feature_extractor.sampling_rate
+        max_length = int(sr * max_duration) if max_duration else None
+        truncation = max_duration != None
         audio_arrays = [x["array"] for x in batch["audio"]]
-        inputs = self.feature_extractor(
+        inputs = feature_extractor(
             audio_arrays,
-            sampling_rate=self.sr,
+            sampling_rate=sr,
             max_length=max_length,
             truncation=truncation,
         )
