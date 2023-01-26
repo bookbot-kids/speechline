@@ -15,7 +15,7 @@
 from typing import Optional, Any
 import pandas as pd
 from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureExtractor
-from datasets import Dataset, Audio
+from datasets import Dataset, Audio, config, load_from_disk
 import torch
 
 
@@ -55,6 +55,8 @@ class AudioModule:
         """
         dataset = Dataset.from_pandas(df)
         dataset = dataset.cast_column("audio", Audio(sampling_rate=self.sr))
+        dataset.save_to_disk(config.HF_DATASETS_CACHE)
+        dataset = load_from_disk(config.HF_DATASETS_CACHE)
         return dataset
 
     @staticmethod
