@@ -68,11 +68,11 @@ class AudioModule:
         """Audio dataset preprocessing function. Extracts audio waves as features.
 
         Args:
-            batch (Dataset): 
+            batch (Dataset):
                 Batch audio dataset to be preprocessed.
             feature_extractor (SequenceFeatureExtractor):
                 Feature extractor for audio waves.
-            max_duration (Optional[int], optional): 
+            max_duration (Optional[int], optional):
                 Maximum audio duration in seconds.
                 Truncates audio if specified. Defaults to None.
 
@@ -81,7 +81,7 @@ class AudioModule:
         """
         sr = feature_extractor.sampling_rate
         max_length = int(sr * max_duration) if max_duration else None
-        truncation = max_duration != None
+        truncation = max_duration is not None
         audio_arrays = [x["array"] for x in batch["audio"]]
         inputs = feature_extractor(
             audio_arrays,
