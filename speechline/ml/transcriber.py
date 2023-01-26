@@ -49,7 +49,7 @@ class Wav2Vec2Transcriber(AudioModule):
         dataset: Union[Dataset, DatasetDict],
         batch_size: int = 1,
         output_phoneme_offsets: bool = False,
-    ) -> Union[List[str], List[List[Dict[str, Any]]]]:
+    ) -> List:
         """Performs batched inference on `dataset`.
 
         Args:
@@ -62,7 +62,7 @@ class Wav2Vec2Transcriber(AudioModule):
                 Whether to output phoneme-level timestamps. Defaults to False.
 
         Returns:
-            Union[List[str], List[List[Dict[str, Any]]]]:
+            List:
                 Defaults to list of transcriptions.
                 If `output_phoneme_offsets` is `True`, return list of phoneme offsets.
 
@@ -135,10 +135,7 @@ class Wav2Vec2Transcriber(AudioModule):
             " ".join(o["phoneme"] for o in offset) for offset in phoneme_offsets
         ]
 
-        if output_phoneme_offsets:
-            return phoneme_offsets
-        else:
-            return transcripts
+        return phoneme_offsets if output_phoneme_offsets else transcripts
 
 
 class WhisperTranscriber(AudioModule):
