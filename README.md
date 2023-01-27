@@ -29,18 +29,23 @@ SpeechLine is a speech labeling pipeline that handles end-to-end, offline, batch
 
 ## Pipeline Overview
 
-![Logo](./docs/assets/diagram-light.svg#gh-light-mode-only)
-![Logo](./docs/assets/diagram-dark.svg#gh-dark-mode-only)
+<p align="center">
+    <img src="./docs/assets/diagram-light.svg#gh-light-mode-only"/>
+    <img src="./docs/assets/diagram-dark.svg#gh-dark-mode-only"/>
+</p>
 
-## Installation
+## Available Modules
 
-```bash
-git clone https://github.com/bookbot-kids/speechline.git
-cd speechline
-pip install -r requirements.txt
-```
+<p align="center">
+    <img src="./docs/assets/components-light.svg#gh-light-mode-only"/>
+    <img src="./docs/assets/components-dark.svg#gh-dark-mode-only"/>
+</p>
 
-## How to Use
+<p align="center" style="font-style: italic;">
+    Figure inspired by <a href="https://maartengr.github.io/BERTopic/algorithm/algorithm.html">BERTopic's Modularity Diagram</a>
+</p>
+
+## Examples
 
 - [SpeechLine on AWS SageMaker](./docs/examples/sagemaker.md)
 
