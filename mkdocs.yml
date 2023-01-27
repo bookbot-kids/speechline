@@ -42,6 +42,8 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  - admonition
+  - pymdownx.details
   - pymdownx.superfences
   - def_list
   - pymdownx.tasklist:
@@ -58,9 +60,10 @@ watch:
 nav:
   - SpeechLine:
       - Home: index.md
+      - Installation: INSTALLATION.md
+      - Contributing: CONTRIBUTING.md
       - Project Charter: PROJECT_CHARTER.md
       - Code of Conduct: CODE_OF_CONDUCT.md
-      - Contributing Guidelines: CONTRIBUTING.md
   - Examples:
       - Running SpeechLine:
           - AWS SageMaker: examples/sagemaker.md
