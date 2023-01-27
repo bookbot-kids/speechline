@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Dict, Any
 import json
 import os
+from typing import Dict, List, Union
+
 from pydub import AudioSegment
 
 
 def export_transcripts_json(
     output_json_path: str,
-    phoneme_offsets: List[Dict[str, Any]],
+    phoneme_offsets: List[Dict[str, Union[str, float]]],
 ) -> None:
     """Exports phoneme transcript with offsets as JSON.
     ```json title="example_output_transcripts.json"
@@ -40,15 +41,17 @@ def export_transcripts_json(
     ```
 
     Args:
-        output_json_path (str): Path to output JSON file.
-        phoneme_offsets (List[Dict[str, Any]]): List of phonemes with offsets.
+        output_json_path (str):
+            Path to output JSON file.
+        phoneme_offsets (List[Dict[str, Union[str, float]]]):
+            List of phonemes with offsets.
     """
     with open(output_json_path, "w") as f:
         json.dump(phoneme_offsets, f, indent=2)
 
 
 def export_segment_transcripts_tsv(
-    output_tsv_path: str, segment: List[Dict[str, Any]]
+    output_tsv_path: str, segment: List[Dict[str, Union[str, float]]]
 ) -> None:
     """Export segment transcripts to TSV of structure:
     ```tsv title="example_output_segment_transcripts.tsv"
@@ -59,7 +62,7 @@ def export_segment_transcripts_tsv(
 
     Args:
         output_tsv_path (str): Path to TSV file.
-        segment (List[Dict[str, Any]]): List of phonemes in segment.
+        segment (List[Dict[str, Union[str, float]]]): List of phonemes in segment.
     """
     with open(output_tsv_path, "w") as f:
         for s in segment:

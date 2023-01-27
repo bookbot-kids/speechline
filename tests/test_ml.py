@@ -12,20 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
+import json
 from glob import glob
 from pathlib import Path
-import json
 
-from speechline.run import Runner
+import pytest
+
+from scripts.aac_to_wav import convert_to_wav, parse_args
 from speechline.ml.classifier import Wav2Vec2Classifier
 from speechline.ml.transcriber import Wav2Vec2Transcriber, WhisperTranscriber
+from speechline.run import Runner
+from speechline.utils.config import Config
 from speechline.utils.dataset import prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.segmenter import AudioSegmenter
-from speechline.utils.config import Config
-
-from scripts.aac_to_wav import parse_args, convert_to_wav
 
 
 def test_convert_to_wav(datadir):

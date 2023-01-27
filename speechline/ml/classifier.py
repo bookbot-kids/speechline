@@ -13,14 +13,15 @@
 # limitations under the License.
 
 from typing import List, Union
-from transformers import (
-    AutoModelForAudioClassification,
-    AutoFeatureExtractor,
-    TrainingArguments,
-    Trainer,
-)
-from datasets import Dataset, DatasetDict
+
 import numpy as np
+from datasets import Dataset, DatasetDict
+from transformers import (
+    AutoFeatureExtractor,
+    AutoModelForAudioClassification,
+    Trainer,
+    TrainingArguments,
+)
 
 from .module import AudioModule
 

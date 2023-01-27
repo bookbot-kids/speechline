@@ -12,22 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List, Dict, Any
-from pydub import AudioSegment
 import os
+from typing import Dict, List, Union
+
+from pydub import AudioSegment
 
 from .io import (
-    get_outdir_path,
-    get_chunk_path,
-    export_segment_transcripts_tsv,
     export_segment_audio_wav,
+    export_segment_transcripts_tsv,
+    get_chunk_path,
+    get_outdir_path,
 )
 
 
 class AudioSegmenter:
     def chunk_offsets(
-        self, phoneme_offsets: List[Dict[str, Any]], silence_duration: float
-    ) -> List[List[Dict[str, Any]]]:
+        self,
+        phoneme_offsets: List[Dict[str, Union[str, float]]],
+        silence_duration: float,
+    ) -> List[List[Dict[str, Union[str, float]]]]:
         """Chunk transcript offsets based on in-between silence duration.
 
         ### Example
@@ -77,13 +80,13 @@ class AudioSegmenter:
         ```
 
         Args:
-            phoneme_offsets (List[Dict[str, Any]]):
+            phoneme_offsets (List[Dict[str, Union[str, float]]]):
                 Offsets to chunk.
             silence_duration (float):
                 Minimum in-between silence duration (in seconds) to consider as gaps.
 
         Returns:
-            List[List[Dict[str, Any]]]: List of chunked/segmented offsets.
+            List[List[Dict[str, Union[str, float]]]]: List of chunked/segmented offsets.
         """
         # calculate gaps in between offsets
         gaps = [
@@ -100,15 +103,17 @@ class AudioSegmenter:
         segments = [phoneme_offsets[i:j] for i, j in zip(slices, slices[1:])]
         return segments
 
-    def _shift_offsets(self, offset: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _shift_offsets(
+        self, offset: List[Dict[str, Union[str, float]]]
+    ) -> List[Dict[str, Union[str, float]]]:
         """Shift start and end time of offsets by index start time.
         Subtracts all start and end times by index start time.
 
         Args:
-            offset (List[Dict[str, Any]]): Offsets to shift.
+            offset (List[Dict[str, Union[str, float]]]): Offsets to shift.
 
         Returns:
-            List[Dict[str, Any]]: Shifted offsets.
+            List[Dict[str, Union[str, float]]]: Shifted offsets.
         """
         index_start = offset[0]["start_time"]
         shifted_offset = [
@@ -125,10 +130,10 @@ class AudioSegmenter:
         self,
         audio_path: str,
         outdir: str,
-        phoneme_offsets: List[Dict[str, Any]],
+        phoneme_offsets: List[Dict[str, Union[str, float]]],
         silence_duration: float = 0.1,
         minimum_chunk_duration: float = 1.0,
-    ) -> List[List[Dict[str, Any]]]:
+    ) -> List[List[Dict[str, Union[str, float]]]]:
         """Chunks an audio file based on its phoneme offsets.
         Generates and exports WAV audio chunks and aligned TSV phoneme transcripts.
 
@@ -138,7 +143,7 @@ class AudioSegmenter:
             outdir (str):
                 Output directory to save chunked audio.
                 Per-region subfolders will be generated under this directory.
-            phoneme_offsets (List[Dict[str, Any]]):
+            phoneme_offsets (List[Dict[str, Union[str, float]]]):
                 List of phoneme offsets.
             silence_duration (float, optional):
                 Minimum in-between silence duration (in seconds) to consider as gaps.
@@ -148,7 +153,8 @@ class AudioSegmenter:
                 Defaults to 1.0 second.
 
         Returns:
-            List[List[Dict[str, Any]]]: List of phoneme offsets for every segment.
+            List[List[Dict[str, Union[str, float]]]]:
+                List of phoneme offsets for every segment.
         """
         segments = self.chunk_offsets(phoneme_offsets, silence_duration)
         # skip empty segments (undetected transcripts)

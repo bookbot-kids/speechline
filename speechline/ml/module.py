@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, Any, Union
+from typing import Any, Optional, Union
+
 import pandas as pd
-from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureExtractor
-from datasets import Dataset, DatasetDict, Audio, config, load_from_disk
 import torch
+from datasets import Audio, Dataset, DatasetDict, config, load_from_disk
+from transformers import PreTrainedModel, PreTrainedTokenizer, SequenceFeatureExtractor
 
 
 class AudioModule:
