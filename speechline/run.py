@@ -15,7 +15,7 @@
 import argparse
 import sys
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List
 
 from tqdm import tqdm
 
@@ -125,7 +125,7 @@ class Runner:
 
             # perform audio transcription
             dataset = transcriber.format_audio_dataset(child_speech_df)
-            phoneme_offsets: List[List[Dict[str, Any]]] = transcriber.predict(  # type: ignore  # noqa: E501
+            phoneme_offsets = transcriber.predict(
                 dataset,
                 batch_size=self.config.transcriber["batch_size"],
                 output_phoneme_offsets=True,

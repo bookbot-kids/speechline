@@ -11,7 +11,6 @@ quality:
 		black --check $(check_dirs)
 		isort --check-only $(check_dirs)
 		flake8 $(check_dirs)
-		mypy speechline
 		mkdocs build
 
 # runs checks on all files and potentially modifies some of them

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Union
+from typing import Dict, List, Union
 
 import numpy as np
 from datasets import Dataset, DatasetDict
@@ -49,7 +49,7 @@ class Wav2Vec2Transcriber(AudioModule):
         dataset: Union[Dataset, DatasetDict],
         batch_size: int = 1,
         output_phoneme_offsets: bool = False,
-    ) -> List:
+    ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
         """Performs batched inference on `dataset`.
 
         Args:
@@ -62,7 +62,7 @@ class Wav2Vec2Transcriber(AudioModule):
                 Whether to output phoneme-level timestamps. Defaults to False.
 
         Returns:
-            List:
+            Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
                 Defaults to list of transcriptions.
                 If `output_phoneme_offsets` is `True`, return list of phoneme offsets.
 
@@ -118,7 +118,7 @@ class Wav2Vec2Transcriber(AudioModule):
         predicted_ids = np.argmax(logits, axis=-1)
         outputs = self.tokenizer.batch_decode(predicted_ids, output_char_offsets=True)
 
-        phoneme_offsets: List[List[Dict[str, Any]]] = [
+        phoneme_offsets = [
             [
                 {
                     "phoneme": o["char"],
