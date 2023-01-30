@@ -26,13 +26,16 @@ from speechline.utils.airtable import AirTable
 
 class DataLogger:
     def parse_args(self, args: List[str]) -> argparse.Namespace:
-        """Utility argument parser function for data logging to AirTable.
+        """
+        Utility argument parser function for data logging to AirTable.
 
         Args:
-            args (List[str]): List of arguments.
+            args (List[str]):
+                List of arguments.
 
         Returns:
-            argparse.Namespace: Objects with arguments values as attributes.
+            argparse.Namespace:
+                Objects with arguments values as attributes.
         """
         parser = argparse.ArgumentParser(
             prog="python scripts/data_logger.py",
@@ -59,17 +62,20 @@ class DataLogger:
         return parser.parse_args(args)
 
     def get_audio_duration(self, audio_path: str) -> float:
-        """Calculate audio duration via ffprobe.
+        """
+        Calculate audio duration via ffprobe.
         Equivalent to:
         ```sh title="example_get_audio_duration.sh"
         ffprobe -v quiet -of csv=p=0 -show_entries format=duration {audio_path}
         ```
 
         Args:
-            audio_path (str): Path to audio file.
+            audio_path (str):
+                Path to audio file.
 
         Returns:
-            float: Duration in seconds.
+            float:
+                Duration in seconds.
         """
         job = subprocess.run(
             [
@@ -90,7 +96,9 @@ class DataLogger:
         return duration
 
     def get_language_total_audio_duration(self, input_dir: str) -> Dict[str, float]:
-        """Map language folders in `input_dir` to their respective total audio duration.
+        """
+        Map language folders in `input_dir` to their respective total audio duration.
+        Assumes `input_dir` as `{input_dir}/{lang}/{audio}.wav`.
 
         ### Example
         ```pycon title="example_get_language_total_audio_duration.py"
@@ -98,14 +106,14 @@ class DataLogger:
         >>> logger.get_language_total_audio_duration("dropbox/")
         {'en-au': 3.936, 'id-id': 3.797}
         ```
-        Assumes `input_dir` as `{input_dir}/{lang}/{audio}.wav`.
-        Returns
 
         Args:
-            input_dir (str): Path to input directory.
+            input_dir (str): 
+                Path to input directory.
 
         Returns:
-            Dict[str, float]: Dictionary of language to total audio duration.
+            Dict[str, float]: 
+                Dictionary of language to total audio duration.
         """
         languages = [f.name for f in os.scandir(input_dir) if f.is_dir()]
         language2duration = {}
@@ -118,7 +126,8 @@ class DataLogger:
     def build_payload(
         self, date: str, label: str, language: str, duration: float
     ) -> Dict[str, Dict[str, Any]]:
-        """Builds payload for AirTable record.
+        """
+        Builds payload for AirTable record.
         AirTable record has the following structure:
         ```pycon
         >>> {
@@ -131,13 +140,18 @@ class DataLogger:
         ```
 
         Args:
-            date (str): Logging date.
-            label (str): Audio folder label.
-            language (str): Language code (lang-country). E.g. `en-us`.
-            duration (float): Duration in seconds.
+            date (str): 
+                Logging date.
+            label (str): 
+                Audio folder label.
+            language (str): 
+                Language code (lang-country). E.g. `en-us`.
+            duration (float): 
+                Duration in seconds.
 
         Returns:
-            Dict[str, Dict[str, Any]]: AirTable record payload.
+            Dict[str, Dict[str, Any]]: 
+                AirTable record payload.
         """
         return {
             "fields": {
@@ -150,15 +164,20 @@ class DataLogger:
         }
 
     def log(self, url: str, input_dir: str, label: str) -> bool:
-        """Logs region-grouped total audio duration in `input_dir` to AirTable at `url`.
+        """
+        Logs region-grouped total audio duration in `input_dir` to AirTable at `url`.
 
         Args:
-            url (str): AirTable URL.
-            input_dir (str): Input directory to log.
-            label (str): Log record label.
+            url (str): 
+                AirTable URL.
+            input_dir (str): 
+                Input directory to log.
+            label (str): 
+                Log record label.
 
         Returns:
-            bool: Whether upload was a success.
+            bool: 
+                Whether upload was a success.
         """
         airtable = AirTable(url)
         language2duration = self.get_language_total_audio_duration(input_dir)

@@ -22,10 +22,12 @@ from tqdm import tqdm
 
 
 class S3Client:
-    """AWS S3 Client Interface.
+    """
+    AWS S3 Client Interface.
 
     Args:
-        region_name (str, optional): AWS region name. Defaults to "us-east-1".
+        region_name (str, optional):
+            AWS region name. Defaults to `"us-east-1"`.
     """
 
     def __init__(self, region_name: str = "us-east-1") -> None:
@@ -35,7 +37,8 @@ class S3Client:
     def download_s3_folder(
         self, bucket_name: str, s3_folder: str, local_dir: Optional[str] = None
     ) -> None:
-        """Download the contents of a folder directory in an S3 bucket.
+        """
+        Download the contents of a folder directory in an S3 bucket.
         Source: [StackOverflow](https://stackoverflow.com/a/62945526).
 
         Args:
@@ -45,7 +48,7 @@ class S3Client:
                 Folder path in the s3 bucket
             local_dir (Optional[str], optional):
                 Relative or absolute directory path in the local file system.
-                Defaults to None.
+                Defaults to `None`.
         """
         bucket = self.resource.Bucket(bucket_name)
         for obj in bucket.objects.filter(Prefix=s3_folder):
@@ -64,7 +67,8 @@ class S3Client:
             bucket.download_file(obj.key, target)
 
     def upload_folder(self, bucket_name: str, prefix: str, local_dir: str) -> None:
-        """Uploads all files under `local_dir` to S3 bucket with `prefix`.
+        """
+        Uploads all files under `local_dir` to S3 bucket with `prefix`.
         Utilizes parallelism to speed up upload process.
 
         ### Example
@@ -90,9 +94,12 @@ class S3Client:
         ```
 
         Args:
-            bucket_name (str): S3 bucket name.
-            prefix (str): Object key's prefix.
-            local_dir (str): Path to local directory.
+            bucket_name (str):
+                S3 bucket name.
+            prefix (str):
+                Object key's prefix.
+            local_dir (str):
+                Path to local directory.
         """
         paths, keys = [], []
         # recursively walk through local directory
@@ -117,21 +124,29 @@ class S3Client:
             _ = list(tqdm(executor.map(fn, keys, paths), total=len(keys)))
 
     def put_object(self, bucket_name: str, key: str, value: str) -> None:
-        """Puts `value` (in str) to S3 bucket.
+        """
+        Puts `value` (in str) to S3 bucket.
 
         Args:
-            bucket_name (str): S3 bucket name.
-            key (str): Key to file in bucket.
-            value (str): String representation of object to put in S3.
+            bucket_name (str):
+                S3 bucket name.
+            key (str):
+                Key to file in bucket.
+            value (str):
+                String representation of object to put in S3.
         """
         self.client.put_object(Bucket=bucket_name, Key=key, Body=value)
 
     def upload_file(self, key: str, path: str, bucket_name: str) -> None:
-        """Uploads file at `path` to S3 bucket with `key` as object key.
+        """
+        Uploads file at `path` to S3 bucket with `key` as object key.
 
         Args:
-            key (str): Key to file in bucket.
-            path (str): Path to local file to upload.
-            bucket_name (str): S3 bucket name.
+            key (str):
+                Key to file in bucket.
+            path (str):
+                Path to local file to upload.
+            bucket_name (str):
+                S3 bucket name.
         """
         self.client.upload_file(Bucket=bucket_name, Key=key, Filename=path)

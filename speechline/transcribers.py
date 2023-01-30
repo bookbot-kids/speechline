@@ -14,7 +14,7 @@
 
 from typing import Dict, List, Union
 
-from datasets import Dataset, DatasetDict
+from datasets import Dataset
 
 from .modules import AudioTranscriber
 
@@ -33,7 +33,7 @@ class Wav2Vec2Transcriber(AudioTranscriber):
 
     def predict(
         self,
-        dataset: Union[Dataset, DatasetDict],
+        dataset: Dataset,
         chunk_length_s: int = 30,
         output_offsets: bool = False,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
@@ -41,7 +41,7 @@ class Wav2Vec2Transcriber(AudioTranscriber):
         Performs inference on `dataset`.
 
         Args:
-            dataset (Union[Dataset, DatasetDict]):
+            dataset (Dataset):
                 Dataset to be inferred.
             chunk_length_s (int):
                 Audio chunk length during inference. Defaults to `30`.
@@ -110,7 +110,7 @@ class WhisperTranscriber(AudioTranscriber):
 
     def predict(
         self,
-        dataset: Union[Dataset, DatasetDict],
+        dataset: Dataset,
         chunk_length_s: int = 30,
         output_offsets: bool = False,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
@@ -118,7 +118,7 @@ class WhisperTranscriber(AudioTranscriber):
         Performs inference on `dataset`.
 
         Args:
-            dataset (Union[Dataset, DatasetDict]):
+            dataset (Dataset):
                 Dataset to be inferred.
             chunk_length_s (int):
                 Audio chunk length during inference. Defaults to `30`.

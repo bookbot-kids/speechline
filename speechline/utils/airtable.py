@@ -20,13 +20,16 @@ import requests
 
 
 class AirTable:
-    """AirTable table interface.
+    """
+    AirTable table interface.
 
     Args:
-        url (str): URL of AirTable table.
+        url (str):
+            URL of AirTable table.
 
     Raises:
-        OSError: `AIRTABLE_API_KEY` environment is not set.
+        OSError:
+            `AIRTABLE_API_KEY` environment is not set.
     """
 
     def __init__(self, url: str) -> None:
@@ -41,13 +44,16 @@ class AirTable:
         }
 
     def add_records(self, records: List[Dict[str, Any]]) -> bool:
-        """Add records to AirTable table.
+        """
+        Add records to AirTable table.
 
         Args:
-            records (List[Dict[str, Any]]): List of records in AirTable format.
+            records (List[Dict[str, Any]]):
+                List of records in AirTable format.
 
         Returns:
-            bool: Whether upload was a success.
+            bool:
+                Whether upload was a success.
         """
         try:
             response = requests.post(
@@ -59,13 +65,16 @@ class AirTable:
         return True if response.ok else False
 
     def batch_add_records(self, records: List[Dict[str, Any]]) -> bool:
-        """Allow batching of record addition due to 10-element limit, then push.
+        """
+        Allow batching of record addition due to 10-element limit, then push.
 
         Args:
-            records (List[Dict[str, Any]]): List of records in AirTable format.
+            records (List[Dict[str, Any]]):
+                List of records in AirTable format.
 
         Returns:
-            bool: Whether upload was a success.
+            bool:
+                Whether upload was a success.
         """
         BATCH_SIZE = 10
         for idx in range(0, len(records), BATCH_SIZE):

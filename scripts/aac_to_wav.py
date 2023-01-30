@@ -23,13 +23,16 @@ from functools import partial
 
 
 def parse_args(args: List[str]) -> argparse.Namespace:
-    """Utility argument parser function for batch audio conversion.
+    """
+    Utility argument parser function for batch audio conversion.
 
     Args:
-        args (List[str]): List of arguments.
+        args (List[str]):
+            List of arguments.
 
     Returns:
-        argparse.Namespace: Objects with arguments values as attributes.
+        argparse.Namespace:
+            Objects with arguments values as attributes.
     """
     parser = argparse.ArgumentParser(
         prog="python scripts/aac_to_wav.py",
@@ -59,15 +62,20 @@ def parse_args(args: List[str]) -> argparse.Namespace:
 def convert_to_wav(
     input_audio_path: str, num_channels: int = 1, sampling_rate: int = 16_000
 ) -> subprocess.CompletedProcess:
-    """Convert aac audio file to wav at same directory.
+    """
+    Convert aac audio file to wav at same directory.
 
     Args:
-        input_audio_path (str): Path to aac file.
-        num_channels (int, optional): Number of output audio channels. Defaults to 1.
-        sampling_rate (int, optional): Output audio sampling rate. Defaults to 16_000.
+        input_audio_path (str):
+            Path to aac file.
+        num_channels (int, optional):
+            Number of output audio channels. Defaults to `1`.
+        sampling_rate (int, optional):
+            Output audio sampling rate. Defaults to `16_000`.
 
     Returns:
-        subprocess.CompletedProcess: Finished subprocess.
+        subprocess.CompletedProcess:
+            Finished subprocess.
     """
     # replace input file's extension to wav as output file path
     output_audio_path = Path(input_audio_path).with_suffix(".wav")
