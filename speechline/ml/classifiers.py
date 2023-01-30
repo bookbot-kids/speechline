@@ -42,7 +42,7 @@ class Wav2Vec2Classifier(AudioClassifier):
             dataset (Dataset):
                 Dataset to be inferred.
             batch_size (int, optional):
-                Per device batch size. Defaults to 1.
+                Per device batch size. Defaults to `1`.
 
         Returns:
             List[str]:
