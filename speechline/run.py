@@ -19,33 +19,40 @@ from typing import List
 
 from tqdm import tqdm
 
-from .ml.classifier import Wav2Vec2Classifier
-from .ml.transcriber import Wav2Vec2Transcriber
-from .utils.config import Config
-from .utils.dataset import prepare_dataframe
-from .utils.io import export_transcripts_json
-from .utils.logger import logger
-from .utils.segmenter import AudioSegmenter
+from speechline.classifiers import Wav2Vec2Classifier
+from speechline.transcribers import Wav2Vec2Transcriber
+from speechline.utils.config import Config
+from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
+from speechline.utils.io import export_transcripts_json
+from speechline.utils.logger import logger
+from speechline.utils.segmenter import AudioSegmenter
 
 
 class Runner:
-    """SpeechLine Runnner.
+    """
+    SpeechLine Runnner.
 
     Args:
-        config (Config): SpeechLine Config object.
-        input_dir (str): Path to input directory.
-        output_dir (str): Path to output directory.
+        config (Config):
+            SpeechLine Config object.
+        input_dir (str):
+            Path to input directory.
+        output_dir (str):
+            Path to output directory.
     """
 
     @staticmethod
     def parse_args(args: List[str]) -> argparse.Namespace:
-        """Utility argument parser function for SpeechLine.
+        """
+        Utility argument parser function for SpeechLine.
 
         Args:
-            args (List[str]): List of arguments.
+            args (List[str]):
+                List of arguments.
 
         Returns:
-            argparse.Namespace: Objects with arguments values as attributes.
+            argparse.Namespace:
+                Objects with arguments values as attributes.
         """
         parser = argparse.ArgumentParser(
             prog="python speechline/run.py",
@@ -82,7 +89,8 @@ class Runner:
         self.output_dir = output_dir
 
     def run(self) -> None:
-        """Runs end-to-end SpeechLine pipeline.
+        """
+        Runs end-to-end SpeechLine pipeline.
 
         ### Pipeline Overview
         - Prepare DataFrame of audio data.
@@ -104,17 +112,17 @@ class Runner:
 
             # load classifier model
             classifier_checkpoint = self.config.classifier["models"][language]
-            classifier = Wav2Vec2Classifier(classifier_checkpoint)
+            classifier = Wav2Vec2Classifier(
+                classifier_checkpoint,
+                max_duration_s=self.config.classifier["max_duration_s"],
+            )
 
             # perform audio classification
             # TODO: add minimum length filter for super-short audio?
-            dataset = classifier.format_audio_dataset(df)
+            dataset = format_audio_dataset(df, sampling_rate=classifier.sampling_rate)
             df["category"] = classifier.predict(
                 dataset, batch_size=self.config.classifier["batch_size"]
             )
-
-            # remove model from memory after inference
-            classifier.clear_memory()
 
             # filter audio by category
             child_speech_df = df[df["category"] == "child"]
@@ -124,7 +132,9 @@ class Runner:
             transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
 
             # perform audio transcription
-            dataset = transcriber.format_audio_dataset(child_speech_df)
+            dataset = format_audio_dataset(
+                child_speech_df, sampling_rate=transcriber.sampling_rate
+            )
             phoneme_offsets = transcriber.predict(
                 dataset,
                 output_offsets=True,

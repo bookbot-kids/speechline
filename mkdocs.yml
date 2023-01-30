@@ -21,7 +21,7 @@ theme:
         name: Switch to light mode
   features:
     - navigation.sections
-    # - navigation.expand
+    - navigation.expand
     - navigation.tabs
     - content.code.annotate
 
@@ -69,16 +69,22 @@ nav:
           - AWS SageMaker: examples/sagemaker.md
   - API Reference:
       - Runner: reference/runner.md
-      - ML Models:
-          - Audio Classifier: reference/ml/classifier.md
-          - Audio Transcriber: reference/ml/transcriber.md
-      - Base Classes:
-          - Audio Dataset: reference/utils/dataset.md
-          - Audio Module: reference/ml/module.md
+      - Classifiers:
+          - Wav2Vec2 Classifier: reference/models/classifiers/wav2vec2_classifier.md
+      - Transcribers:
+          - Wav2Vec2 Transcriber: reference/models/transcribers/wav2vec2_transcriber.md
+          - Whisper Transcriber: reference/models/transcribers/whisper_transcriber.md
+      - Base Modules:
+          - Audio Classifier: reference/modules/audio_classifier.md
+          - Audio Transcriber: reference/modules/audio_transcriber.md
+          - Audio Module: reference/modules/audio_module.md
+      - Pipelines:
+          - Audio Classification with Padding Pipeline: reference/pipelines/audio_classification_with_padding_pipeline.md
       - Utilities:
           - AirTable Interface: reference/utils/airtable.md
           - Audio Segmenter: reference/utils/segmenter.md
           - Config: reference/utils/config.md
+          - Dataset: reference/utils/dataset.md
           - I/O: reference/utils/io.md
           - S3: reference/utils/s3.md
       - Scripts:

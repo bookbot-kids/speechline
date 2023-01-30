@@ -16,10 +16,12 @@ from glob import glob
 from pathlib import Path
 
 import pandas as pd
+from datasets import Audio, Dataset, config, load_from_disk
 
 
 def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.DataFrame:
-    """Prepares audio and ground truth files as Pandas `DataFrame`.
+    """
+    Prepares audio and ground truth files as Pandas `DataFrame`.
     Assumes files are of the following structure:
 
     ```
@@ -54,3 +56,25 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     df["language_code"] = df["audio"].apply(lambda f: Path(f).parent.name)
     df["language"] = df["language_code"].apply(lambda f: f.split("-")[0])
     return df
+
+
+def format_audio_dataset(df: pd.DataFrame, sampling_rate: int = 16000) -> Dataset:
+    """
+    Formats Pandas `DataFrame` as a datasets `Dataset`.
+    Converts `audio` path column to audio arrays and resamples accordingly.
+
+    Args:
+        df (pd.DataFrame):
+            Pandas DataFrame to convert to `Dataset`.
+
+    Returns:
+        Dataset:
+            `datasets`' `Dataset` object usable for batch inference.
+    """
+    dataset = Dataset.from_pandas(df)
+    dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
+    saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
+    saved_dataset = saved_dataset.cast_column(
+        "audio", Audio(sampling_rate=sampling_rate)
+    )
+    return saved_dataset
