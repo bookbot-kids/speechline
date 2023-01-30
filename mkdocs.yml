@@ -69,12 +69,11 @@ nav:
           - AWS SageMaker: examples/sagemaker.md
   - API Reference:
       - Runner: reference/runner.md
-      - Models:
-          - Classifiers:
-              - Wav2Vec2 Classifier: reference/models/classifiers/wav2vec2_classifier.md
-          - Transcribers:
-              - Wav2Vec2 Transcriber: reference/models/transcribers/wav2vec2_transcriber.md
-              - Whisper Transcriber: reference/models/transcribers/whisper_transcriber.md
+      - Classifiers:
+          - Wav2Vec2 Classifier: reference/models/classifiers/wav2vec2_classifier.md
+      - Transcribers:
+          - Wav2Vec2 Transcriber: reference/models/transcribers/wav2vec2_transcriber.md
+          - Whisper Transcriber: reference/models/transcribers/whisper_transcriber.md
       - Base Modules:
           - Audio Classifier: reference/modules/audio_classifier.md
           - Audio Transcriber: reference/modules/audio_transcriber.md

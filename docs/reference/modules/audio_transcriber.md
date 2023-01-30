@@ -1,3 +1,3 @@
 # Audio Transcriber
 
-::: speechline.ml.modules.AudioTranscriber
+::: speechline.modules.AudioTranscriber

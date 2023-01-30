@@ -19,8 +19,8 @@ from typing import List
 
 from tqdm import tqdm
 
-from speechline.ml.classifiers import Wav2Vec2Classifier
-from speechline.ml.transcribers import Wav2Vec2Transcriber
+from speechline.classifiers import Wav2Vec2Classifier
+from speechline.transcribers import Wav2Vec2Transcriber
 from speechline.utils.config import Config
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json

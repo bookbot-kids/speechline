@@ -1,3 +1,3 @@
 # Audio Classifier
 
-::: speechline.ml.modules.AudioClassifier
+::: speechline.modules.AudioClassifier

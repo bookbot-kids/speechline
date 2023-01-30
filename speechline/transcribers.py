@@ -55,7 +55,7 @@ class Wav2Vec2Transcriber(AudioTranscriber):
 
         ### Example
         ```pycon title="example_transcriber_predict.py"
-        >>> from speechline.ml.transcriber import Wav2Vec2Transcriber
+        >>> from speechline.transcribers import Wav2Vec2Transcriber
         >>> from datasets import Dataset, Audio
         >>> transcriber = Wav2Vec2Transcriber("bookbot/wav2vec2-ljspeech-gruut")
         >>> dataset = Dataset.from_dict({"audio": ["sample.wav"]}).cast_column(
@@ -132,7 +132,7 @@ class WhisperTranscriber(AudioTranscriber):
 
         ### Example
         ```pycon title="example_transcriber_predict.py"
-        >>> from speechline.ml.transcriber import WhisperTranscriber
+        >>> from speechline.transcribers import WhisperTranscriber
         >>> from datasets import Dataset, Audio
         >>> transcriber = WhisperTranscriber("openai/whisper-tiny")
         >>> dataset = Dataset.from_dict({"audio": ["sample.wav"]}).cast_column(
