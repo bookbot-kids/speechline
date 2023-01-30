@@ -19,13 +19,13 @@ from typing import List
 
 from tqdm import tqdm
 
-from .ml.classifier import Wav2Vec2Classifier
-from .ml.transcriber import Wav2Vec2Transcriber
-from .utils.config import Config
-from .utils.dataset import prepare_dataframe
-from .utils.io import export_transcripts_json
-from .utils.logger import logger
-from .utils.segmenter import AudioSegmenter
+from speechline.ml.classifier import Wav2Vec2Classifier
+from speechline.ml.transcriber import Wav2Vec2Transcriber
+from speechline.utils.config import Config
+from speechline.utils.dataset import prepare_dataframe
+from speechline.utils.io import export_transcripts_json
+from speechline.utils.logger import logger
+from speechline.utils.segmenter import AudioSegmenter
 
 
 class Runner:
@@ -104,7 +104,9 @@ class Runner:
 
             # load classifier model
             classifier_checkpoint = self.config.classifier["models"][language]
-            classifier = Wav2Vec2Classifier(classifier_checkpoint)
+            classifier = Wav2Vec2Classifier(
+                classifier_checkpoint, self.config.classifier["max_duration_s"]
+            )
 
             # perform audio classification
             # TODO: add minimum length filter for super-short audio?
@@ -112,9 +114,6 @@ class Runner:
             df["category"] = classifier.predict(
                 dataset, batch_size=self.config.classifier["batch_size"]
             )
-
-            # remove model from memory after inference
-            classifier.clear_memory()
 
             # filter audio by category
             child_speech_df = df[df["category"] == "child"]

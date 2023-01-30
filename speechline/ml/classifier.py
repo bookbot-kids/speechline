@@ -14,29 +14,74 @@
 
 from typing import List, Union
 
-import numpy as np
+import torch
 from datasets import Dataset, DatasetDict
-from transformers import (
-    AutoFeatureExtractor,
-    AutoModelForAudioClassification,
-    Trainer,
-    TrainingArguments,
-)
+from tqdm.auto import tqdm
+from transformers import AudioClassificationPipeline, pipeline
+from transformers.pipelines.pt_utils import KeyDataset
 
 from .module import AudioModule
 
 
-class Wav2Vec2Classifier(AudioModule):
+class AudioClassificationWithPaddingPipeline(AudioClassificationPipeline):
+    def __init__(self, *args, **kwargs):
+        self.max_duration_s = kwargs.get("max_duration_s", None)
+        super().__init__(*args, **kwargs)
+
+    def preprocess(self, inputs):
+        sampling_rate = self.feature_extractor.sampling_rate
+        max_length = (
+            int(sampling_rate * self.max_duration_s) if self.max_duration_s else None
+        )
+        truncation = self.max_duration_s is not None
+
+        processed = self.feature_extractor(
+            inputs,
+            sampling_rate=sampling_rate,
+            return_tensors="pt",
+            max_length=max_length,
+            truncation=truncation,
+        )
+        return processed
+
+
+class AudioClassifier(AudioModule):
+    def __init__(self, model_checkpoint: str, max_duration_s: float = None) -> None:
+        self.classifier = pipeline(
+            "audio-classification",
+            model=model_checkpoint,
+            device=0 if torch.cuda.is_available() else -1,
+            max_duration_s=max_duration_s,
+            pipeline_class=AudioClassificationWithPaddingPipeline,
+        )
+        self.sr = self.classifier.feature_extractor.sampling_rate
+
+    def inference(self, batch: Dataset, batch_size: int = 1) -> List[str]:
+        prediction = [
+            o["label"]
+            for out in tqdm(
+                self.classifier(
+                    KeyDataset(batch["audio"], key="array"),
+                    batch_size=batch_size,
+                    top_k=1,
+                ),
+                total=len(batch),
+            )
+            for o in out
+        ]
+
+        return prediction
+
+
+class Wav2Vec2Classifier(AudioClassifier):
     """Audio classifier with feature extractor.
 
     Args:
         model_checkpoint (str): HuggingFace model hub checkpoint.
     """
 
-    def __init__(self, model_checkpoint: str) -> None:
-        model = AutoModelForAudioClassification.from_pretrained(model_checkpoint)
-        feature_extractor = AutoFeatureExtractor.from_pretrained(model_checkpoint)
-        super().__init__(model, feature_extractor)
+    def __init__(self, model_checkpoint: str, max_duration_s: float = None) -> None:
+        super().__init__(model_checkpoint, max_duration_s=max_duration_s)
 
     def predict(
         self, dataset: Union[Dataset, DatasetDict], batch_size: int = 1
@@ -52,25 +97,5 @@ class Wav2Vec2Classifier(AudioModule):
             List[str]: List of predictions (in string of labels).
         """
 
-        encoded_dataset = dataset.map(
-            self.preprocess_function,
-            batched=True,
-            desc="Preprocessing Dataset",
-            fn_kwargs={
-                "feature_extractor": self.feature_extractor,
-                "max_duration": 3.0,
-            },
-        )
-
-        args = TrainingArguments(output_dir="./", per_device_eval_batch_size=batch_size)
-
-        trainer = Trainer(
-            model=self.model,
-            args=args,
-            tokenizer=self.feature_extractor,
-        )
-
-        logits, *_ = trainer.predict(encoded_dataset)
-        predicted_ids = np.argmax(logits, axis=1).tolist()
-        predictions = [self.model.config.id2label[p] for p in predicted_ids]
+        predictions = self.inference(dataset, batch_size=batch_size)
         return predictions

@@ -49,7 +49,7 @@ def test_prepare_dataframe(datadir):
 
 def test_audio_classifier(datadir):
     model_checkpoint = "bookbot/distil-wav2vec2-adult-child-cls-52m"
-    classifier = Wav2Vec2Classifier(model_checkpoint)
+    classifier = Wav2Vec2Classifier(model_checkpoint, max_duration_s=3.0)
     df = prepare_dataframe(datadir)
     dataset = classifier.format_audio_dataset(df)
     predictions = classifier.predict(dataset)
