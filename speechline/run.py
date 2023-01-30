@@ -22,7 +22,7 @@ from tqdm import tqdm
 from speechline.ml.classifiers import Wav2Vec2Classifier
 from speechline.ml.transcribers import Wav2Vec2Transcriber
 from speechline.utils.config import Config
-from speechline.utils.dataset import prepare_dataframe, format_audio_dataset
+from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.logger import logger
 from speechline.utils.segmenter import AudioSegmenter

@@ -15,8 +15,8 @@
 from glob import glob
 from pathlib import Path
 
-from datasets import Dataset, Audio, config, load_from_disk
 import pandas as pd
+from datasets import Audio, Dataset, config, load_from_disk
 
 
 def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.DataFrame:
