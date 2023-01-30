@@ -20,13 +20,16 @@ from speechline.utils.s3 import S3Client
 
 
 def parse_args(args: List[str]) -> argparse.Namespace:
-    """Utility argument parser function for S3 bucket downloader.
+    """
+    Utility argument parser function for S3 bucket downloader.
 
     Args:
-        args (List[str]): List of arguments.
+        args (List[str]):
+            List of arguments.
 
     Returns:
-        argparse.Namespace: Objects with arguments values as attributes.
+        argparse.Namespace:
+            Objects with arguments values as attributes.
     """
     parser = argparse.ArgumentParser(
         prog="python scripts/download_s3_bucket.py",

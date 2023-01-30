@@ -23,7 +23,9 @@ def export_transcripts_json(
     output_json_path: str,
     phoneme_offsets: List[Dict[str, Union[str, float]]],
 ) -> None:
-    """Exports phoneme transcript with offsets as JSON.
+    """
+    Exports phoneme transcript with offsets as JSON.
+
     ```json title="example_output_transcripts.json"
     [
       {
@@ -53,7 +55,9 @@ def export_transcripts_json(
 def export_segment_transcripts_tsv(
     output_tsv_path: str, segment: List[Dict[str, Union[str, float]]]
 ) -> None:
-    """Export segment transcripts to TSV of structure:
+    """
+    Export segment transcripts to TSV of structure:
+
     ```tsv title="example_output_segment_transcripts.tsv"
     start_time_in_secs\tend_time_in_secs\tlabel
     start_time_in_secs\tend_time_in_secs\tlabel
@@ -61,8 +65,10 @@ def export_segment_transcripts_tsv(
     ```
 
     Args:
-        output_tsv_path (str): Path to TSV file.
-        segment (List[Dict[str, Union[str, float]]]): List of phonemes in segment.
+        output_tsv_path (str):
+            Path to TSV file.
+        segment (List[Dict[str, Union[str, float]]]):
+            List of phonemes in segment.
     """
     with open(output_tsv_path, "w") as f:
         for s in segment:
@@ -70,33 +76,41 @@ def export_segment_transcripts_tsv(
 
 
 def export_segment_audio_wav(output_wav_path: str, segment: AudioSegment) -> None:
-    """Export segment audio to WAV.
+    """
+    Export segment audio to WAV.
 
     Equivalent to:
+
     ```sh title="example_export_segment_audio_wav.sh"
     ffmpeg -i {segment} -acodec pcm_s16le -ac 1 -ar 16000 {output_wav_path}
     ```
 
     Args:
-        output_wav_path (str): Path to WAV file.
-        segment (AudioSegment): Audio segment to export.
+        output_wav_path (str):
+            Path to WAV file.
+        segment (AudioSegment):
+            Audio segment to export.
     """
     parameters = ["-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000"]
     segment.export(output_wav_path, format="wav", parameters=parameters)
 
 
 def get_outdir_path(path: str, outdir: str) -> str:
-    """Generate path at output directory.
+    """
+    Generate path at output directory.
 
     Assumes `path` as `{inputdir}/{lang}/*.wav`,
     and will return `{outdir}/{lang}/*.wav`
 
     Args:
-        path (str): Path to file.
-        outdir (str): Output directory where file will be saved.
+        path (str):
+            Path to file.
+        outdir (str):
+            Output directory where file will be saved.
 
     Returns:
-        str: Path to output directory.
+        str:
+            Path to output directory.
     """
     pathname, _ = os.path.splitext(path)  # remove extension
     components = os.path.normpath(pathname).split(os.sep)  # split into components
@@ -106,19 +120,25 @@ def get_outdir_path(path: str, outdir: str) -> str:
 
 
 def get_chunk_path(path: str, outdir: str, idx: int, extension: str) -> str:
-    """Generate path to chunk at output directory.
+    """
+    Generate path to chunk at output directory.
 
     Assumes `path` as `{inputdir}/{lang}/{utt_id}.{old_extension}`,
     and will return `{outdir}/{lang}/{utt_id}-{idx}.{extension}`
 
     Args:
-        path (str): Path to file.
-        outdir (str): Output directory where file will be saved.
-        idx (int): Index of chunk.
-        extension (str): New file extension.
+        path (str):
+            Path to file.
+        outdir (str):
+            Output directory where file will be saved.
+        idx (int):
+            Index of chunk.
+        extension (str):
+            New file extension.
 
     Returns:
-        str: Path to chunk at output directory.
+        str:
+            Path to chunk at output directory.
     """
     outdir_path = get_outdir_path(path, outdir)
     filename = os.path.splitext(os.path.basename(path))[0]
