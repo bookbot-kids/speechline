@@ -1,3 +1,3 @@
 # Audio Module
 
-::: speechline.ml.module.AudioModule
+::: speechline.ml.module
