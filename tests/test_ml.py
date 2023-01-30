@@ -68,7 +68,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         "s ə b l ɛ n s ɪ p z ə f i t p l i s æ æ p l æ p ə",
     ]
 
-    phoneme_offsets = transcriber.predict(dataset, output_phoneme_offsets=True)
+    phoneme_offsets = transcriber.predict(dataset, output_offsets=True)
     assert phoneme_offsets == [
         [
             {"phoneme": "h", "start_time": 0.0, "end_time": 0.04},
@@ -240,6 +240,25 @@ def test_whisper_transcriber(datadir):
         " Her red umbrella is just the best.",
         " It is not up.",
         " Sepulang sekolah, fitri sangat lapar.",
+    ]
+
+    offsets = transcriber.predict(dataset, output_offsets=True)
+    assert offsets == [
+        [
+            {
+                "text": " Her red umbrella is just the best.",
+                "start_time": 0.0,
+                "end_time": 3.0,
+            }
+        ],
+        [{"text": " It is not up.", "start_time": 0.0, "end_time": 2.0}],
+        [
+            {
+                "text": " Sepulang sekolah, fitri sangat lapar.",
+                "start_time": 0.0,
+                "end_time": 3.0,
+            }
+        ],
     ]
 
 

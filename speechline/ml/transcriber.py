@@ -12,59 +12,169 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict, List, Union
+from typing import Dict, List, Tuple, Union
 
-import numpy as np
+import torch
 from datasets import Dataset, DatasetDict
-from transformers import (
-    AutoModelForCTC,
-    AutoModelForSpeechSeq2Seq,
-    AutoProcessor,
-    Seq2SeqTrainer,
-    Seq2SeqTrainingArguments,
-    Trainer,
-    TrainingArguments,
-)
+from transformers import pipeline
 
 from .module import AudioModule
 
 
-class Wav2Vec2Transcriber(AudioModule):
-    """Wav2Vec2-CTC model for phoneme recognition with its processor.
+class AudioTranscriber(AudioModule):
+    """Generic AudioTranscriber class for speech/phoneme recognition.
 
     Args:
         model_checkpoint (str): HuggingFace model hub checkpoint.
     """
 
     def __init__(self, model_checkpoint: str) -> None:
-        model = AutoModelForCTC.from_pretrained(model_checkpoint)
-        processor = AutoProcessor.from_pretrained(model_checkpoint)
-        feature_extractor = processor.feature_extractor
-        tokenizer = processor.tokenizer
-        super().__init__(model, feature_extractor, tokenizer)
-        self.time_offset = self.model.config.inputs_to_logits_ratio / self.sr
+        self.asr = pipeline(
+            "automatic-speech-recognition",
+            model=model_checkpoint,
+            device=0 if torch.cuda.is_available() else -1,
+        )
+        self.sr = self.asr.feature_extractor.sampling_rate
+
+    def inference(
+        self,
+        batch: Dataset,
+        chunk_length_s: int = 30,
+        output_offsets: bool = False,
+        offset_key: str = "text",
+        return_timestamps: Union[str, bool] = True,
+    ) -> Dataset:
+        """Inference/prediction function to be mapped to a dataset.
+
+        Args:
+            batch (Dataset):
+                Batch of dataset.
+            chunk_length_s (int, optional):
+                Audio chunk length in seconds. Defaults to `30`.
+            output_offsets (bool, optional):
+                Whether to output offsets. Defaults to `False`.
+            offset_key (str, optional):
+                Offset dictionary key. Defaults to `"text"`.
+            return_timestamps (Union[str, bool], optional):
+                `return_timestamps` argument in `AutomaticSpeechRecognitionPipeline`'s
+                `__call__` method. Use `"char"` for CTC-based models and
+                `True` for Whisper-based models.
+                Defaults to `True`.
+
+        Returns:
+            Dataset:
+                Dataset with inferred predictions in `prediction` column.
+        """
+
+        def _format_timestamps_to_offsets(
+            timestamps: Dict[
+                str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]
+            ],
+            offset_key: str = "text",
+        ) -> List[Dict[str, Union[str, float]]]:
+            """Formats `AutomaticSpeechRecognitionPipeline`'s timestamp outputs to
+            a list of offsets with the following format:
+
+            ```json
+            [
+                {
+                    "{offset_key}": {text},
+                    "start_time": {start_time},
+                    "end_time": {end_time}
+                },
+                {
+                    "{offset_key}": {text},
+                    "start_time": {start_time},
+                    "end_time": {end_time}
+                },
+                ...
+            ]
+            ```
+
+            Args:
+                timestamps (Dict[str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]]):  # noqa: E501
+                    Output timestamps from `AutomaticSpeechRecognitionPipeline`.
+
+            Returns:
+                List[Dict[str, Union[str, float]]]:
+                    List of offsets.
+            """
+            return [
+                {
+                    offset_key: o["text"],
+                    "start_time": round(o["timestamp"][0], 3),
+                    "end_time": round(o["timestamp"][1], 3),
+                }
+                for o in timestamps["chunks"]
+                if o["text"] != " "
+            ]
+
+        def _format_timestamps_to_transcript(
+            timestamps: Dict[
+                str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]
+            ],
+        ) -> str:
+            """Formats `AutomaticSpeechRecognitionPipeline`'s timestamp outputs to
+            a transcript string.
+
+            Args:
+                timestamps (Dict[str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]]):  # noqa: E501
+                    Output timestamps from `AutomaticSpeechRecognitionPipeline`.
+
+            Returns:
+                str:
+                    Transcript string.
+            """
+            return " ".join(
+                [o["text"] for o in timestamps["chunks"] if o["text"] != " "]
+            )
+
+        prediction = self.asr(
+            batch["audio"]["array"],
+            chunk_length_s=chunk_length_s,
+            return_timestamps=return_timestamps,
+        )
+
+        if output_offsets:
+            batch["prediction"] = _format_timestamps_to_offsets(
+                prediction, offset_key=offset_key
+            )
+        else:
+            batch["prediction"] = _format_timestamps_to_transcript(prediction)
+
+        return batch
+
+
+class Wav2Vec2Transcriber(AudioTranscriber):
+    """Wav2Vec2-CTC model for phoneme recognition.
+
+    Args:
+        model_checkpoint (str): HuggingFace model hub checkpoint.
+    """
+
+    def __init__(self, model_checkpoint: str) -> None:
+        super().__init__(model_checkpoint)
 
     def predict(
         self,
         dataset: Union[Dataset, DatasetDict],
-        batch_size: int = 1,
-        output_phoneme_offsets: bool = False,
+        chunk_length_s: int = 30,
+        output_offsets: bool = False,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
-        """Performs batched inference on `dataset`.
+        """Performs inference on `dataset`.
 
         Args:
             dataset (Union[Dataset, DatasetDict]):
                 Dataset to be inferred.
-            batch_size (int, optional):
-                Batch size during inference. Defaults to 1.
-                Using a batch size >1 may hurt the performance of the model.
-            output_phoneme_offsets (bool, optional):
-                Whether to output phoneme-level timestamps. Defaults to False.
+            chunk_length_s (int):
+                Audio chunk length during inference. Defaults to `30`.
+            output_offsets (bool, optional):
+                Whether to output phoneme-level timestamps. Defaults to `False`.
 
         Returns:
             Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
                 Defaults to list of transcriptions.
-                If `output_phoneme_offsets` is `True`, return list of phoneme offsets.
+                If `output_offsets` is `True`, return list of phoneme offsets.
 
         ### Example
         ```pycon title="example_transcriber_predict.py"
@@ -77,7 +187,7 @@ class Wav2Vec2Transcriber(AudioModule):
         >>> transcripts = transcriber.predict(dataset)
         >>> transcripts
         ["ɪ t ɪ z n oʊ t ʌ p"]
-        >>> phoneme_offsets = transcriber.predict(dataset, output_phoneme_offsets=True)
+        >>> phoneme_offsets = transcriber.predict(dataset, output_offsets=True)
         >>> phoneme_offsets
         [
             [
@@ -94,51 +204,22 @@ class Wav2Vec2Transcriber(AudioModule):
         ]
         ```
         """
-        encoded_dataset = dataset.map(
-            self.preprocess_function,
-            batched=True,
-            desc="Preprocessing Dataset",
+
+        dataset = dataset.map(
+            self.inference,
+            desc="Performing Inference",
             fn_kwargs={
-                "feature_extractor": self.feature_extractor,
+                "chunk_length_s": chunk_length_s,
+                "output_offsets": output_offsets,
+                "offset_key": "phoneme",
+                "return_timestamps": "char",
             },
         )
 
-        args = TrainingArguments(
-            output_dir="./",
-            per_device_eval_batch_size=batch_size,
-        )
-
-        trainer = Trainer(
-            model=self.model,
-            args=args,
-            tokenizer=self.feature_extractor,
-        )
-
-        logits, *_ = trainer.predict(encoded_dataset)
-        predicted_ids = np.argmax(logits, axis=-1)
-        outputs = self.tokenizer.batch_decode(predicted_ids, output_char_offsets=True)
-
-        phoneme_offsets = [
-            [
-                {
-                    "phoneme": o["char"],
-                    "start_time": round(o["start_offset"] * self.time_offset, 3),
-                    "end_time": round(o["end_offset"] * self.time_offset, 3),
-                }
-                for o in offset
-                if o["char"] != " "
-            ]
-            for offset in outputs.char_offsets
-        ]
-
-        transcripts: List[str] = [
-            " ".join(o["phoneme"] for o in offset) for offset in phoneme_offsets
-        ]
-
-        return phoneme_offsets if output_phoneme_offsets else transcripts
+        return dataset["prediction"]
 
 
-class WhisperTranscriber(AudioModule):
+class WhisperTranscriber(AudioTranscriber):
     """Whisper model for seq2seq speech recognition with its processor.
 
     Args:
@@ -146,47 +227,62 @@ class WhisperTranscriber(AudioModule):
     """
 
     def __init__(self, model_checkpoint: str) -> None:
-        model = AutoModelForSpeechSeq2Seq.from_pretrained(model_checkpoint)
-        processor = AutoProcessor.from_pretrained(model_checkpoint)
-        feature_extractor = processor.feature_extractor
-        tokenizer = processor.tokenizer
-        super().__init__(model, feature_extractor, tokenizer)
+        super().__init__(model_checkpoint)
 
     def predict(
-        self, dataset: Union[Dataset, DatasetDict], batch_size: int = 1
-    ) -> List[str]:
-        """Performs batched inference on `dataset`.
+        self,
+        dataset: Union[Dataset, DatasetDict],
+        chunk_length_s: int = 30,
+        output_offsets: bool = False,
+    ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
+        """Performs inference on `dataset`.
 
         Args:
-            dataset (Union[Dataset, DatasetDict]): Dataset to be inferred.
-            batch_size (int, optional): Batch size during inference. Defaults to 1.
+            dataset (Union[Dataset, DatasetDict]):
+                Dataset to be inferred.
+            chunk_length_s (int):
+                Audio chunk length during inference. Defaults to `30`.
+            output_offsets (bool, optional):
+                Whether to output phoneme-level timestamps. Defaults to `False`.
 
         Returns:
-            List[str]: List of transcriptions.
+            Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
+                Defaults to list of transcriptions.
+                If `output_offsets` is `True`, return list of text offsets.
+
+        ### Example
+        ```pycon title="example_transcriber_predict.py"
+        >>> from speechline.ml.transcriber import WhisperTranscriber
+        >>> from datasets import Dataset, Audio
+        >>> transcriber = WhisperTranscriber("openai/whisper-tiny")
+        >>> dataset = Dataset.from_dict({"audio": ["sample.wav"]}).cast_column(
+        ...     "audio", Audio(sampling_rate=transcriber.sr)
+        ... )
+        >>> transcripts = transcriber.predict(dataset)
+        >>> transcripts
+        [" Her red umbrella is just the best."]
+        >>> offsets = transcriber.predict(dataset, output_offsets=True)
+        >>> offsets
+        [
+            [
+                {
+                    "text": " Her red umbrella is just the best.",
+                    "start_time": 0.0,
+                    "end_time": 3.0,
+                }
+            ]
+        ]
+        ```
         """
-        encoded_dataset = dataset.map(
-            self.preprocess_function,
-            batched=True,
-            desc="Preprocessing Dataset",
+        dataset = dataset.map(
+            self.inference,
+            desc="Performing Inference",
             fn_kwargs={
-                "feature_extractor": self.feature_extractor,
+                "chunk_length_s": chunk_length_s,
+                "output_offsets": output_offsets,
+                "offset_key": "text",
+                "return_timestamps": True,
             },
         )
 
-        args = Seq2SeqTrainingArguments(
-            output_dir="./",
-            per_device_eval_batch_size=batch_size,
-            predict_with_generate=True,
-        )
-
-        trainer = Seq2SeqTrainer(
-            model=self.model,
-            args=args,
-            tokenizer=self.feature_extractor,
-        )
-
-        predicted_ids, *_ = trainer.predict(encoded_dataset)
-        transcription: List[str] = self.tokenizer.batch_decode(
-            predicted_ids, skip_special_tokens=True
-        )
-        return transcription
+        return dataset["prediction"]

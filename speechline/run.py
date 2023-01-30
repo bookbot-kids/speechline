@@ -127,12 +127,8 @@ class Runner:
             dataset = transcriber.format_audio_dataset(child_speech_df)
             phoneme_offsets = transcriber.predict(
                 dataset,
-                batch_size=self.config.transcriber["batch_size"],
-                output_phoneme_offsets=True,
+                output_offsets=True,
             )
-
-            # remove model from memory after inference
-            transcriber.clear_memory()
 
             # segment audios based on offsets
             segmenter = AudioSegmenter()

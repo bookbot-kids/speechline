@@ -14,6 +14,6 @@ jobs:
         with:
           python-version: 3.x
       - name: Install dependencies
-        run: pip install mkdocs-material mkdocstrings mkdocstrings-python
+        run: pip install mkdocs-material mkdocstrings mkdocstrings-python-legacy
       - name: Deploy docs
         run: mkdocs gh-deploy --force

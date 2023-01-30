@@ -12,7 +12,7 @@
         "models": {
             "en": "bookbot/wav2vec2-bookbot-en-gruut-v3"
         },
-        "batch_size": 1
+        "chunk_length_s": 30
     },
     "segmenter": {
         "silence_duration": 0.3,
