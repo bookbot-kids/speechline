@@ -19,8 +19,8 @@ from pathlib import Path
 import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
-from speechline.ml.classifier import Wav2Vec2Classifier
-from speechline.ml.transcriber import Wav2Vec2Transcriber, WhisperTranscriber
+from speechline.ml.classifiers import Wav2Vec2Classifier
+from speechline.ml.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.run import Runner
 from speechline.utils.config import Config
 from speechline.utils.dataset import prepare_dataframe, format_audio_dataset
