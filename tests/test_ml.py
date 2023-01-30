@@ -23,7 +23,7 @@ from speechline.ml.classifier import Wav2Vec2Classifier
 from speechline.ml.transcriber import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.run import Runner
 from speechline.utils.config import Config
-from speechline.utils.dataset import prepare_dataframe
+from speechline.utils.dataset import prepare_dataframe, format_audio_dataset
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.segmenter import AudioSegmenter
 
@@ -51,7 +51,7 @@ def test_audio_classifier(datadir):
     model_checkpoint = "bookbot/distil-wav2vec2-adult-child-cls-52m"
     classifier = Wav2Vec2Classifier(model_checkpoint, max_duration_s=3.0)
     df = prepare_dataframe(datadir)
-    dataset = classifier.format_audio_dataset(df)
+    dataset = format_audio_dataset(df, sampling_rate=classifier.sampling_rate)
     predictions = classifier.predict(dataset)
     assert predictions == ["child", "child", "child"]
 
@@ -60,7 +60,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
     model_checkpoint = "bookbot/wav2vec2-ljspeech-gruut"
     transcriber = Wav2Vec2Transcriber(model_checkpoint)
     df = prepare_dataframe(datadir)
-    dataset = transcriber.format_audio_dataset(df)
+    dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
     transcriptions = transcriber.predict(dataset)
     assert transcriptions == [
         "h h ɚ i d ʌ m b ɹ ɛ l ə ɪ z d͡ʒ ʌ s t ð ə b ɛ s t",
@@ -234,7 +234,7 @@ def test_whisper_transcriber(datadir):
     model_checkpoint = "openai/whisper-tiny"
     transcriber = WhisperTranscriber(model_checkpoint)
     df = prepare_dataframe(datadir)
-    dataset = transcriber.format_audio_dataset(df)
+    dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
     transcriptions = transcriber.predict(dataset)
     assert transcriptions == [
         " Her red umbrella is just the best.",
