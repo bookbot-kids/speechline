@@ -38,8 +38,7 @@ class Config:
         Ensures all specified languages have supported models.
 
         Raises:
-            AttributeError:
-                ML Models have not been specified for particular languages.
+            AttributeError: ML Models have not been specified for particular languages.
         """
         classifier_lang = self.classifier["models"].keys()
         transcriber_lang = self.transcriber["models"].keys()

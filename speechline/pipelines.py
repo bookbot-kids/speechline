@@ -22,10 +22,6 @@ class AudioClassificationWithPaddingPipeline(AudioClassificationPipeline):
     """
     Subclass of `AudioClassificationPipeline`.
     Pads/truncates audio array to maximum length before performing audio classification.
-
-    Args:
-        max_duration_s (float):
-            Maximum audio duration in seconds.
     """
 
     def __init__(self, *args, **kwargs):

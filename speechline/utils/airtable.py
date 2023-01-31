@@ -28,8 +28,7 @@ class AirTable:
             URL of AirTable table.
 
     Raises:
-        OSError:
-            `AIRTABLE_API_KEY` environment is not set.
+        OSError: `AIRTABLE_API_KEY` environment is not set.
     """
 
     def __init__(self, url: str) -> None:
