@@ -84,7 +84,7 @@ class Wav2Vec2Transcriber(AudioTranscriber):
 
         dataset = dataset.map(
             self.inference,
-            desc="Performing Inference",
+            desc="Transcribing Audios",
             fn_kwargs={
                 "chunk_length_s": chunk_length_s,
                 "output_offsets": output_offsets,
@@ -156,7 +156,7 @@ class WhisperTranscriber(AudioTranscriber):
         """
         dataset = dataset.map(
             self.inference,
-            desc="Performing Inference",
+            desc="Transcribing Audios",
             fn_kwargs={
                 "chunk_length_s": chunk_length_s,
                 "output_offsets": output_offsets,
