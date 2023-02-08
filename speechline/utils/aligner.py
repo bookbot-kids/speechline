@@ -53,10 +53,12 @@ class PunctuationForcedAligner:
             predicted_phonemes, n=len(cleaned_segments)
         )
 
-        # filter for only probable candidates
-        potential_segments = self._filter_candidates_stdev(
-            cleaned_segments, potential_segments
-        )
+        # if there are multiple possible partitions
+        if len(cleaned_segments) > 1:
+            # filter for highly probable candidates
+            potential_segments = self._filter_candidates_stdev(
+                cleaned_segments, potential_segments
+            )
 
         # find most similar predicted segment to actual segments
         max_similarity, aligned_segments = -1, None
