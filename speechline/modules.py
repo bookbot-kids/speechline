@@ -81,6 +81,7 @@ class AudioClassifier(AudioModule):
                     top_k=1,
                 ),
                 total=len(batch),
+                desc="Classifying Audios",
             )
             for o in out
         ]
