@@ -94,7 +94,7 @@ class PunctuationForcedAligner:
             else:
                 end = start  # if it's last, end = start
 
-            offset = {"end_time": end, "phoneme": token, "start_time": start}
+            offset = {"phoneme": token, "start_time": start, "end_time": end}
             updated_offsets.insert(idx, offset)
             idx += 1
 
