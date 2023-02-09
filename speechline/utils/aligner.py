@@ -29,7 +29,6 @@ class PunctuationForcedAligner:
         punctuations (Optional[List[str]], optional):
             List of punctuations to include. Defaults to `None`.
     """
-
     def __init__(
         self, g2p: Callable[[str], List[str]], punctuations: Optional[List[str]] = None
     ):
@@ -38,7 +37,69 @@ class PunctuationForcedAligner:
         )
         self.g2p = g2p
 
-    def __call__(self, offsets: List[Dict[str, Union[str, float]]], text: str):
+    def __call__(self, offsets: List[Dict[str, Union[str, float]]], text: str) -> List[Dict[str, Union[str, float]]]:
+        """
+        Performs punctuation-forced alignment on output offsets
+        from phoneme-recognition models like wav2vec 2.0.
+
+        ### Example
+        ```pycon title="example_punctuation_forced_aligner.py"
+        >>> from gruut import sentences
+        >>> def g2p(text):
+        ...     phonemes = []
+        ...     for words in sentences(text):
+        ...         for word in words:
+        ...             if word.is_major_break or word.is_minor_break:
+        ...                 phonemes += word.text
+        ...             elif word.phonemes:
+        ...                 phonemes += word.phonemes
+        ...     return phonemes
+        >>> pfa = PunctuationForcedAligner(g2p)
+        >>> offsets = [
+        ...     {"phoneme": "h", "start_time": 0.0, "end_time": 0.2},
+        ...     {"phoneme": "ɚ", "start_time": 0.24, "end_time": 0.28},
+        ...     {"phoneme": "i", "start_time": 0.42, "end_time": 0.44},
+        ...     {"phoneme": "d", "start_time": 0.5, "end_time": 0.54},
+        ...     {"phoneme": "d", "start_time": 0.5, "end_time": 0.54},
+        ...     {"phoneme": "ʌ", "start_time": 0.64, "end_time": 0.66},
+        ...     {"phoneme": "m", "start_time": 0.7, "end_time": 0.74},
+        ...     {"phoneme": "b", "start_time": 0.78, "end_time": 0.82},
+        ...     {"phoneme": "ɹ", "start_time": 0.84, "end_time": 0.9},
+        ...     {"phoneme": "ɛ", "start_time": 0.92, "end_time": 0.94},
+        ...     {"phoneme": "l", "start_time": 1.0, "end_time": 1.04},
+        ...     {"phoneme": "ə", "start_time": 1.08, "end_time": 1.12},
+        ... ]
+        >>> transcript = "Her red, umbrella."
+        >>> pfa(offsets, transcript)
+        [
+            {'phoneme': 'h', 'start_time': 0.0, 'end_time': 0.2},
+            {'phoneme': 'ɚ', 'start_time': 0.24, 'end_time': 0.28},
+            {'phoneme': 'i', 'start_time': 0.42, 'end_time': 0.44},
+            {'phoneme': 'd', 'start_time': 0.5, 'end_time': 0.54},
+            {'phoneme': 'd', 'start_time': 0.5, 'end_time': 0.54},
+            {'phoneme': ',', 'start_time': 0.54, 'end_time': 0.64},
+            {'phoneme': 'ʌ', 'start_time': 0.64, 'end_time': 0.66},
+            {'phoneme': 'm', 'start_time': 0.7, 'end_time': 0.74},
+            {'phoneme': 'b', 'start_time': 0.78, 'end_time': 0.82},
+            {'phoneme': 'ɹ', 'start_time': 0.84, 'end_time': 0.9},
+            {'phoneme': 'ɛ', 'start_time': 0.92, 'end_time': 0.94},
+            {'phoneme': 'l', 'start_time': 1.0, 'end_time': 1.04},
+            {'phoneme': 'ə', 'start_time': 1.08, 'end_time': 1.12},
+            {'phoneme': '.', 'start_time': 1.12, 'end_time': 1.12}
+        ]
+        ```
+        
+        Args:
+            offsets (List[Dict[str, Union[str, float]]]):
+                List of offsets containing information of phonemes 
+                and their respective start and end times
+            text (str): 
+                ground truth transcript which contains punctuations
+
+        Returns:
+            List[Dict[str, Union[str, float]]]: 
+                List of newly updated offsets which includes punctuations
+        """
         updated_offsets = offsets[:]
         predicted_phonemes = [offset["phoneme"] for offset in updated_offsets]
         ground_truth_phonemes = self.g2p(text)
@@ -143,16 +204,6 @@ class PunctuationForcedAligner:
         """
         Segment/group list of phonemes consecutively, up to a punctuation.
 
-        ### Example
-        ```pycon title="example_segment_phonemes_punctuations.py"
-        >>> phonemes = ['h', 'e', '.', 'l', '!', 'o', '.']
-        >>> segment, cleaned_segment = segment_phonemes_punctuations(phonemes)
-        >>> segment
-        ['h e', '.', 'l', '!', 'o', '.']
-        >>> cleaned_segment
-        ['h e', 'l', 'o']
-        ```
-
         Args:
             phonemes (List[str]):
                 List of phonemes.
@@ -179,13 +230,6 @@ class PunctuationForcedAligner:
         """
         Generate all possible `n` consecutive partitions.
         Source: [StackOverflow](https://stackoverflow.com/a/73356868).
-
-        ### Example
-        ```pycon title="example_generate_partitions.py"
-        >>> lst = [1, 2, 3]
-        >>> generate_partitions(lst, 2)
-        [[[1], [2, 3]], [[1, 2], [3]]]
-        ```
 
         Args:
             lst (List):
