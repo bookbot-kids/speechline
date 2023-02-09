@@ -1,3 +1,3 @@
 # Punctuation Forced Aligner
 
-::: speechline.utils.aligner.PunctuationForcedAligner
+::: speechline.utils.aligners.PunctuationForcedAligner

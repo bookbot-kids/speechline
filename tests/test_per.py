@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-from speechline.utils.metric import PhonemeErrorRate
+from speechline.utils.metrics import PhonemeErrorRate
 
 
 def test_phoneme_error_rate():

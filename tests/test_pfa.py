@@ -18,7 +18,7 @@ from pathlib import Path
 
 from gruut import sentences
 
-from speechline.utils.aligner import PunctuationForcedAligner
+from speechline.utils.aligners import PunctuationForcedAligner
 
 
 def g2p(text):
