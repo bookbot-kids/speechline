@@ -69,7 +69,7 @@ class PhonemeErrorRate:
         for tag, i1, i2, j1, j2 in s.get_opcodes():
             if tag != "equal":
                 # if there happens to be multiple valid phoneme swaps in current index
-                if i1 == idx and len(stack[idx]) > 1:
+                if i1 == idx and idx < len(stack) and len(stack[idx]) > 1:
                     # get current substring
                     expected = reference[i1:i2]
                     predicted = prediction[j1:j2]
