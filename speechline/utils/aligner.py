@@ -29,6 +29,7 @@ class PunctuationForcedAligner:
         punctuations (Optional[List[str]], optional):
             List of punctuations to include. Defaults to `None`.
     """
+
     def __init__(
         self, g2p: Callable[[str], List[str]], punctuations: Optional[List[str]] = None
     ):
@@ -37,7 +38,9 @@ class PunctuationForcedAligner:
         )
         self.g2p = g2p
 
-    def __call__(self, offsets: List[Dict[str, Union[str, float]]], text: str) -> List[Dict[str, Union[str, float]]]:
+    def __call__(
+        self, offsets: List[Dict[str, Union[str, float]]], text: str
+    ) -> List[Dict[str, Union[str, float]]]:
         """
         Performs punctuation-forced alignment on output offsets
         from phoneme-recognition models like wav2vec 2.0.
@@ -88,16 +91,16 @@ class PunctuationForcedAligner:
             {'phoneme': '.', 'start_time': 1.12, 'end_time': 1.12}
         ]
         ```
-        
+
         Args:
             offsets (List[Dict[str, Union[str, float]]]):
-                List of offsets containing information of phonemes 
+                List of offsets containing information of phonemes
                 and their respective start and end times
-            text (str): 
+            text (str):
                 ground truth transcript which contains punctuations
 
         Returns:
-            List[Dict[str, Union[str, float]]]: 
+            List[Dict[str, Union[str, float]]]:
                 List of newly updated offsets which includes punctuations
         """
         updated_offsets = offsets[:]
