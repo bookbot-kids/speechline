@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gruut import sentences
-
 import json
 from glob import glob
 from pathlib import Path
 
-from speechline.utils.aligner import PunctuationForcedAligner
+from gruut import sentences
+
+from speechline.utils.aligners import PunctuationForcedAligner
 
 
 def g2p(text):

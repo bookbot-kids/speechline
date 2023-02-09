@@ -86,6 +86,7 @@ nav:
           - Config: reference/utils/config.md
           - Dataset: reference/utils/dataset.md
           - I/O: reference/utils/io.md
+          - Phoneme Error Rate: reference/utils/metric.md
           - Punctuation Forced Aligner: reference/utils/aligner.md
           - S3: reference/utils/s3.md
       - Scripts:
