@@ -63,6 +63,9 @@ class PhonemeErrorRate:
             predictions (List[List[str]]):
                 List of list of predicted phonemes in a batch.
 
+        Raises:
+            ValueError: Mistmatch in the number of predictions and sequences.
+
         Returns:
             float:
                 Phoneme error rate.
