@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from difflib import SequenceMatcher
+from itertools import permutations
 from typing import Dict, List, Set
+
+import Levenshtein
 
 
 class PhonemeErrorRate:
@@ -27,9 +29,11 @@ class PhonemeErrorRate:
     """
 
     def __init__(self, lexicon: Dict[str, List[List[str]]]) -> None:
-        self.lexicon = lexicon
+        self.lexicon = self._validate_lexicon(lexicon)
 
-    def __call__(self, words: List[str], prediction: List[str]) -> float:
+    def __call__(
+        self, sequences: List[List[str]], predictions: List[List[str]]
+    ) -> float:
         """
         Calculates PER given list of ground truth words, predicted phonemes,
         and corresponding lexicon.
@@ -40,14 +44,73 @@ class PhonemeErrorRate:
         ...     "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
         ...     "guy": [["g", "a", "i"]]
         ... }
+        >>> per = PhonemeErrorRate(lexicon)
+        >>> sequences = [
+        ...     ["hello", "hello"],
+        ...     ["hello", "guy"]
+        ... ]
+        >>> predictions = [
+        ...     ["h", "e", "l", "l", "o", "b", "e", "l", "l", "o"],
+        ...     ["h", "a", "l", "l", "o", "g", "a", "i"]
+        ... ]
+        >>> per(sequences=sequences, predictions=predictions)
+        0.05555555555555555
+        ```
+
+        Args:
+            sequences (List[List[str]]):
+                List of list of ground truth words in a batch.
+            predictions (List[List[str]]):
+                List of list of predicted phonemes in a batch.
+
+        Raises:
+            ValueError: Mistmatch in the number of predictions and sequences.
+
+        Returns:
+            float:
+                Phoneme error rate.
+        """
+        if len(sequences) != len(predictions):
+            raise ValueError(
+                f"Mismatch in the number of predictions ({len(predictions)}) and sequences ({len(sequences)})"  # noqa: E501
+            )
+
+        errors, total = 0, 0
+        for words, prediction in zip(sequences, predictions):
+            measures = self.compute_measures(words, prediction)
+            errors += measures["errors"]
+            total += measures["total"]
+        return errors / total
+
+    def compute_measures(
+        self, words: List[str], prediction: List[str]
+    ) -> Dict[str, int]:
+        """
+        Computes the number of phoneme-level errors.
+
+        ### Example
+        ```pycon title="example_compute_measures.py"
+        >>> lexicon = {
+        ...     "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
+        ...     "guy": [["g", "a", "i"]]
+        ... }
         >>> words = ["hello", "guy"]
         >>> per = PhonemeErrorRate(lexicon)
-        >>> per(words, prediction=["h", "a", "l", "l", "o", "g", "a", "i"])
-        0.0
-        >>> per(words, prediction=["h", "a", "l", "a", "i"])
-        0.375
-        >>> per(words, prediction=["h", "a", "l", "l", "o", "b", "h", "a", "i"])
-        0.25
+        >>> per.compute_measures(
+        ...     words,
+        ...     prediction=["h", "a", "l", "l", "o", "g", "a", "i"]
+        ... )
+        {'errors': 0, 'total': 8}
+        >>> per.compute_measures(
+        ...     words,
+        ...     prediction=["h", "a", "l", "a", "i"]
+        ... )
+        {'errors': 3, 'total': 8}
+        >>> per.compute_measures(
+        ...     words,
+        ...     prediction=["h", "a", "l", "l", "o", "b", "h", "a", "i"]
+        ... )
+        {'errors': 2, 'total': 8}
         ```
 
         Args:
@@ -57,86 +120,28 @@ class PhonemeErrorRate:
                 List of predicted phonemes.
 
         Returns:
-            float:
-                Phoneme-error rate.
+            Dict[str, int]:
+                A dictionary with number of errors and total number of true phonemes.
         """
-        errs, idx = 0, 0
-
         reference = [p for word in words for p in self.lexicon[word][0]]
         stack = self._build_pronunciation_stack(words)
 
-        s = SequenceMatcher(None, reference, prediction)
-        for tag, i1, i2, j1, j2 in s.get_opcodes():
-            if tag != "equal":
-                # if there happens to be multiple valid phoneme swaps in current index
-                if i1 == idx and idx < len(stack) and len(stack[idx]) > 1:
-                    # get current substring
-                    expected = reference[i1:i2]
-                    predicted = prediction[j1:j2]
+        editops = Levenshtein.editops(reference, prediction)
+        # get initial number of errors
+        errors = len(editops)
 
-                    for phn in stack[idx]:
-                        # remove valid phoneme swaps from substring
-                        if phn in expected:
-                            expected.remove(phn)
-                        if phn in predicted:
-                            predicted.remove(phn)
+        for tag, i, j in editops:
+            # if substitution is a valid phoneme swap, reduce error by one
+            if (
+                tag == "replace"
+                # there are >1 valid phonemes at position
+                and len(stack[i]) > 1
+                # pair of phoneme is in list of valid phoneme pairs
+                and (reference[i], prediction[j]) in permutations(stack[i], 2)
+            ):
+                errors -= 1
 
-                    # rematch remaining phonemes, and update costs accordingly
-                    s2 = SequenceMatcher(None, expected, predicted)
-                    for tag2, k1, k2, l1, l2 in s2.get_opcodes():
-                        errs += self._calculate_error(tag2, k1, k2, l1, l2)
-                else:
-                    # calculate basic error count of A/D/S
-                    errs += self._calculate_error(tag, i1, i2, j1, j2)
-            idx += i2 - i1
-
-        return errs / len(reference)
-
-    def _calculate_error(self, tag: str, i1: int, i2: int, j1: int, j2: int) -> int:
-        """
-        Calculates the total number of:
-
-        - Additions
-        - Deletions
-        - Substitutions
-
-        Args:
-            tag (str):
-                Opcode tags `{'replace', 'delete', 'insert', 'equal'}`.
-            i1 (int):
-                Start index in sequence `a`.
-            i2 (int):
-                End index in sequence `a`.
-            j1 (int):
-                Start index in sequence `b`.
-            j2 (int):
-                End index in sequence `b`.
-
-        Returns:
-            int:
-                Total number of errors.
-        """
-        len_ori = i2 - i1
-        len_pred = j2 - j1
-        errs = 0
-        # if deletion, see how many original phonemes were deleted
-        if tag == "delete":
-            errs += len_ori
-        # if insertion, see how many extra phonemes were inserted
-        elif tag == "insert":
-            errs += len_pred
-        elif tag == "replace":
-            # original phonemes were replaced by much longer phonemes
-            # punish by the number of substituted new phonemes
-            # as the additional ones count as "additions"
-            if len_ori <= len_pred:
-                errs += len_pred
-            # otherwise, if the substitution phonemes are shorter than original
-            # punish by how many original phonemes were expected
-            # as the "unreplaced" ones count as "deletions"
-            else:
-                errs += len_ori
-        return errs
+        return {"errors": errors, "total": len(reference)}
 
     def _build_pronunciation_stack(self, words: List[str]) -> List[Set[str]]:
         """
@@ -171,3 +176,31 @@ class PhonemeErrorRate:
             ]
             stack += word_stack
         return stack
+
+    def _validate_lexicon(
+        self, lexicon: Dict[str, List[List[str]]]
+    ) -> Dict[str, List[List[str]]]:
+        """
+        Validates lexicon, where all pronunciation variants
+        must have the same number of phonemes.
+
+        Args:
+            lexicon (Dict[str, List[List[str]]]):
+                Pronunciation lexicon with word (grapheme) as key,
+                and list of valid phoneme-list pronunciations.
+
+        Raises:
+            ValueError: Pronunciation variants have differing phoneme lengths.
+
+        Returns:
+            Dict[str, List[List[str]]]:
+                Validated lexicon.
+        """
+        for _, pronunciations in lexicon.items():
+            if len(pronunciations) > 1:
+                base_length = len(pronunciations[0])
+                if not all(len(pron) == base_length for pron in pronunciations):
+                    raise ValueError(
+                        "Pronunciation variants must have the same number of phonemes!"
+                    )
+        return lexicon

@@ -24,11 +24,11 @@ def parse_args(args: List[str]) -> argparse.Namespace:
     Utility argument parser function for S3 bucket uploader.
 
     Args:
-        args (List[str]): 
+        args (List[str]):
             List of arguments.
 
     Returns:
-        argparse.Namespace: 
+        argparse.Namespace:
             Objects with arguments values as attributes.
     """
     parser = argparse.ArgumentParser(
