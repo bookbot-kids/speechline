@@ -13,6 +13,8 @@
 # limitations under the License.
 
 
+import pytest
+
 from speechline.utils.metrics import PhonemeErrorRate
 
 
@@ -135,3 +137,12 @@ def test_phoneme_error_rate():
         )
         == 1.3076923076923077
     )
+
+
+def test_invalid_lexicon():
+    lexicon = {
+        "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "o"]],
+        "guy": [["g", "a", "i"]],
+    }
+    with pytest.raises(ValueError):
+        _ = PhonemeErrorRate(lexicon)

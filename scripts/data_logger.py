@@ -108,11 +108,11 @@ class DataLogger:
         ```
 
         Args:
-            input_dir (str): 
+            input_dir (str):
                 Path to input directory.
 
         Returns:
-            Dict[str, float]: 
+            Dict[str, float]:
                 Dictionary of language to total audio duration.
         """
         languages = [f.name for f in os.scandir(input_dir) if f.is_dir()]
@@ -140,17 +140,17 @@ class DataLogger:
         ```
 
         Args:
-            date (str): 
+            date (str):
                 Logging date.
-            label (str): 
+            label (str):
                 Audio folder label.
-            language (str): 
+            language (str):
                 Language code (lang-country). E.g. `en-us`.
-            duration (float): 
+            duration (float):
                 Duration in seconds.
 
         Returns:
-            Dict[str, Dict[str, Any]]: 
+            Dict[str, Dict[str, Any]]:
                 AirTable record payload.
         """
         return {
@@ -168,15 +168,15 @@ class DataLogger:
         Logs region-grouped total audio duration in `input_dir` to AirTable at `url`.
 
         Args:
-            url (str): 
+            url (str):
                 AirTable URL.
-            input_dir (str): 
+            input_dir (str):
                 Input directory to log.
-            label (str): 
+            label (str):
                 Log record label.
 
         Returns:
-            bool: 
+            bool:
                 Whether upload was a success.
         """
         airtable = AirTable(url)

@@ -27,7 +27,7 @@ class PhonemeErrorRate:
     """
 
     def __init__(self, lexicon: Dict[str, List[List[str]]]) -> None:
-        self.lexicon = lexicon
+        self.lexicon = self._validate_lexicon(lexicon)
 
     def __call__(self, words: List[str], prediction: List[str]) -> float:
         """
@@ -171,3 +171,31 @@ class PhonemeErrorRate:
             ]
             stack += word_stack
         return stack
+
+    def _validate_lexicon(
+        self, lexicon: Dict[str, List[List[str]]]
+    ) -> Dict[str, List[List[str]]]:
+        """
+        Validates lexicon, where all pronunciation variants
+        must have the same number of phonemes.
+
+        Args:
+            lexicon (Dict[str, List[List[str]]]):
+                Pronunciation lexicon with word (grapheme) as key,
+                and list of valid phoneme-list pronunciations.
+
+        Raises:
+            ValueError: Pronunciation variants have differing phoneme lengths.
+
+        Returns:
+            Dict[str, List[List[str]]]:
+                Validated lexicon.
+        """
+        for _, pronunciations in lexicon.items():
+            if len(pronunciations) > 1:
+                base_length = len(pronunciations[0])
+                if not all(len(pron) == base_length for pron in pronunciations):
+                    raise ValueError(
+                        "Pronunciation variants must have the same number of phonemes!"
+                    )
+        return lexicon
