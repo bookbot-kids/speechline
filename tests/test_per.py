@@ -24,39 +24,39 @@ def test_phoneme_error_rate():
         "guy": [["g", "a", "i"]],
     }
     per = PhonemeErrorRate(lexicon)
-    words = ["hello", "guy"]
+    sequences = [["hello", "guy"]]
 
-    assert per([words], [["h", "a", "l", "l", "o", "g", "a", "i"]]) == 0.0
-    assert per([words], [["h", "a", "l", "l", "X", "g", "a", "i"]]) == 0.125
-    assert per([words], [["h", "a", "l", "l", "X", "X", "X", "g", "a", "i"]]) == 0.375
-    assert per([words], [["h", "a", "X", "g", "a", "i"]]) == 0.375
-    assert per([words], [["h", "a", "l", "l", "X", "o", "g", "a", "i"]]) == 0.125
+    assert per(sequences, [["h", "a", "l", "l", "o", "g", "a", "i"]]) == 0.0
+    assert per(sequences, [["h", "a", "l", "l", "X", "g", "a", "i"]]) == 0.125
+    assert per(sequences, [["h", "a", "l", "l", "X", "X", "X", "g", "a", "i"]]) == 0.375
+    assert per(sequences, [["h", "a", "X", "g", "a", "i"]]) == 0.375
+    assert per(sequences, [["h", "a", "l", "l", "X", "o", "g", "a", "i"]]) == 0.125
     assert (
         per(
-            [words],
+            sequences,
             [["h", "a", "l", "l", "X", "X", "X", "o", "g", "a", "i"]],
         )
         == 0.375
     )
-    assert per([words], [["h", "a", "l", "l", "g", "a", "i"]]) == 0.125
-    assert per([words], [["h", "a", "l", "g", "a", "i"]]) == 0.25
-    assert per([words], [["h", "e", "l", "l", "o", "g", "a", "i"]]) == 0.0
+    assert per(sequences, [["h", "a", "l", "l", "g", "a", "i"]]) == 0.125
+    assert per(sequences, [["h", "a", "l", "g", "a", "i"]]) == 0.25
+    assert per(sequences, [["h", "e", "l", "l", "o", "g", "a", "i"]]) == 0.0
     assert (
         per(
-            [words],
+            sequences,
             [["h", "X", "e", "X", "X", "l", "l", "o", "g", "a", "i"]],
         )
         == 0.375
     )
-    assert per([words], [["h", "e", "X", "X", "l", "l", "o", "g", "a", "i"]]) == 0.25
-    assert per([words], [["h", "e", "o", "g", "a", "i"]]) == 0.25
-    assert per([words], [["h", "e", "X", "l", "o", "g", "a", "i"]]) == 0.125
+    assert per(sequences, [["h", "e", "X", "X", "l", "l", "o", "g", "a", "i"]]) == 0.25
+    assert per(sequences, [["h", "e", "o", "g", "a", "i"]]) == 0.25
+    assert per(sequences, [["h", "e", "X", "l", "o", "g", "a", "i"]]) == 0.125
 
-    words = ["hello", "guy", "hello"]
+    sequences = [["hello", "guy", "hello"]]
 
     assert (
         per(
-            [words],
+            sequences,
             [
                 [
                     "h",
@@ -78,12 +78,12 @@ def test_phoneme_error_rate():
         == 0.0
     )
     assert (
-        per([words], [["h", "a", "l", "l", "o", "g", "h", "e", "o"]])
+        per(sequences, [["h", "a", "l", "l", "o", "g", "h", "e", "o"]])
         == 0.3076923076923077
     )
     assert (
         per(
-            [words],
+            sequences,
             [
                 [
                     "h",
@@ -110,17 +110,18 @@ def test_phoneme_error_rate():
     )
     assert (
         per(
-            [words],
+            sequences,
             [["h", "a", "X", "o", "g", "X", "i", "h", "e", "l", "l", "X"]],
         )
         == 0.3076923076923077
     )
     assert (
-        per([words], [["g", "a", "i", "h", "e", "l", "l", "o"]]) == 0.38461538461538464
+        per(sequences, [["g", "a", "i", "h", "e", "l", "l", "o"]])
+        == 0.38461538461538464
     )
     assert (
         per(
-            [words],
+            sequences,
             [
                 [
                     "h",
@@ -151,3 +152,15 @@ def test_invalid_lexicon():
     }
     with pytest.raises(ValueError):
         _ = PhonemeErrorRate(lexicon)
+
+
+def test_invalid_per_arguments():
+    lexicon = {
+        "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
+        "guy": [["g", "a", "i"]],
+    }
+    per = PhonemeErrorRate(lexicon)
+    sequences = [["hello"], ["guy"]]
+    predictions = [["h", "e", "l", "l", "o"]]
+    with pytest.raises(ValueError):
+        _ = per(sequences, predictions)

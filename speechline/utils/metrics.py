@@ -67,6 +67,11 @@ class PhonemeErrorRate:
             float:
                 Phoneme error rate.
         """
+        if len(sequences) != len(predictions):
+            raise ValueError(
+                f"Mismatch in the number of predictions ({len(predictions)}) and sequences ({len(sequences)})"  # noqa: E501
+            )
+
         errors, total = 0, 0
         for words, prediction in zip(sequences, predictions):
             measures = self.compute_measures(words, prediction)
@@ -115,81 +120,25 @@ class PhonemeErrorRate:
             Dict[str, int]:
                 A dictionary with number of errors and total number of true phonemes.
         """
-        errors, idx = 0, 0
-
         reference = [p for word in words for p in self.lexicon[word][0]]
         stack = self._build_pronunciation_stack(words)
 
-        opcodes = Levenshtein.opcodes(reference, prediction)
-        for tag, i1, i2, j1, j2 in opcodes:
-            if tag != "equal":
-                # if there happens to be multiple valid phoneme swaps in current index
-                if i1 == idx and idx < len(stack) and len(stack[idx]) > 1:
-                    # get current substring
-                    expected = reference[i1:i2]
-                    predicted = prediction[j1:j2]
+        editops = Levenshtein.editops(reference, prediction)
+        # get initial number of errors
+        errors = len(editops)
 
-                    # remove valid phoneme swaps from substring
-                    for (p1, p2) in permutations(stack[idx], 2):
-                        if p1 in expected and p2 in predicted:
-                            expected.remove(p1)
-                            predicted.remove(p2)
-
-                    # rematch remaining phonemes, and update costs accordingly
-                    editops = Levenshtein.editops(expected, predicted)
-                    errors += len(editops)
-                else:
-                    # calculate basic error count of A/D/S
-                    errors += self._calculate_error(tag, i1, i2, j1, j2)
-            idx += i2 - i1
+        for tag, i, j in editops:
+            # if substitution is a valid phoneme swap, reduce error by one
+            if (
+                tag == "replace"
+                # there are >1 valid phonemes at position
+                and len(stack[i]) > 1
+                # pair of phoneme is in list of valid phoneme pairs
+                and (reference[i], prediction[j]) in permutations(stack[i], 2)
+            ):
+                errors -= 1
 
         return {"errors": errors, "total": len(reference)}
-
-    def _calculate_error(self, tag: str, i1: int, i2: int, j1: int, j2: int) -> int:
-        """
-        Calculates the total number of:
-
-        - Additions
-        - Deletions
-        - Substitutions
-
-        Args:
-            tag (str):
-                Opcode tags `{'replace', 'delete', 'insert', 'equal'}`.
-            i1 (int):
-                Start index in sequence `a`.
-            i2 (int):
-                End index in sequence `a`.
-            j1 (int):
-                Start index in sequence `b`.
-            j2 (int):
-                End index in sequence `b`.
-
-        Returns:
-            int:
-                Total number of errors.
-        """
-        len_ori = i2 - i1
-        len_pred = j2 - j1
-        errs = 0
-        # if deletion, see how many original phonemes were deleted
-        if tag == "delete":
-            errs += len_ori
-        # if insertion, see how many extra phonemes were inserted
-        elif tag == "insert":
-            errs += len_pred
-        elif tag == "replace":
-            # original phonemes were replaced by much longer phonemes
-            # punish by the number of substituted new phonemes
-            # as the additional ones count as "additions"
-            if len_ori <= len_pred:
-                errs += len_pred
-            # otherwise, if the substitution phonemes are shorter than original
-            # punish by how many original phonemes were expected
-            # as the "unreplaced" ones count as "deletions"
-            else:
-                errs += len_ori
-        return errs
 
     def _build_pronunciation_stack(self, words: List[str]) -> List[Set[str]]:
         """
