@@ -31,7 +31,9 @@ class PhonemeErrorRate:
     def __init__(self, lexicon: Dict[str, List[List[str]]]) -> None:
         self.lexicon = self._validate_lexicon(lexicon)
 
-    def __call__(self, words: List[str], prediction: List[str]) -> float:
+    def __call__(
+        self, sequences: List[List[str]], predictions: List[List[str]]
+    ) -> float:
         """
         Calculates PER given list of ground truth words, predicted phonemes,
         and corresponding lexicon.
@@ -42,14 +44,65 @@ class PhonemeErrorRate:
         ...     "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
         ...     "guy": [["g", "a", "i"]]
         ... }
+        >>> per = PhonemeErrorRate(lexicon)
+        >>> sequences = [
+        ...     ["hello", "hello"],
+        ...     ["hello", "guy"]
+        ... ]
+        >>> predictions = [
+        ...     ["h", "e", "l", "l", "o", "b", "e", "l", "l", "o"],
+        ...     ["h", "a", "l", "l", "o", "g", "a", "i"]
+        ... ]
+        >>> per(sequences=sequences, predictions=predictions)
+        0.05555555555555555
+        ```
+
+        Args:
+            sequences (List[List[str]]):
+                List of list of ground truth words in a batch.
+            predictions (List[List[str]]):
+                List of list of predicted phonemes in a batch.
+
+        Returns:
+            float:
+                Phoneme error rate.
+        """
+        errors, total = 0, 0
+        for words, prediction in zip(sequences, predictions):
+            measures = self.compute_measures(words, prediction)
+            errors += measures["errors"]
+            total += measures["total"]
+        return errors / total
+
+    def compute_measures(
+        self, words: List[str], prediction: List[str]
+    ) -> Dict[str, int]:
+        """
+        Computes the number of phoneme-level errors.
+
+        ### Example
+        ```pycon title="example_compute_measures.py"
+        >>> lexicon = {
+        ...     "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
+        ...     "guy": [["g", "a", "i"]]
+        ... }
         >>> words = ["hello", "guy"]
         >>> per = PhonemeErrorRate(lexicon)
-        >>> per(words, prediction=["h", "a", "l", "l", "o", "g", "a", "i"])
-        0.0
-        >>> per(words, prediction=["h", "a", "l", "a", "i"])
-        0.375
-        >>> per(words, prediction=["h", "a", "l", "l", "o", "b", "h", "a", "i"])
-        0.25
+        >>> per.compute_measures(
+        ...     words,
+        ...     prediction=["h", "a", "l", "l", "o", "g", "a", "i"]
+        ... )
+        {'errors': 0, 'total': 8}
+        >>> per.compute_measures(
+        ...     words,
+        ...     prediction=["h", "a", "l", "a", "i"]
+        ... )
+        {'errors': 3, 'total': 8}
+        >>> per.compute_measures(
+        ...     words,
+        ...     prediction=["h", "a", "l", "l", "o", "b", "h", "a", "i"]
+        ... )
+        {'errors': 2, 'total': 8}
         ```
 
         Args:
@@ -59,10 +112,10 @@ class PhonemeErrorRate:
                 List of predicted phonemes.
 
         Returns:
-            float:
-                Phoneme-error rate.
+            Dict[str, int]:
+                A dictionary with number of errors and total number of true phonemes.
         """
-        errs, idx = 0, 0
+        errors, idx = 0, 0
 
         reference = [p for word in words for p in self.lexicon[word][0]]
         stack = self._build_pronunciation_stack(words)
@@ -84,13 +137,13 @@ class PhonemeErrorRate:
 
                     # rematch remaining phonemes, and update costs accordingly
                     editops = Levenshtein.editops(expected, predicted)
-                    errs += len(editops)
+                    errors += len(editops)
                 else:
                     # calculate basic error count of A/D/S
-                    errs += self._calculate_error(tag, i1, i2, j1, j2)
+                    errors += self._calculate_error(tag, i1, i2, j1, j2)
             idx += i2 - i1
 
-        return errs / len(reference)
+        return {"errors": errors, "total": len(reference)}
 
     def _calculate_error(self, tag: str, i1: int, i2: int, j1: int, j2: int) -> int:
         """
