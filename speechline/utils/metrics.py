@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from itertools import permutations
 from typing import Dict, List, Set
 
 import Levenshtein
@@ -75,12 +76,11 @@ class PhonemeErrorRate:
                     expected = reference[i1:i2]
                     predicted = prediction[j1:j2]
 
-                    for phn in stack[idx]:
-                        # remove valid phoneme swaps from substring
-                        if phn in expected:
-                            expected.remove(phn)
-                        if phn in predicted:
-                            predicted.remove(phn)
+                    # remove valid phoneme swaps from substring
+                    for (p1, p2) in permutations(stack[idx], 2):
+                        if p1 in expected and p2 in predicted:
+                            expected.remove(p1)
+                            predicted.remove(p2)
 
                     # rematch remaining phonemes, and update costs accordingly
                     editops = Levenshtein.editops(expected, predicted)
