@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from difflib import SequenceMatcher
 from typing import Dict, List, Set
+
+import Levenshtein
 
 
 class PhonemeErrorRate:
@@ -65,8 +66,8 @@ class PhonemeErrorRate:
         reference = [p for word in words for p in self.lexicon[word][0]]
         stack = self._build_pronunciation_stack(words)
 
-        s = SequenceMatcher(None, reference, prediction)
-        for tag, i1, i2, j1, j2 in s.get_opcodes():
+        opcodes = Levenshtein.opcodes(reference, prediction)
+        for tag, i1, i2, j1, j2 in opcodes:
             if tag != "equal":
                 # if there happens to be multiple valid phoneme swaps in current index
                 if i1 == idx and idx < len(stack) and len(stack[idx]) > 1:
@@ -82,9 +83,8 @@ class PhonemeErrorRate:
                             predicted.remove(phn)
 
                     # rematch remaining phonemes, and update costs accordingly
-                    s2 = SequenceMatcher(None, expected, predicted)
-                    for tag2, k1, k2, l1, l2 in s2.get_opcodes():
-                        errs += self._calculate_error(tag2, k1, k2, l1, l2)
+                    editops = Levenshtein.editops(expected, predicted)
+                    errs += len(editops)
                 else:
                     # calculate basic error count of A/D/S
                     errs += self._calculate_error(tag, i1, i2, j1, j2)

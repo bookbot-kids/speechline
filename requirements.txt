@@ -11,3 +11,4 @@ botocore==1.21.37
 pydub==0.25.1
 requests
 gruut
+levenshtein
