@@ -28,8 +28,11 @@ class PhonemeErrorRate:
             and list of valid phoneme-list pronunciations.
     """
 
-    def __init__(self, lexicon: Dict[str, List[List[str]]]) -> None:
-        self.lexicon = self._validate_lexicon(lexicon)
+    def __init__(
+        self, lexicon: Dict[str, List[List[str]]], epsilon_token: str = "<*>"
+    ) -> None:
+        self.lexicon = lexicon
+        self.epsilon_token = epsilon_token
 
     def __call__(
         self, sequences: List[List[str]], predictions: List[List[str]]
@@ -123,7 +126,34 @@ class PhonemeErrorRate:
             Dict[str, int]:
                 A dictionary with number of errors and total number of true phonemes.
         """
-        reference = [p for word in words for p in self.lexicon[word][0]]
+
+        def get_closest_pronunciation(
+            pronunciations: List[List[str]], prediction: List[str]
+        ) -> List[str]:
+            """
+            Gets closest potential pronunciation to be used as reference phonemes.
+            This is to avoid unnecessary re-weighting of PER due to differing
+            phoneme lengths.
+
+            Args:
+                pronunciations (List[List[str]]):
+                    List of pronunciation phonemes.
+                prediction (List[str]):
+                    Predicted list of phonemes.
+
+            Returns:
+                List[str]:
+                    Closest pronunciation to be used as reference.
+            """
+            return min(
+                pronunciations, key=lambda pron: Levenshtein.distance(pron, prediction)
+            )
+
+        reference = [
+            phoneme
+            for word in words
+            for phoneme in get_closest_pronunciation(self.lexicon[word], prediction)
+        ]
         stack = self._build_pronunciation_stack(words)
 
         editops = Levenshtein.editops(reference, prediction)
@@ -131,15 +161,17 @@ class PhonemeErrorRate:
         errors = len(editops)
 
         for tag, i, j in editops:
-            # if substitution is a valid phoneme swap, reduce error by one
-            if (
-                tag == "replace"
-                # there are >1 valid phonemes at position
-                and len(stack[i]) > 1
-                # pair of phoneme is in list of valid phoneme pairs
-                and (reference[i], prediction[j]) in permutations(stack[i], 2)
-            ):
-                errors -= 1
+            # if substitution, check if it might be a valid phoneme swap
+            # where there are >1 valid phonemes at position in stack
+            if tag == "replace" and len(stack[i]) > 1:
+                # check if pair of phoneme is in list of valid phoneme pairs
+                permutes = permutations(stack[i], 2)
+                if (
+                    (reference[i], prediction[j]) in permutes
+                    or (reference[i], self.epsilon_token) in permutes
+                    or (prediction[j], self.epsilon_token) in permutes
+                ):
+                    errors -= 1
 
         return {"errors": errors, "total": len(reference)}
 
@@ -167,40 +199,40 @@ class PhonemeErrorRate:
             List[Set[str]]:
                 List of possible phonemes of the input words.
         """
+
+        def insert_epsilon(
+            pronunciations: List[List[str]], epsilon_token: str = "<*>"
+        ) -> List[List[str]]:
+            """
+            Insert epsilon (skippable) token into pronunciation phonemes.
+            Epsilon tokens will be ignored during phoneme matching step.
+
+            Args:
+                pronunciations (List[List[str]]):
+                    List of phoneme pronunciations.
+
+            Returns:
+                List[List[str]]:
+                    List of updated phoneme pronunciations.
+            """
+            updated_pronunciations = pronunciations[:]
+            # get longest pronunciation
+            longest_pron = max(updated_pronunciations, key=len)
+            for pron in updated_pronunciations:
+                if len(pron) != len(longest_pron):
+                    editops = Levenshtein.editops(pron, longest_pron)
+                    for op, i, _ in editops:
+                        # insert epsilon on insertion index
+                        if op == "insert":
+                            pron.insert(i, epsilon_token)
+            return updated_pronunciations
+
         stack = []
         for word in words:
-            pronunciations = self.lexicon[word]
+            pronunciations = insert_epsilon(self.lexicon[word], self.epsilon_token)
             length = len(pronunciations[0])
             word_stack = [
                 set(pron[i] for pron in pronunciations) for i in range(length)
             ]
             stack += word_stack
         return stack
-
-    def _validate_lexicon(
-        self, lexicon: Dict[str, List[List[str]]]
-    ) -> Dict[str, List[List[str]]]:
-        """
-        Validates lexicon, where all pronunciation variants
-        must have the same number of phonemes.
-
-        Args:
-            lexicon (Dict[str, List[List[str]]]):
-                Pronunciation lexicon with word (grapheme) as key,
-                and list of valid phoneme-list pronunciations.
-
-        Raises:
-            ValueError: Pronunciation variants have differing phoneme lengths.
-
-        Returns:
-            Dict[str, List[List[str]]]:
-                Validated lexicon.
-        """
-        for _, pronunciations in lexicon.items():
-            if len(pronunciations) > 1:
-                base_length = len(pronunciations[0])
-                if not all(len(pron) == base_length for pron in pronunciations):
-                    raise ValueError(
-                        "Pronunciation variants must have the same number of phonemes!"
-                    )
-        return lexicon
