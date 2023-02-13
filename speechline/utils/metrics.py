@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import deepcopy
 from itertools import permutations
 from typing import Dict, List, Set
 
@@ -31,7 +32,7 @@ class PhonemeErrorRate:
     def __init__(
         self, lexicon: Dict[str, List[List[str]]], epsilon_token: str = "<*>"
     ) -> None:
-        self.lexicon = lexicon
+        self.lexicon = deepcopy(lexicon)
         self.epsilon_token = epsilon_token
 
     def __call__(
@@ -126,51 +127,24 @@ class PhonemeErrorRate:
             Dict[str, int]:
                 A dictionary with number of errors and total number of true phonemes.
         """
-
-        def get_closest_pronunciation(
-            pronunciations: List[List[str]], prediction: List[str]
-        ) -> List[str]:
-            """
-            Gets closest potential pronunciation to be used as reference phonemes.
-            This is to avoid unnecessary re-weighting of PER due to differing
-            phoneme lengths.
-
-            Args:
-                pronunciations (List[List[str]]):
-                    List of pronunciation phonemes.
-                prediction (List[str]):
-                    Predicted list of phonemes.
-
-            Returns:
-                List[str]:
-                    Closest pronunciation to be used as reference.
-            """
-            return min(
-                pronunciations, key=lambda pron: Levenshtein.distance(pron, prediction)
-            )
-
-        reference = [
-            phoneme
-            for word in words
-            for phoneme in get_closest_pronunciation(self.lexicon[word], prediction)
-        ]
         stack = self._build_pronunciation_stack(words)
+        reference = [
+            phoneme for word in words for phoneme in max(self.lexicon[word], key=len)
+        ]
 
         editops = Levenshtein.editops(reference, prediction)
         # get initial number of errors
         errors = len(editops)
 
         for tag, i, j in editops:
-            # if substitution, check if it might be a valid phoneme swap
-            # where there are >1 valid phonemes at position in stack
-            if tag == "replace" and len(stack[i]) > 1:
-                # check if pair of phoneme is in list of valid phoneme pairs
+            # if there are >1 valid phonemes at position in stack
+            if len(stack[i]) > 1:
                 permutes = permutations(stack[i], 2)
-                if (
-                    (reference[i], prediction[j]) in permutes
-                    or (reference[i], self.epsilon_token) in permutes
-                    or (prediction[j], self.epsilon_token) in permutes
-                ):
+                # check if pair of phoneme is in list of valid phoneme pairs
+                if tag == "replace" and (reference[i], prediction[j]) in permutes:
+                    errors -= 1
+                # or is an epsilon and hence skippable
+                elif tag == "delete" and reference[i] == self.epsilon_token:
                     errors -= 1
 
         return {"errors": errors, "total": len(reference)}
