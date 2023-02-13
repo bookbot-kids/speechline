@@ -138,9 +138,9 @@ class PhonemeErrorRate:
 
         for tag, i, j in editops:
             # if there are >1 valid phonemes at position in stack
-            if len(stack[i]) > 1:
-                permutes = permutations(stack[i], 2)
+            if i < len(stack) and len(stack[i]) > 1:
                 # check if pair of phoneme is in list of valid phoneme pairs
+                permutes = permutations(stack[i], 2)
                 if tag == "replace" and (reference[i], prediction[j]) in permutes:
                     errors -= 1
                 # or is an epsilon and hence skippable
