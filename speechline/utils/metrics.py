@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import deepcopy
 from itertools import permutations
 from typing import Dict, List, Set
 
@@ -31,7 +32,7 @@ class PhonemeErrorRate:
     def __init__(
         self, lexicon: Dict[str, List[List[str]]], epsilon_token: str = "<*>"
     ) -> None:
-        self.lexicon = lexicon
+        self.lexicon = deepcopy(lexicon)
         self.epsilon_token = epsilon_token
 
     def __call__(
