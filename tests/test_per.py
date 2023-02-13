@@ -22,8 +22,25 @@ def test_phoneme_error_rate():
     lexicon = {
         "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
         "guy": [["g", "a", "i"]],
+        "i": [["aɪ"]],
+        "am": [["æ", "m"]],
+        "bahrainian": [
+            ["b", "ɚ", "eɪ", "n", "i", "ə", "n"],
+            ["b", "aɪ", "ɹ", "ɑ", "n", "i", "ə", "n"],
+            ["b", "ɑ", "ɹ", "eɪ", "n", "i", "ə", "n"],
+        ],
     }
+
     per = PhonemeErrorRate(lexicon)
+
+    sequences = [["i", "am", "bahrainian"]]
+
+    assert per(sequences, [["aɪ", "æ", "m", "b", "ɚ", "eɪ", "n", "i", "ə", "n"]]) == 0.0
+    assert (
+        per(sequences, [["aɪ", "æ", "m", "b", "ɑ", "ɹ", "eɪ", "n", "i", "ə", "n"]])
+        == 0.0
+    )
+
     sequences = [["hello", "guy"]]
 
     assert per(sequences, [["h", "a", "l", "l", "o", "g", "a", "i"]]) == 0.0
@@ -143,15 +160,6 @@ def test_phoneme_error_rate():
         )
         == 0.38461538461538464
     )
-
-
-def test_invalid_lexicon():
-    lexicon = {
-        "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "o"]],
-        "guy": [["g", "a", "i"]],
-    }
-    with pytest.raises(ValueError):
-        _ = PhonemeErrorRate(lexicon)
 
 
 def test_invalid_per_arguments():
