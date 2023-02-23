@@ -24,21 +24,21 @@
 SpeechLine is a speech labeling pipeline that handles end-to-end, offline, batch audio categorization, transcription, segmentation, and logging.
 
 <p align="center">
-    <img src="./docs/assets/logo-medium.png" alt="logo" width="300"/>
+    <img src="https://raw.githubusercontent.com/bookbot-kids/speechline/main/docs/assets/logo-medium.png" alt="logo" width="300"/>
 </p>
 
 ## Pipeline Overview
 
 <p align="center">
-    <img src="./docs/assets/diagram-light.svg#gh-light-mode-only"/>
-    <img src="./docs/assets/diagram-dark.svg#gh-dark-mode-only"/>
+    <img src="https://raw.githubusercontent.com/bookbot-kids/speechline/main/docs/assets/diagram-light.svg#gh-light-mode-only"/>
+    <img src="https://raw.githubusercontent.com/bookbot-kids/speechline/main/docs/assets/diagram-dark.svg#gh-dark-mode-only"/>
 </p>
 
 ## Available Modules
 
 <p align="center">
-    <img src="./docs/assets/components-light.svg#gh-light-mode-only"/>
-    <img src="./docs/assets/components-dark.svg#gh-dark-mode-only"/>
+    <img src="https://raw.githubusercontent.com/bookbot-kids/speechline/main/docs/assets/components-light.svg#gh-light-mode-only"/>
+    <img src="https://raw.githubusercontent.com/bookbot-kids/speechline/main/docs/assets/components-dark.svg#gh-dark-mode-only"/>
 </p>
 
 <p align="center" style="font-style: italic;">
