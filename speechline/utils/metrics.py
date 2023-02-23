@@ -145,6 +145,7 @@ class PhonemeErrorRate:
             # if there are >1 valid phonemes at position in stack
             if i < len(stack) and len(stack[i]) > 1:
                 # check if pair of phoneme is in list of valid phoneme pairs
+                # or is substituted by epsilon, which we will thus ignore
                 permutes = permutations(stack[i], 2)
                 if tag == "replace" and (reference[i], prediction[j]) in permutes:
                     errors -= 1
@@ -204,6 +205,19 @@ class PhonemeErrorRate:
                         # insert epsilon on insertion index
                         if op == "insert":
                             pron.insert(i, epsilon_token)
+
+            # repeat, insert epsilon based on new longest pronunciation
+            # See: https://github.com/bookbot-kids/speechline/issues/64.
+            longest_pron = max(updated_pronunciations, key=len)
+            for pron in updated_pronunciations:
+                if len(pron) != len(longest_pron):
+                    editops = Levenshtein.editops(pron, longest_pron)
+                    # only this time following the target index
+                    for op, _, j in editops:
+                        # insert epsilon on insertion index
+                        if op == "insert":
+                            pron.insert(j, epsilon_token)
+
             return updated_pronunciations
 
         stack = []
