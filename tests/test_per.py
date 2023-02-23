@@ -161,6 +161,25 @@ def test_phoneme_error_rate():
         == 0.38461538461538464
     )
 
+    lexicon = {
+        "4806": [
+            ["f", "ɔ", "ɹ", "eɪ", "t", "oʊ", "s", "ɪ", "k", "s"],
+            ["f", "ɔ", "eɪ", "t", "oʊ", "s", "ɪ", "k", "s"],
+            ["f", "ɔ", "eɪ", "t", "z", "ɪ", "ɹ", "oʊ", "s", "ɪ", "k", "s"],
+            ["f", "l", "ɔ", "ɹ", "eɪ", "t", "oʊ", "s", "ɪ", "k", "s"],
+        ]
+    }
+
+    per = PhonemeErrorRate(lexicon)
+
+    assert (
+        per(
+            [["4806"]],
+            [["f", "ɔ", "ɹ", "eɪ", "t", "ə", "s", "ɪ", "k", "s"]],
+        )
+        == 0.07142857142857142
+    )
+
 
 def test_mismatch_sequence_prediction_lengths():
     lexicon = {
