@@ -68,7 +68,8 @@ class PhonemeErrorRate:
                 List of list of predicted phonemes in a batch.
 
         Raises:
-            ValueError: Mistmatch in the number of predictions and sequences.
+            ValueError: Mismatch in the number of predictions and sequences.
+            KeyError: Words not found in the lexicon.
 
         Returns:
             float:
@@ -78,6 +79,10 @@ class PhonemeErrorRate:
             raise ValueError(
                 f"Mismatch in the number of predictions ({len(predictions)}) and sequences ({len(sequences)})"  # noqa: E501
             )
+
+        oovs = [word for seq in sequences for word in seq if word not in self.lexicon]
+        if len(oovs) > 0:
+            raise KeyError(f"Words not found in the lexicon: {oovs}")
 
         errors, total = 0, 0
         for words, prediction in zip(sequences, predictions):
