@@ -162,7 +162,7 @@ def test_phoneme_error_rate():
     )
 
 
-def test_invalid_per_arguments():
+def test_mismatch_sequence_prediction_lengths():
     lexicon = {
         "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
         "guy": [["g", "a", "i"]],
@@ -171,4 +171,16 @@ def test_invalid_per_arguments():
     sequences = [["hello"], ["guy"]]
     predictions = [["h", "e", "l", "l", "o"]]
     with pytest.raises(ValueError):
+        _ = per(sequences, predictions)
+
+
+def test_oov_lexicon():
+    lexicon = {
+        "hello": [["h", "e", "l", "l", "o"], ["h", "a", "l", "l", "o"]],
+        "guy": [["g", "a", "i"]],
+    }
+    per = PhonemeErrorRate(lexicon)
+    sequences = [["hello", "guy", "friend"]]
+    predictions = [["h", "e", "l", "l", "o"]]
+    with pytest.raises(KeyError):
         _ = per(sequences, predictions)
