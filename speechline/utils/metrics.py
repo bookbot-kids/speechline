@@ -147,10 +147,7 @@ class PhonemeErrorRate:
                 # check if pair of phoneme is in list of valid phoneme pairs
                 # or is substituted by epsilon, which we will thus ignore
                 permutes = permutations(stack[i], 2)
-                if tag == "replace" and (
-                    (reference[i], prediction[j]) in permutes
-                    or self.epsilon_token in stack[i]
-                ):
+                if tag == "replace" and (reference[i], prediction[j]) in permutes:
                     errors -= 1
                 # or is an epsilon and hence skippable
                 elif tag == "delete" and reference[i] == self.epsilon_token:
