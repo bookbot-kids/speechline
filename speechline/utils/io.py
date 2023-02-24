@@ -21,20 +21,20 @@ from pydub import AudioSegment
 
 def export_transcripts_json(
     output_json_path: str,
-    phoneme_offsets: List[Dict[str, Union[str, float]]],
+    offsets: List[Dict[str, Union[str, float]]],
 ) -> None:
     """
-    Exports phoneme transcript with offsets as JSON.
+    Exports transcript with offsets as JSON.
 
     ```json title="example_output_transcripts.json"
     [
       {
-        "phoneme": {phoneme},
+        "text": {text},
         "start_time": {start_time},
         "end_time": {end_time}
       },
       {
-        "phoneme": {phoneme},
+        "text": {text},
         "start_time": {start_time},
         "end_time": {end_time}
       },
@@ -45,11 +45,11 @@ def export_transcripts_json(
     Args:
         output_json_path (str):
             Path to output JSON file.
-        phoneme_offsets (List[Dict[str, Union[str, float]]]):
-            List of phonemes with offsets.
+        offsets (List[Dict[str, Union[str, float]]]):
+            List of offsets.
     """
     with open(output_json_path, "w") as f:
-        json.dump(phoneme_offsets, f, indent=2)
+        json.dump(offsets, f, indent=2)
 
 
 def export_segment_transcripts_tsv(
@@ -68,11 +68,11 @@ def export_segment_transcripts_tsv(
         output_tsv_path (str):
             Path to TSV file.
         segment (List[Dict[str, Union[str, float]]]):
-            List of phonemes in segment.
+            List of offsets in segment.
     """
     with open(output_tsv_path, "w") as f:
         for s in segment:
-            f.write(f'{s["start_time"]}\t{s["end_time"]}\t{s["phoneme"]}\n')
+            f.write(f'{s["start_time"]}\t{s["end_time"]}\t{s["text"]}\n')
 
 
 def export_segment_audio_wav(output_wav_path: str, segment: AudioSegment) -> None:

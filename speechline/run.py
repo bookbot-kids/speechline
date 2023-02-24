@@ -20,7 +20,7 @@ from typing import List
 from tqdm import tqdm
 
 from speechline.classifiers import Wav2Vec2Classifier
-from speechline.transcribers import Wav2Vec2Transcriber
+from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.config import Config
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
@@ -135,7 +135,7 @@ class Runner:
             dataset = format_audio_dataset(
                 child_speech_df, sampling_rate=transcriber.sampling_rate
             )
-            phoneme_offsets = transcriber.predict(
+            output_offsets = transcriber.predict(
                 dataset,
                 output_offsets=True,
             )
@@ -143,7 +143,7 @@ class Runner:
             # segment audios based on offsets
             segmenter = AudioSegmenter()
             for audio_path, offsets in tqdm(
-                zip(child_speech_df["audio"], phoneme_offsets),
+                zip(child_speech_df["audio"], output_offsets),
                 desc="Segmenting Audio into Chunks",
                 total=len(child_speech_df),
             ):

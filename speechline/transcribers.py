@@ -21,7 +21,7 @@ from .modules import AudioTranscriber
 
 class Wav2Vec2Transcriber(AudioTranscriber):
     """
-    Wav2Vec2-CTC model for phoneme recognition.
+    Wav2Vec2-CTC model for speech recognition.
 
     Args:
         model_checkpoint (str):
@@ -46,12 +46,12 @@ class Wav2Vec2Transcriber(AudioTranscriber):
             chunk_length_s (int):
                 Audio chunk length during inference. Defaults to `30`.
             output_offsets (bool, optional):
-                Whether to output phoneme-level timestamps. Defaults to `False`.
+                Whether to output timestamps. Defaults to `False`.
 
         Returns:
             Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
                 Defaults to list of transcriptions.
-                If `output_offsets` is `True`, return list of phoneme offsets.
+                If `output_offsets` is `True`, return list of offsets.
 
         ### Example
         ```pycon title="example_transcriber_predict.py"
@@ -64,19 +64,19 @@ class Wav2Vec2Transcriber(AudioTranscriber):
         >>> transcripts = transcriber.predict(dataset)
         >>> transcripts
         ["ɪ t ɪ z n oʊ t ʌ p"]
-        >>> phoneme_offsets = transcriber.predict(dataset, output_offsets=True)
-        >>> phoneme_offsets
+        >>> offsets = transcriber.predict(dataset, output_offsets=True)
+        >>> offsets
         [
             [
-                {"phoneme": "ɪ", "start_time": 0.0, "end_time": 0.02},
-                {"phoneme": "t", "start_time": 0.26, "end_time": 0.3},
-                {"phoneme": "ɪ", "start_time": 0.34, "end_time": 0.36},
-                {"phoneme": "z", "start_time": 0.42, "end_time": 0.44},
-                {"phoneme": "n", "start_time": 0.5, "end_time": 0.54},
-                {"phoneme": "oʊ", "start_time": 0.54, "end_time": 0.58},
-                {"phoneme": "t", "start_time": 0.58, "end_time": 0.62},
-                {"phoneme": "ʌ", "start_time": 0.76, "end_time": 0.78},
-                {"phoneme": "p", "start_time": 0.92, "end_time": 0.94},
+                {"text": "ɪ", "start_time": 0.0, "end_time": 0.02},
+                {"text": "t", "start_time": 0.26, "end_time": 0.3},
+                {"text": "ɪ", "start_time": 0.34, "end_time": 0.36},
+                {"text": "z", "start_time": 0.42, "end_time": 0.44},
+                {"text": "n", "start_time": 0.5, "end_time": 0.54},
+                {"text": "oʊ", "start_time": 0.54, "end_time": 0.58},
+                {"text": "t", "start_time": 0.58, "end_time": 0.62},
+                {"text": "ʌ", "start_time": 0.76, "end_time": 0.78},
+                {"text": "p", "start_time": 0.92, "end_time": 0.94},
             ]
         ]
         ```
@@ -88,7 +88,7 @@ class Wav2Vec2Transcriber(AudioTranscriber):
             fn_kwargs={
                 "chunk_length_s": chunk_length_s,
                 "output_offsets": output_offsets,
-                "offset_key": "phoneme",
+                "offset_key": "text",
                 "return_timestamps": "char",
             },
         )
@@ -111,7 +111,6 @@ class WhisperTranscriber(AudioTranscriber):
     def predict(
         self,
         dataset: Dataset,
-        chunk_length_s: int = 30,
         output_offsets: bool = False,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
         """
@@ -120,10 +119,8 @@ class WhisperTranscriber(AudioTranscriber):
         Args:
             dataset (Dataset):
                 Dataset to be inferred.
-            chunk_length_s (int):
-                Audio chunk length during inference. Defaults to `30`.
             output_offsets (bool, optional):
-                Whether to output phoneme-level timestamps. Defaults to `False`.
+                Whether to output timestamps. Defaults to `False`.
 
         Returns:
             Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
@@ -158,7 +155,7 @@ class WhisperTranscriber(AudioTranscriber):
             self.inference,
             desc="Transcribing Audios",
             fn_kwargs={
-                "chunk_length_s": chunk_length_s,
+                "chunk_length_s": 0,
                 "output_offsets": output_offsets,
                 "offset_key": "text",
                 "return_timestamps": True,

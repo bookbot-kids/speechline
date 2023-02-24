@@ -109,7 +109,7 @@ class AudioTranscriber(AudioModule):
     def inference(
         self,
         batch: Dataset,
-        chunk_length_s: int = 30,
+        chunk_length_s: int = 0,
         output_offsets: bool = False,
         offset_key: str = "text",
         return_timestamps: Union[str, bool] = True,
