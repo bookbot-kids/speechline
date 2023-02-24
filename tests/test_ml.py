@@ -20,7 +20,7 @@ import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
 from speechline.classifiers import Wav2Vec2Classifier
-from speechline.config import Config
+from speechline.config import Config, TranscriberConfig
 from speechline.run import Runner
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
@@ -45,6 +45,11 @@ def test_convert_to_wav(datadir):
 def test_prepare_dataframe(datadir):
     df = prepare_dataframe(datadir)
     assert df.shape[1] == 4
+
+
+def test_empty_dataframe():
+    with pytest.raises(ValueError):
+        _ = prepare_dataframe("foo")
 
 
 def test_audio_classifier(datadir):
@@ -280,22 +285,12 @@ def test_runner(datadir, tmpdir):
     assert len(glob(f"{tmpdir}/*/*.wav")) == 7
 
 
-# def test_failed_run(datadir, tmpdir):
-#     args = Runner.parse_args(
-#         [
-#             "--input_dir",
-#             str(datadir),
-#             "--output_dir",
-#             str(tmpdir),
-#             "--config",
-#             f"{datadir}/config.json",
-#         ]
-#     )
-#     config = Config(args.config)
-#     # inject unsupported language
-#     config.languages = ["zh"]
-#     with pytest.raises(AttributeError):
-#         config.validate_config()
+def test_invalid_transcriber_config():
+    with pytest.raises(ValueError):
+        _ = TranscriberConfig("seq2seq", "model", "word", 0)
 
-#     runner = Runner(config, args.input_dir, args.output_dir)
-#     runner.run()
+    with pytest.raises(ValueError):
+        _ = TranscriberConfig("wav2vec2", "model", "phoneme", 0)
+
+    with pytest.raises(ValueError):
+        _ = TranscriberConfig("whisper", "model", "word", 0)

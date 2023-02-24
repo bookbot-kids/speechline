@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .audio_classification_with_padding import AudioClassificationWithPaddingPipeline
+from .audio_classification import AudioClassificationWithPaddingPipeline
 
 __all__ = ["AudioClassificationWithPaddingPipeline"]
