@@ -16,77 +16,9 @@ from typing import Dict, List, Tuple, Union
 
 import torch
 from datasets import Dataset
-from tqdm.auto import tqdm
-from transformers import Pipeline, pipeline
-from transformers.pipelines.pt_utils import KeyDataset
+from transformers import pipeline
 
-from .pipelines import AudioClassificationWithPaddingPipeline
-
-
-class AudioModule:
-    """
-    Base AudioModule. Inherit this class for other audio models.
-    An AudioModule should have an inference pipeline,
-    and an inference function utilizing the pipeline.
-
-    Args:
-        pipeline (Pipeline):
-            HuggingFace `transformers` `Pipeline` for inference.
-    """
-
-    def __init__(self, pipeline: Pipeline) -> None:
-        self.pipeline = pipeline
-        self.sampling_rate = self.pipeline.feature_extractor.sampling_rate
-
-
-class AudioClassifier(AudioModule):
-    """
-    Generic AudioClassifier Module. Performs padded audio classification.
-
-    Args:
-        model_checkpoint (str):
-            HuggingFace Hub model checkpoint.
-    """
-
-    def __init__(self, model_checkpoint: str, **kwargs) -> None:
-        classifier = pipeline(
-            "audio-classification",
-            model=model_checkpoint,
-            device=0 if torch.cuda.is_available() else -1,
-            pipeline_class=AudioClassificationWithPaddingPipeline,
-            **kwargs,
-        )
-        super().__init__(pipeline=classifier)
-
-    def inference(self, batch: Dataset, batch_size: int = 1) -> List[str]:
-        """
-        Inference function for batched audio classification.
-
-        Args:
-            batch (Dataset):
-                Dataset to be inferred.
-            batch_size (int, optional):
-                Batch size during inference. Defaults to `1`.
-
-        Returns:
-            List[str]:
-                List of predicted labels.
-        """
-        prediction = [
-            o["label"]
-            for out in tqdm(
-                self.pipeline(
-                    KeyDataset(batch["audio"], key="array"),
-                    batch_size=batch_size,
-                    top_k=1,
-                ),
-                total=len(batch),
-                desc="Classifying Audios",
-            )
-            for o in out
-        ]
-
-        return prediction
+from .audio_module import AudioModule
 
 
 class AudioTranscriber(AudioModule):
@@ -109,10 +41,11 @@ class AudioTranscriber(AudioModule):
     def inference(
         self,
         batch: Dataset,
-        chunk_length_s: int = 30,
+        chunk_length_s: int = 0,
         output_offsets: bool = False,
         offset_key: str = "text",
         return_timestamps: Union[str, bool] = True,
+        **kwargs,
     ) -> Dataset:
         """
         Inference/prediction function to be mapped to a dataset.
@@ -173,7 +106,7 @@ class AudioTranscriber(AudioModule):
             """
             return [
                 {
-                    offset_key: o["text"],
+                    offset_key: o["text"].strip(),
                     "start_time": round(o["timestamp"][0], 3),
                     "end_time": round(o["timestamp"][1], 3),
                 }
@@ -199,13 +132,14 @@ class AudioTranscriber(AudioModule):
                     Transcript string.
             """
             return " ".join(
-                [o["text"] for o in timestamps["chunks"] if o["text"] != " "]
+                [o["text"].strip() for o in timestamps["chunks"] if o["text"] != " "]
             )
 
         prediction = self.pipeline(
             batch["audio"]["array"],
             chunk_length_s=chunk_length_s,
             return_timestamps=return_timestamps,
+            **kwargs,
         )
 
         if output_offsets:

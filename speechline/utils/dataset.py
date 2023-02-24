@@ -27,8 +27,8 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     ```
     path_to_files
     ├── langX
-    │   ├── a.{audio_extension}
-    │   └── b.{audio_extension}
+    │   ├── a.{audio_extension}
+    │   └── b.{audio_extension}
     └── langY
         └── c.{audio_extension}
     ```
@@ -38,6 +38,9 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
             Path to files.
         audio_extension (str, optional):
             Audio extension of files to include. Defaults to "wav".
+
+    Raises:
+        ValueError: No audio files found.
 
     Returns:
         pd.DataFrame:
@@ -49,6 +52,9 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         - `language_code`
     """
     audios = sorted(glob(f"{path_to_files}/*/*.{audio_extension}"))
+    if len(audios) == 0:
+        raise ValueError("No audio files found!")
+
     df = pd.DataFrame({"audio": audios})
     # ID is filename stem (before extension)
     df["id"] = df["audio"].apply(lambda f: Path(f).stem)

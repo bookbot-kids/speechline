@@ -16,7 +16,7 @@ from typing import List
 
 from datasets import Dataset
 
-from .modules import AudioClassifier
+from ..modules import AudioClassifier
 
 
 class Wav2Vec2Classifier(AudioClassifier):

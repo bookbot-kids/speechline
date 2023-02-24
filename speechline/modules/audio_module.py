@@ -12,4 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = "0.0.1"
+from transformers import Pipeline
+
+
+class AudioModule:
+    """
+    Base AudioModule. Inherit this class for other audio models.
+    An AudioModule should have an inference pipeline,
+    and an inference function utilizing the pipeline.
+
+    Args:
+        pipeline (Pipeline):
+            HuggingFace `transformers` `Pipeline` for inference.
+    """
+
+    def __init__(self, pipeline: Pipeline) -> None:
+        self.pipeline = pipeline
+        self.sampling_rate = self.pipeline.feature_extractor.sampling_rate

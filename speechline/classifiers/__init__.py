@@ -12,4 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = "0.0.1"
+from .wav2vec2 import Wav2Vec2Classifier
+
+__all__ = ["Wav2Vec2Classifier"]

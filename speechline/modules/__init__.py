@@ -12,4 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = "0.0.1"
+from .audio_classifier import AudioClassifier
+from .audio_module import AudioModule
+from .audio_transcriber import AudioTranscriber
+
+__all__ = ["AudioModule", "AudioClassifier", "AudioTranscriber"]

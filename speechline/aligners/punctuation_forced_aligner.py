@@ -59,36 +59,36 @@ class PunctuationForcedAligner:
         ...     return phonemes
         >>> pfa = PunctuationForcedAligner(g2p)
         >>> offsets = [
-        ...     {"phoneme": "h", "start_time": 0.0, "end_time": 0.2},
-        ...     {"phoneme": "ɚ", "start_time": 0.24, "end_time": 0.28},
-        ...     {"phoneme": "i", "start_time": 0.42, "end_time": 0.44},
-        ...     {"phoneme": "d", "start_time": 0.5, "end_time": 0.54},
-        ...     {"phoneme": "d", "start_time": 0.5, "end_time": 0.54},
-        ...     {"phoneme": "ʌ", "start_time": 0.64, "end_time": 0.66},
-        ...     {"phoneme": "m", "start_time": 0.7, "end_time": 0.74},
-        ...     {"phoneme": "b", "start_time": 0.78, "end_time": 0.82},
-        ...     {"phoneme": "ɹ", "start_time": 0.84, "end_time": 0.9},
-        ...     {"phoneme": "ɛ", "start_time": 0.92, "end_time": 0.94},
-        ...     {"phoneme": "l", "start_time": 1.0, "end_time": 1.04},
-        ...     {"phoneme": "ə", "start_time": 1.08, "end_time": 1.12},
+        ...     {"text": "h", "start_time": 0.0, "end_time": 0.2},
+        ...     {"text": "ɚ", "start_time": 0.24, "end_time": 0.28},
+        ...     {"text": "i", "start_time": 0.42, "end_time": 0.44},
+        ...     {"text": "d", "start_time": 0.5, "end_time": 0.54},
+        ...     {"text": "d", "start_time": 0.5, "end_time": 0.54},
+        ...     {"text": "ʌ", "start_time": 0.64, "end_time": 0.66},
+        ...     {"text": "m", "start_time": 0.7, "end_time": 0.74},
+        ...     {"text": "b", "start_time": 0.78, "end_time": 0.82},
+        ...     {"text": "ɹ", "start_time": 0.84, "end_time": 0.9},
+        ...     {"text": "ɛ", "start_time": 0.92, "end_time": 0.94},
+        ...     {"text": "l", "start_time": 1.0, "end_time": 1.04},
+        ...     {"text": "ə", "start_time": 1.08, "end_time": 1.12},
         ... ]
         >>> transcript = "Her red, umbrella."
         >>> pfa(offsets, transcript)
         [
-            {'phoneme': 'h', 'start_time': 0.0, 'end_time': 0.2},
-            {'phoneme': 'ɚ', 'start_time': 0.24, 'end_time': 0.28},
-            {'phoneme': 'i', 'start_time': 0.42, 'end_time': 0.44},
-            {'phoneme': 'd', 'start_time': 0.5, 'end_time': 0.54},
-            {'phoneme': 'd', 'start_time': 0.5, 'end_time': 0.54},
-            {'phoneme': ',', 'start_time': 0.54, 'end_time': 0.64},
-            {'phoneme': 'ʌ', 'start_time': 0.64, 'end_time': 0.66},
-            {'phoneme': 'm', 'start_time': 0.7, 'end_time': 0.74},
-            {'phoneme': 'b', 'start_time': 0.78, 'end_time': 0.82},
-            {'phoneme': 'ɹ', 'start_time': 0.84, 'end_time': 0.9},
-            {'phoneme': 'ɛ', 'start_time': 0.92, 'end_time': 0.94},
-            {'phoneme': 'l', 'start_time': 1.0, 'end_time': 1.04},
-            {'phoneme': 'ə', 'start_time': 1.08, 'end_time': 1.12},
-            {'phoneme': '.', 'start_time': 1.12, 'end_time': 1.12}
+            {'text': 'h', 'start_time': 0.0, 'end_time': 0.2},
+            {'text': 'ɚ', 'start_time': 0.24, 'end_time': 0.28},
+            {'text': 'i', 'start_time': 0.42, 'end_time': 0.44},
+            {'text': 'd', 'start_time': 0.5, 'end_time': 0.54},
+            {'text': 'd', 'start_time': 0.5, 'end_time': 0.54},
+            {'text': ',', 'start_time': 0.54, 'end_time': 0.64},
+            {'text': 'ʌ', 'start_time': 0.64, 'end_time': 0.66},
+            {'text': 'm', 'start_time': 0.7, 'end_time': 0.74},
+            {'text': 'b', 'start_time': 0.78, 'end_time': 0.82},
+            {'text': 'ɹ', 'start_time': 0.84, 'end_time': 0.9},
+            {'text': 'ɛ', 'start_time': 0.92, 'end_time': 0.94},
+            {'text': 'l', 'start_time': 1.0, 'end_time': 1.04},
+            {'text': 'ə', 'start_time': 1.08, 'end_time': 1.12},
+            {'text': '.', 'start_time': 1.12, 'end_time': 1.12}
         ]
         ```
 
@@ -104,7 +104,7 @@ class PunctuationForcedAligner:
                 List of newly updated offsets which includes punctuations
         """
         updated_offsets = offsets[:]
-        predicted_phonemes = [offset["phoneme"] for offset in updated_offsets]
+        predicted_phonemes = [offset["text"] for offset in updated_offsets]
         ground_truth_phonemes = self.g2p(text)
 
         # segment phonemes based on `self.punctuations`
@@ -158,7 +158,7 @@ class PunctuationForcedAligner:
             else:
                 end = start  # if it's last, end = start
 
-            offset = {"phoneme": token, "start_time": start, "end_time": end}
+            offset = {"text": token, "start_time": start, "end_time": end}
             updated_offsets.insert(idx, offset)
             idx += 1
 

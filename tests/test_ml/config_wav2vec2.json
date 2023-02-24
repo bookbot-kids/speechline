@@ -7,12 +7,12 @@
     },
     "transcriber": {
         "type": "wav2vec2",
-        "model": "bookbot/wav2vec2-bookbot-en-gruut-v3",
+        "model": "bookbot/wav2vec2-ljspeech-gruut",
         "return_timestamps": "char",
         "chunk_length_s": 30
     },
     "segmenter": {
-        "silence_duration": 3.0,
-        "minimum_chunk_duration": 0.2
+        "silence_duration": 0.3,
+        "minimum_chunk_duration": 0.7
     }
 }
