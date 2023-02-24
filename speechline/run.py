@@ -81,6 +81,14 @@ class Runner:
         - Classifies for children's speech audio (optional).
         - Transcribes audio.
         - Segments audio into chunks based on silences.
+
+        Args:
+            config (Config):
+                SpeechLine Config object.
+            input_dir (str):
+                Path to input directory.
+            output_dir (str):
+                Path to output directory.
         """
         logger.info("Preparing DataFrame..")
         df = prepare_dataframe(input_dir, audio_extension="wav")
