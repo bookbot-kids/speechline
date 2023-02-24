@@ -16,77 +16,9 @@ from typing import Dict, List, Tuple, Union
 
 import torch
 from datasets import Dataset
-from tqdm.auto import tqdm
-from transformers import Pipeline, pipeline
-from transformers.pipelines.pt_utils import KeyDataset
+from transformers import pipeline
 
-from .pipelines import AudioClassificationWithPaddingPipeline
-
-
-class AudioModule:
-    """
-    Base AudioModule. Inherit this class for other audio models.
-    An AudioModule should have an inference pipeline,
-    and an inference function utilizing the pipeline.
-
-    Args:
-        pipeline (Pipeline):
-            HuggingFace `transformers` `Pipeline` for inference.
-    """
-
-    def __init__(self, pipeline: Pipeline) -> None:
-        self.pipeline = pipeline
-        self.sampling_rate = self.pipeline.feature_extractor.sampling_rate
-
-
-class AudioClassifier(AudioModule):
-    """
-    Generic AudioClassifier Module. Performs padded audio classification.
-
-    Args:
-        model_checkpoint (str):
-            HuggingFace Hub model checkpoint.
-    """
-
-    def __init__(self, model_checkpoint: str, **kwargs) -> None:
-        classifier = pipeline(
-            "audio-classification",
-            model=model_checkpoint,
-            device=0 if torch.cuda.is_available() else -1,
-            pipeline_class=AudioClassificationWithPaddingPipeline,
-            **kwargs,
-        )
-        super().__init__(pipeline=classifier)
-
-    def inference(self, batch: Dataset, batch_size: int = 1) -> List[str]:
-        """
-        Inference function for batched audio classification.
-
-        Args:
-            batch (Dataset):
-                Dataset to be inferred.
-            batch_size (int, optional):
-                Batch size during inference. Defaults to `1`.
-
-        Returns:
-            List[str]:
-                List of predicted labels.
-        """
-        prediction = [
-            o["label"]
-            for out in tqdm(
-                self.pipeline(
-                    KeyDataset(batch["audio"], key="array"),
-                    batch_size=batch_size,
-                    top_k=1,
-                ),
-                total=len(batch),
-                desc="Classifying Audios",
-            )
-            for o in out
-        ]
-
-        return prediction
+from .audio_module import AudioModule
 
 
 class AudioTranscriber(AudioModule):

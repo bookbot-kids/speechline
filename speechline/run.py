@@ -151,13 +151,13 @@ class Runner:
                 "char",
             }:
                 raise ValueError(
-                    f"Wav2vec2 only support `'word'` or `'char'` timestamps!"
+                    "Wav2vec2 only support `'word'` or `'char'` timestamps!"
                 )
             elif (
                 self.config.transcriber["type"] == "whisper"
                 and self.config.transcriber["return_timestamps"] is not True
             ):
-                raise ValueError(f"Whisper only support `True` timestamps!")
+                raise ValueError("Whisper only support `True` timestamps!")
 
             output_offsets = transcriber.predict(
                 dataset,
