@@ -113,6 +113,7 @@ class AudioTranscriber(AudioModule):
         output_offsets: bool = False,
         offset_key: str = "text",
         return_timestamps: Union[str, bool] = True,
+        **kwargs,
     ) -> Dataset:
         """
         Inference/prediction function to be mapped to a dataset.
@@ -173,7 +174,7 @@ class AudioTranscriber(AudioModule):
             """
             return [
                 {
-                    offset_key: o["text"],
+                    offset_key: o["text"].strip(),
                     "start_time": round(o["timestamp"][0], 3),
                     "end_time": round(o["timestamp"][1], 3),
                 }
@@ -199,13 +200,14 @@ class AudioTranscriber(AudioModule):
                     Transcript string.
             """
             return " ".join(
-                [o["text"] for o in timestamps["chunks"] if o["text"] != " "]
+                [o["text"].strip() for o in timestamps["chunks"] if o["text"] != " "]
             )
 
         prediction = self.pipeline(
             batch["audio"]["array"],
             chunk_length_s=chunk_length_s,
             return_timestamps=return_timestamps,
+            **kwargs,
         )
 
         if output_offsets:

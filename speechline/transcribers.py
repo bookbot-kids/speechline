@@ -140,13 +140,13 @@ class WhisperTranscriber(AudioTranscriber):
         ... )
         >>> transcripts = transcriber.predict(dataset)
         >>> transcripts
-        [" Her red umbrella is just the best."]
+        ["Her red umbrella is just the best."]
         >>> offsets = transcriber.predict(dataset, output_offsets=True)
         >>> offsets
         [
             [
                 {
-                    "text": " Her red umbrella is just the best.",
+                    "text": "Her red umbrella is just the best.",
                     "start_time": 0.0,
                     "end_time": 3.0,
                 }
@@ -162,6 +162,7 @@ class WhisperTranscriber(AudioTranscriber):
                 "output_offsets": output_offsets,
                 "offset_key": "text",
                 "return_timestamps": True,
+                "generate_kwargs": {"max_new_tokens": 448},
             },
         )
 

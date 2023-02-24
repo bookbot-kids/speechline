@@ -237,24 +237,24 @@ def test_whisper_transcriber(datadir):
     dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
     transcriptions = transcriber.predict(dataset)
     assert transcriptions == [
-        " Her red umbrella is just the best.",
-        " It is not up.",
-        " Sepulang sekolah, fitri sangat lapar.",
+        "Her red umbrella is just the best.",
+        "It is not up.",
+        "Sepulang sekolah, fitri sangat lapar.",
     ]
 
     offsets = transcriber.predict(dataset, output_offsets=True)
     assert offsets == [
         [
             {
-                "text": " Her red umbrella is just the best.",
+                "text": "Her red umbrella is just the best.",
                 "start_time": 0.0,
                 "end_time": 3.0,
             }
         ],
-        [{"text": " It is not up.", "start_time": 0.0, "end_time": 2.0}],
+        [{"text": "It is not up.", "start_time": 0.0, "end_time": 2.0}],
         [
             {
-                "text": " Sepulang sekolah, fitri sangat lapar.",
+                "text": "Sepulang sekolah, fitri sangat lapar.",
                 "start_time": 0.0,
                 "end_time": 3.0,
             }
