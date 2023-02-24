@@ -19,6 +19,18 @@ from typing import Union
 
 @dataclass
 class ClassifierConfig:
+    """
+    Audio classifier config.
+
+    Args:
+        model (str):
+            HuggingFace Hub model hub checkpoint.
+        max_duration_s (float, optional):
+            Maximum audio duration for padding. Defaults to `3.0` seconds.
+        batch_size (int, optional):
+            Batch size during inference. Defaults to `1`.
+    """
+
     model: str
     max_duration_s: float = 3.0
     batch_size: int = 1
@@ -26,6 +38,22 @@ class ClassifierConfig:
 
 @dataclass
 class TranscriberConfig:
+    """
+    Audio transcriber config.
+
+    Args:
+        type (str):
+            Transcriber model architecture type.
+        model (str):
+            HuggingFace Hub model hub checkpoint.
+        return_timestamps (Union[str, bool]):
+            `return_timestamps` argument in `AutomaticSpeechRecognitionPipeline`'s
+            `__call__` method. Use `"char"` for CTC-based models and
+            `True` for Whisper-based models.
+        chunk_length_s (int):
+            Audio chunk length in seconds.
+    """
+
     type: str
     model: str
     return_timestamps: Union[str, bool]
@@ -46,6 +74,18 @@ class TranscriberConfig:
 
 @dataclass
 class SegmenterConfig:
+    """
+    Audio segmenter config.
+
+    Args:
+        silence_duration (float, optional):
+            Minimum in-between silence duration (in seconds) to consider as gaps.
+            Defaults to `3.0` seconds.
+        minimum_chunk_duration (float, optional):
+            Minimum chunk duration (in seconds) to be exported.
+            Defaults to 0.2 second.
+    """
+
     silence_duration: float = 3.0
     minimum_chunk_duration: float = 0.2
 
@@ -53,7 +93,7 @@ class SegmenterConfig:
 @dataclass
 class Config:
     """
-    SpeechLine Config: languages, models, parameters.
+    Main SpeechLine config, contains all other subconfigs.
 
     Args:
         path (str):

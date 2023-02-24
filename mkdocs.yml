@@ -69,6 +69,7 @@ nav:
           - AWS SageMaker: examples/sagemaker.md
   - API Reference:
       - Runner: reference/runner.md
+      - Config: reference/config.md
       - Classifiers:
           - Wav2Vec2 Classifier: reference/models/classifiers/wav2vec2_classifier.md
       - Transcribers:
@@ -83,7 +84,6 @@ nav:
       - Utilities:
           - AirTable Interface: reference/utils/airtable.md
           - Audio Segmenter: reference/utils/segmenter.md
-          - Config: reference/utils/config.md
           - Dataset: reference/utils/dataset.md
           - I/O: reference/utils/io.md
           - Phoneme Error Rate: reference/utils/metric.md

@@ -1,3 +1,8 @@
+# Config
+
+## Example Config File
+
+```json title="example_config.json"
 {
     "do_classify": true,
     "classifier": {
@@ -7,8 +12,8 @@
     },
     "transcriber": {
         "type": "wav2vec2",
-        "model": "bookbot/wav2vec2-bookbot-en-gruut-v3",
-        "return_timestamps": "char",
+        "model": "facebook/wav2vec2-base-960h",
+        "return_timestamps": "word",
         "chunk_length_s": 30
     },
     "segmenter": {
@@ -16,3 +21,14 @@
         "minimum_chunk_duration": 0.2
     }
 }
+```
+
+---
+
+::: speechline.config.ClassifierConfig
+
+::: speechline.config.TranscriberConfig
+
+::: speechline.config.SegmenterConfig
+
+::: speechline.config.Config
