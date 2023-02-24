@@ -14,33 +14,23 @@
 
 import argparse
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
 from tqdm import tqdm
 
 from speechline.classifiers import Wav2Vec2Classifier
+from speechline.config import Config
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
-from speechline.utils.config import Config
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.logger import logger
 from speechline.utils.segmenter import AudioSegmenter
 
 
+@dataclass
 class Runner:
-    """
-    SpeechLine Runnner.
-
-    Args:
-        config (Config):
-            SpeechLine Config object.
-        input_dir (str):
-            Path to input directory.
-        output_dir (str):
-            Path to output directory.
-    """
-
     @staticmethod
     def parse_args(args: List[str]) -> argparse.Namespace:
         """
@@ -82,114 +72,78 @@ class Runner:
         )
         return parser.parse_args(args)
 
-    def __init__(self, config: Config, input_dir: str, output_dir: str) -> None:
-        self.config = config
-        self.languages = self.config.languages
-        self.input_dir = input_dir
-        self.output_dir = output_dir
-
-    def run(self) -> None:
+    @staticmethod
+    def run(config: Config, input_dir: str, output_dir: str) -> None:
         """
         Runs end-to-end SpeechLine pipeline.
 
         ### Pipeline Overview
         - Prepare DataFrame of audio data.
-        - For every specified language:
-            - Filters dataset based on language.
-            - Classifies for children's speech audio.
-            - Transcribes children's speech audio.
-            - Segments audio into chunks based on silences.
+        - Filters dataset based on language.
+        - Classifies for children's speech audio.
+        - Transcribes children's speech audio.
+        - Segments audio into chunks based on silences.
         """
         logger.info("Preparing DataFrame..")
-        raw_df = prepare_dataframe(self.input_dir, audio_extension="wav")
+        df = prepare_dataframe(input_dir, audio_extension="wav")
 
-        for language in self.languages:
-            # filter dataframe by language
-            df = raw_df[raw_df["language"] == language]
-            if len(df) == 0:
-                logger.info(f"DataFrame for language {language} is empty. Skipping..")
-                continue
+        # load classifier model
+        classifier_checkpoint = config.classifier.model
+        classifier = Wav2Vec2Classifier(
+            classifier_checkpoint,
+            max_duration_s=config.classifier.max_duration_s,
+        )
 
-            # load classifier model
-            classifier_checkpoint = self.config.classifier["models"][language]
-            classifier = Wav2Vec2Classifier(
-                classifier_checkpoint,
-                max_duration_s=self.config.classifier["max_duration_s"],
+        # perform audio classification
+        dataset = format_audio_dataset(df, sampling_rate=classifier.sampling_rate)
+        df["category"] = classifier.predict(
+            dataset, batch_size=config.classifier.batch_size
+        )
+
+        # filter audio by category
+        child_speech_df = df[df["category"] == "child"]
+
+        # load transcriber model
+        transcriber_checkpoint = config.transcriber.model
+
+        if config.transcriber.type == "wav2vec2":
+            transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
+        elif config.transcriber.type == "whisper":
+            transcriber = WhisperTranscriber(transcriber_checkpoint)
+
+        # perform audio transcription
+        dataset = format_audio_dataset(
+            child_speech_df, sampling_rate=transcriber.sampling_rate
+        )
+
+        output_offsets = transcriber.predict(
+            dataset,
+            chunk_length_s=config.transcriber.chunk_length_s,
+            output_offsets=True,
+            return_timestamps=config.transcriber.return_timestamps,
+        )
+
+        # segment audios based on offsets
+        segmenter = AudioSegmenter()
+        for audio_path, offsets in tqdm(
+            zip(child_speech_df["audio"], output_offsets),
+            desc="Segmenting Audio into Chunks",
+            total=len(child_speech_df),
+        ):
+            json_path = Path(audio_path).with_suffix(".json")
+            # export JSON transcripts
+            export_transcripts_json(str(json_path), offsets)
+            # chunk audio into segments
+            segmenter.chunk_audio_segments(
+                audio_path,
+                output_dir,
+                offsets,
+                silence_duration=config.segmenter.silence_duration,
+                minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
             )
-
-            # perform audio classification
-            # TODO: add minimum length filter for super-short audio?
-            dataset = format_audio_dataset(df, sampling_rate=classifier.sampling_rate)
-            df["category"] = classifier.predict(
-                dataset, batch_size=self.config.classifier["batch_size"]
-            )
-
-            # filter audio by category
-            child_speech_df = df[df["category"] == "child"]
-
-            # load transcriber model
-            transcriber_checkpoint = self.config.transcriber["models"][language]
-
-            if self.config.transcriber["type"] == "wav2vec2":
-                transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
-            elif self.config.transcriber["type"] == "whisper":
-                transcriber = WhisperTranscriber(transcriber_checkpoint)
-            else:
-                raise ValueError(
-                    f"Transcriber of type {self.config.transcriber['type']} is not yet supported!"  # noqa: E501
-                )
-
-            # perform audio transcription
-            dataset = format_audio_dataset(
-                child_speech_df, sampling_rate=transcriber.sampling_rate
-            )
-
-            if self.config.transcriber[
-                "type"
-            ] == "wav2vec2" and self.config.transcriber["return_timestamps"] not in {
-                "word",
-                "char",
-            }:
-                raise ValueError(
-                    "Wav2vec2 only support `'word'` or `'char'` timestamps!"
-                )
-            elif (
-                self.config.transcriber["type"] == "whisper"
-                and self.config.transcriber["return_timestamps"] is not True
-            ):
-                raise ValueError("Whisper only support `True` timestamps!")
-
-            output_offsets = transcriber.predict(
-                dataset,
-                chunk_length_s=self.config.transcriber["chunk_length_s"],
-                output_offsets=True,
-                return_timestamps=self.config.transcriber["return_timestamps"],
-            )
-
-            # segment audios based on offsets
-            segmenter = AudioSegmenter()
-            for audio_path, offsets in tqdm(
-                zip(child_speech_df["audio"], output_offsets),
-                desc="Segmenting Audio into Chunks",
-                total=len(child_speech_df),
-            ):
-                json_path = Path(audio_path).with_suffix(".json")
-                # export JSON transcripts
-                export_transcripts_json(str(json_path), offsets)
-                # chunk audio into segments
-                segmenter.chunk_audio_segments(
-                    audio_path,
-                    self.output_dir,
-                    offsets,
-                    silence_duration=self.config.segmenter["silence_duration"],
-                    minimum_chunk_duration=self.config.segmenter[
-                        "minimum_chunk_duration"
-                    ],
-                )
 
 
 if __name__ == "__main__":
     args = Runner.parse_args(sys.argv[1:])
     config = Config(args.config)
-    runner = Runner(config, args.input_dir, args.output_dir)
-    runner.run()
+    Runner.run(config, args.input_dir, args.output_dir)

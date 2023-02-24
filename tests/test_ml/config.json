@@ -1,22 +1,12 @@
 {
-    "languages": [
-        "en",
-        "id"
-    ],
     "classifier": {
-        "models": {
-            "en": "bookbot/distil-wav2vec2-adult-child-cls-52m",
-            "id": "bookbot/distil-wav2vec2-adult-child-cls-52m"
-        },
+        "model": "bookbot/distil-wav2vec2-adult-child-cls-52m",
         "max_duration_s": 3.0,
         "batch_size": 128
     },
     "transcriber": {
         "type": "wav2vec2",
-        "models": {
-            "en": "bookbot/wav2vec2-ljspeech-gruut",
-            "id": "bookbot/wav2vec2-ljspeech-gruut"
-        },
+        "model": "bookbot/wav2vec2-ljspeech-gruut",
         "return_timestamps": "char",
         "chunk_length_s": 30
     },
