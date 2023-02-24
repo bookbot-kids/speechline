@@ -129,15 +129,41 @@ class Runner:
 
             # load transcriber model
             transcriber_checkpoint = self.config.transcriber["models"][language]
-            transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
+
+            if self.config.transcriber["type"] == "wav2vec2":
+                transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
+            elif self.config.transcriber["type"] == "whisper":
+                transcriber = WhisperTranscriber(transcriber_checkpoint)
+            else:
+                raise ValueError(
+                    f"Transcriber of type {self.config.transcriber['type']} is not yet supported!"  # noqa: E501
+                )
 
             # perform audio transcription
             dataset = format_audio_dataset(
                 child_speech_df, sampling_rate=transcriber.sampling_rate
             )
+
+            if self.config.transcriber[
+                "type"
+            ] == "wav2vec2" and self.config.transcriber["return_timestamps"] not in {
+                "word",
+                "char",
+            }:
+                raise ValueError(
+                    f"Wav2vec2 only support `'word'` or `'char'` timestamps!"
+                )
+            elif (
+                self.config.transcriber["type"] == "whisper"
+                and self.config.transcriber["return_timestamps"] is not True
+            ):
+                raise ValueError(f"Whisper only support `True` timestamps!")
+
             output_offsets = transcriber.predict(
                 dataset,
+                chunk_length_s=self.config.transcriber["chunk_length_s"],
                 output_offsets=True,
+                return_timestamps=self.config.transcriber["return_timestamps"],
             )
 
             # segment audios based on offsets

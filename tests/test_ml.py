@@ -61,14 +61,16 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
     transcriber = Wav2Vec2Transcriber(model_checkpoint)
     df = prepare_dataframe(datadir)
     dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
-    transcriptions = transcriber.predict(dataset)
+    transcriptions = transcriber.predict(dataset, return_timestamps="char")
     assert transcriptions == [
         "h h ɚ i d ʌ m b ɹ ɛ l ə ɪ z d͡ʒ ʌ s t ð ə b ɛ s t",
         "ɪ t ɪ z n oʊ t ʌ p",
         "s ə b l ɛ n s ɪ p z ə f i t p l i s æ æ p l æ p ə",
     ]
 
-    output_offsets = transcriber.predict(dataset, output_offsets=True)
+    output_offsets = transcriber.predict(
+        dataset, return_timestamps="char", output_offsets=True
+    )
     assert output_offsets == [
         [
             {"text": "h", "start_time": 0.0, "end_time": 0.04},

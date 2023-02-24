@@ -10,9 +10,11 @@
         "batch_size": 128
     },
     "transcriber": {
+        "type": "wav2vec2",
         "models": {
-            "en": "bookbot/wav2vec2-bookbot-en-gruut-v3"
+            "en": "facebook/wav2vec2-base-960h"
         },
+        "return_timestamps": "word",
         "chunk_length_s": 30
     },
     "segmenter": {

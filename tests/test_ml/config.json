@@ -12,10 +12,12 @@
         "batch_size": 128
     },
     "transcriber": {
+        "type": "wav2vec2",
         "models": {
             "en": "bookbot/wav2vec2-ljspeech-gruut",
             "id": "bookbot/wav2vec2-ljspeech-gruut"
         },
+        "return_timestamps": "char",
         "chunk_length_s": 30
     },
     "segmenter": {
