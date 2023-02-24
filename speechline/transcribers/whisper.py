@@ -36,6 +36,7 @@ class WhisperTranscriber(AudioTranscriber):
         dataset: Dataset,
         chunk_length_s: int = 0,
         output_offsets: bool = False,
+        return_timestamps: bool = True,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
         """
         Performs inference on `dataset`.
@@ -47,6 +48,8 @@ class WhisperTranscriber(AudioTranscriber):
                 Audio chunk length during inference. Defaults to `0`.
             output_offsets (bool, optional):
                 Whether to output timestamps. Defaults to `False`.
+            return_timestamps (bool, optional):
+                Returned timestamp level. Defaults to `True`.
 
         Returns:
             Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
@@ -84,7 +87,7 @@ class WhisperTranscriber(AudioTranscriber):
                 "chunk_length_s": chunk_length_s,
                 "output_offsets": output_offsets,
                 "offset_key": "text",
-                "return_timestamps": True,
+                "return_timestamps": return_timestamps,
                 "generate_kwargs": {"max_new_tokens": 448},
             },
         )

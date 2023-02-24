@@ -78,43 +78,37 @@ class Runner:
         Runs end-to-end SpeechLine pipeline.
 
         ### Pipeline Overview
-        - Prepare DataFrame of audio data.
-        - Filters dataset based on language.
-        - Classifies for children's speech audio.
-        - Transcribes children's speech audio.
+        - Classifies for children's speech audio (optional).
+        - Transcribes audio.
         - Segments audio into chunks based on silences.
         """
         logger.info("Preparing DataFrame..")
         df = prepare_dataframe(input_dir, audio_extension="wav")
 
-        # load classifier model
-        classifier_checkpoint = config.classifier.model
-        classifier = Wav2Vec2Classifier(
-            classifier_checkpoint,
-            max_duration_s=config.classifier.max_duration_s,
-        )
+        if config.do_classify:
+            # load classifier model
+            classifier = Wav2Vec2Classifier(
+                config.classifier.model,
+                max_duration_s=config.classifier.max_duration_s,
+            )
 
-        # perform audio classification
-        dataset = format_audio_dataset(df, sampling_rate=classifier.sampling_rate)
-        df["category"] = classifier.predict(
-            dataset, batch_size=config.classifier.batch_size
-        )
+            # perform audio classification
+            dataset = format_audio_dataset(df, sampling_rate=classifier.sampling_rate)
+            df["category"] = classifier.predict(
+                dataset, batch_size=config.classifier.batch_size
+            )
 
-        # filter audio by category
-        child_speech_df = df[df["category"] == "child"]
+            # filter audio by category
+            df = df[df["category"] == "child"]
 
         # load transcriber model
-        transcriber_checkpoint = config.transcriber.model
-
         if config.transcriber.type == "wav2vec2":
-            transcriber = Wav2Vec2Transcriber(transcriber_checkpoint)
+            transcriber = Wav2Vec2Transcriber(config.transcriber.model)
         elif config.transcriber.type == "whisper":
-            transcriber = WhisperTranscriber(transcriber_checkpoint)
+            transcriber = WhisperTranscriber(config.transcriber.model)
 
         # perform audio transcription
-        dataset = format_audio_dataset(
-            child_speech_df, sampling_rate=transcriber.sampling_rate
-        )
+        dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
 
         output_offsets = transcriber.predict(
             dataset,
@@ -126,9 +120,9 @@ class Runner:
         # segment audios based on offsets
         segmenter = AudioSegmenter()
         for audio_path, offsets in tqdm(
-            zip(child_speech_df["audio"], output_offsets),
+            zip(df["audio"], output_offsets),
             desc="Segmenting Audio into Chunks",
-            total=len(child_speech_df),
+            total=len(df),
         ):
             json_path = Path(audio_path).with_suffix(".json")
             # export JSON transcripts

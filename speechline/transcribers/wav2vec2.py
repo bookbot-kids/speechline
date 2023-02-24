@@ -48,6 +48,8 @@ class Wav2Vec2Transcriber(AudioTranscriber):
                 Audio chunk length during inference. Defaults to `30`.
             output_offsets (bool, optional):
                 Whether to output timestamps. Defaults to `False`.
+            return_timestamps (str, optional):
+                Returned timestamp level. Defaults to `"word"`.
 
         Returns:
             Union[List[str], List[List[Dict[str, Union[str, float]]]]]:

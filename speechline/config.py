@@ -20,8 +20,8 @@ from typing import Union
 @dataclass
 class ClassifierConfig:
     model: str
-    max_duration_s: float
-    batch_size: int
+    max_duration_s: float = 3.0
+    batch_size: int = 1
 
 
 @dataclass
@@ -46,8 +46,8 @@ class TranscriberConfig:
 
 @dataclass
 class SegmenterConfig:
-    silence_duration: float
-    minimum_chunk_duration: float
+    silence_duration: float = 3.0
+    minimum_chunk_duration: float = 0.2
 
 
 @dataclass
@@ -64,6 +64,7 @@ class Config:
 
     def __post_init__(self):
         config = json.load(open(self.path))
+        self.do_classify = config.get("do_classify", False)
         self.classifier = ClassifierConfig(**config["classifier"])
         self.transcriber = TranscriberConfig(**config["transcriber"])
         self.segmenter = SegmenterConfig(**config["segmenter"])

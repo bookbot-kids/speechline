@@ -1,4 +1,5 @@
 {
+    "do_classify": true,
     "classifier": {
         "model": "bookbot/distil-wav2vec2-adult-child-cls-52m",
         "max_duration_s": 3.0,

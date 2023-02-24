@@ -269,7 +269,7 @@ def test_whisper_transcriber(datadir):
     ]
 
 
-def test_runner(datadir, tmpdir):
+def test_runner_wav2vec2(datadir, tmpdir):
     args = Runner.parse_args(
         [
             "--input_dir",
@@ -277,12 +277,28 @@ def test_runner(datadir, tmpdir):
             "--output_dir",
             str(tmpdir),
             "--config",
-            f"{datadir}/config.json",
+            f"{datadir}/config_wav2vec2.json",
         ]
     )
     config = Config(args.config)
     Runner.run(config, args.input_dir, args.output_dir)
     assert len(glob(f"{tmpdir}/*/*.wav")) == 7
+
+
+def test_runner_whisper(datadir, tmpdir):
+    args = Runner.parse_args(
+        [
+            "--input_dir",
+            str(datadir),
+            "--output_dir",
+            str(tmpdir),
+            "--config",
+            f"{datadir}/config_whisper.json",
+        ]
+    )
+    config = Config(args.config)
+    Runner.run(config, args.input_dir, args.output_dir)
+    assert len(glob(f"{tmpdir}/*/*.wav")) == 6
 
 
 def test_invalid_transcriber_config():
