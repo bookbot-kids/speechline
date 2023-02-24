@@ -71,23 +71,25 @@ nav:
       - Runner: reference/runner.md
       - Config: reference/config.md
       - Classifiers:
-          - Wav2Vec2 Classifier: reference/models/classifiers/wav2vec2_classifier.md
+          - Wav2Vec2 Classifier: reference/classifiers/wav2vec2.md
       - Transcribers:
-          - Wav2Vec2 Transcriber: reference/models/transcribers/wav2vec2_transcriber.md
-          - Whisper Transcriber: reference/models/transcribers/whisper_transcriber.md
+          - Wav2Vec2 Transcriber: reference/transcribers/wav2vec2.md
+          - Whisper Transcriber: reference/transcribers/whisper.md
       - Base Modules:
           - Audio Classifier: reference/modules/audio_classifier.md
           - Audio Transcriber: reference/modules/audio_transcriber.md
           - Audio Module: reference/modules/audio_module.md
       - Pipelines:
-          - Audio Classification with Padding Pipeline: reference/pipelines/audio_classification_with_padding_pipeline.md
+          - Audio Classification with Padding: reference/pipelines/audio_classification_with_padding.md
+      - Aligners:
+          - Punctuation Forced Aligner: reference/aligners/punctuation_forced_aligner.md
+      - Metrics:
+          - Phoneme Error Rate: reference/metrics/phoneme_error_rate.md
       - Utilities:
           - AirTable Interface: reference/utils/airtable.md
           - Audio Segmenter: reference/utils/segmenter.md
           - Dataset: reference/utils/dataset.md
           - I/O: reference/utils/io.md
-          - Phoneme Error Rate: reference/utils/metric.md
-          - Punctuation Forced Aligner: reference/utils/aligner.md
           - S3: reference/utils/s3.md
       - Scripts:
           - aac-to-wav Audio Converter: reference/scripts/aac_to_wav.md

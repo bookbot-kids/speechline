@@ -1,3 +1,3 @@
-# Audio Classification with Padding Pipeline
+# Audio Classification with Padding
 
 ::: speechline.pipelines.AudioClassificationWithPaddingPipeline

@@ -15,7 +15,7 @@
 
 import pytest
 
-from speechline.utils.metrics import PhonemeErrorRate
+from speechline.metrics import PhonemeErrorRate
 
 
 def test_phoneme_error_rate():
