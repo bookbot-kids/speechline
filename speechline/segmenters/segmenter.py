@@ -17,7 +17,7 @@ from typing import Dict, List, Union
 
 from pydub import AudioSegment
 
-from .io import (
+from ..utils.io import (
     export_segment_audio_wav,
     export_segment_transcripts_tsv,
     get_chunk_path,
@@ -25,86 +25,7 @@ from .io import (
 )
 
 
-class AudioSegmenter:
-    def chunk_offsets(
-        self,
-        offsets: List[Dict[str, Union[str, float]]],
-        silence_duration: float,
-    ) -> List[List[Dict[str, Union[str, float]]]]:
-        """
-        Chunk transcript offsets based on in-between silence duration.
-
-        ### Example
-        ```pycon title="example_chunk_offsets.py"
-        >>> from speechline.utils.segmenter import AudioSegmenter
-        >>> segmenter = AudioSegmenter()
-        >>> offsets = [
-        ...     {"start_time": 0.0, "end_time": 0.4},
-        ...     {"start_time": 0.4, "end_time": 0.5},
-        ...     {"start_time": 0.6, "end_time": 0.8},
-        ...     {"start_time": 1.1, "end_time": 1.3},
-        ...     {"start_time": 1.5, "end_time": 1.7},
-        ...     {"start_time": 1.7, "end_time": 2.0},
-        ... ]
-        >>> segmenter.chunk_offsets(offsets, silence_duration=0.2)
-        [
-            [
-                {"start_time": 0.0, "end_time": 0.4},
-                {"start_time": 0.4, "end_time": 0.5},
-                {"start_time": 0.6, "end_time": 0.8},
-            ],
-            [
-                {"start_time": 1.1, "end_time": 1.3}
-            ],
-            [
-                {"start_time": 1.5, "end_time": 1.7},
-                {"start_time": 1.7, "end_time": 2.0}
-            ],
-        ]
-        >>> segmenter.chunk_offsets(offsets, silence_duration=0.1)
-        [
-            [
-                {"start_time": 0.0, "end_time": 0.4},
-                {"start_time": 0.4, "end_time": 0.5}
-            ],
-            [
-                {"start_time": 0.6, "end_time": 0.8}
-            ],
-            [
-                {"start_time": 1.1, "end_time": 1.3}
-            ],
-            [
-                {"start_time": 1.5, "end_time": 1.7},
-                {"start_time": 1.7, "end_time": 2.0}
-            ],
-        ]
-        ```
-
-        Args:
-            offsets (List[Dict[str, Union[str, float]]]):
-                Offsets to chunk.
-            silence_duration (float):
-                Minimum in-between silence duration (in seconds) to consider as gaps.
-
-        Returns:
-            List[List[Dict[str, Union[str, float]]]]:
-                List of chunked/segmented offsets.
-        """
-        # calculate gaps in between offsets
-        gaps = [
-            round(next["start_time"] - curr["end_time"], 3)
-            for curr, next in zip(offsets, offsets[1:])
-        ]
-        # generate segment slices (start and end indices) based on silence
-        slices = (
-            [0]
-            + [idx + 1 for idx, gap in enumerate(gaps) if gap >= silence_duration]
-            + [len(offsets)]
-        )
-        # group consecutive offsets (segments) based on slices
-        segments = [offsets[i:j] for i, j in zip(slices, slices[1:])]
-        return segments
-
+class Segmenter:
     def _shift_offsets(
         self, offset: List[Dict[str, Union[str, float]]]
     ) -> List[Dict[str, Union[str, float]]]:
@@ -136,8 +57,8 @@ class AudioSegmenter:
         audio_path: str,
         outdir: str,
         offsets: List[Dict[str, Union[str, float]]],
-        silence_duration: float = 0.1,
         minimum_chunk_duration: float = 1.0,
+        **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Chunks an audio file based on its phoneme offsets.
@@ -151,9 +72,6 @@ class AudioSegmenter:
                 Per-region subfolders will be generated under this directory.
             offsets (List[Dict[str, Union[str, float]]]):
                 List of phoneme offsets.
-            silence_duration (float, optional):
-                Minimum in-between silence duration (in seconds) to consider as gaps.
-                Defaults to 0.1 seconds.
             minimum_chunk_duration (float, optional):
                 Minimum chunk duration (in seconds) to be exported.
                 Defaults to 1.0 second.
@@ -162,7 +80,7 @@ class AudioSegmenter:
             List[List[Dict[str, Union[str, float]]]]:
                 List of phoneme offsets for every segment.
         """
-        segments = self.chunk_offsets(offsets, silence_duration)
+        segments = self.chunk_offsets(offsets, **kwargs)
         # skip empty segments (undetected transcripts)
         if len(segments[0]) == 0:
             return [[{}]]

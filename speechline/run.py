@@ -22,11 +22,11 @@ from tqdm import tqdm
 
 from speechline.classifiers import Wav2Vec2Classifier
 from speechline.config import Config
+from speechline.segmenters import SilenceSegmenter
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.logger import logger
-from speechline.utils.segmenter import AudioSegmenter
 
 
 @dataclass
@@ -126,7 +126,7 @@ class Runner:
         )
 
         # segment audios based on offsets
-        segmenter = AudioSegmenter()
+        segmenter = SilenceSegmenter()
         for audio_path, offsets in tqdm(
             zip(df["audio"], output_offsets),
             desc="Segmenting Audio into Chunks",
@@ -140,8 +140,8 @@ class Runner:
                 audio_path,
                 output_dir,
                 offsets,
-                silence_duration=config.segmenter.silence_duration,
                 minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
+                silence_duration=config.segmenter.silence_duration,
             )
 
 
