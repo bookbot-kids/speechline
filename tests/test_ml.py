@@ -20,7 +20,7 @@ import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
 from speechline.classifiers import Wav2Vec2Classifier
-from speechline.config import Config, TranscriberConfig, SegmenterConfig
+from speechline.config import Config, SegmenterConfig, TranscriberConfig
 from speechline.run import Runner
 from speechline.segmenters import SilenceSegmenter
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber

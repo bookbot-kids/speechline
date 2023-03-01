@@ -84,7 +84,7 @@ class SegmenterConfig:
         minimum_chunk_duration (float, optional):
             Minimum chunk duration (in seconds) to be exported.
             Defaults to 0.2 second.
-    """ 
+    """
 
     type: str
     silence_duration: float = 0.0
@@ -95,6 +95,7 @@ class SegmenterConfig:
 
         if self.type not in SUPPORTED_TYPES:
             raise ValueError(f"Segmenter of type {self.type} is not yet supported!")
+
 
 @dataclass
 class Config:
