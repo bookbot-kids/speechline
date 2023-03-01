@@ -86,8 +86,15 @@ class SegmenterConfig:
             Defaults to 0.2 second.
     """
 
-    silence_duration: float = 3.0
+    type: str
+    silence_duration: float = 0.0
     minimum_chunk_duration: float = 0.2
+
+    def __post_init__(self):
+        SUPPORTED_TYPES = {"silence", "word_overlap"}
+
+        if self.type not in SUPPORTED_TYPES:
+            raise ValueError(f"Segmenter of type {self.type} is not yet supported!")
 
 
 @dataclass
@@ -105,6 +112,8 @@ class Config:
     def __post_init__(self):
         config = json.load(open(self.path))
         self.do_classify = config.get("do_classify", False)
-        self.classifier = ClassifierConfig(**config["classifier"])
+        if self.do_classify:
+            self.classifier = ClassifierConfig(**config["classifier"])
+
         self.transcriber = TranscriberConfig(**config["transcriber"])
         self.segmenter = SegmenterConfig(**config["segmenter"])

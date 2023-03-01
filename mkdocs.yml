@@ -85,12 +85,16 @@ nav:
           - Punctuation Forced Aligner: reference/aligners/punctuation_forced_aligner.md
       - Metrics:
           - Phoneme Error Rate: reference/metrics/phoneme_error_rate.md
+      - Segmenters:
+          - Audio Segmenter: reference/segmenters/segmenter.md
+          - Silence Segmenter: reference/segmenters/silence_segmenter.md
+          - Word Overlap Segmenter: reference/segmenters/word_overlap_segmenter.md
       - Utilities:
           - AirTable Interface: reference/utils/airtable.md
-          - Audio Segmenter: reference/utils/segmenter.md
           - Dataset: reference/utils/dataset.md
           - I/O: reference/utils/io.md
           - S3: reference/utils/s3.md
+          - Word Tokenizer: reference/utils/tokenizer.md
       - Scripts:
           - aac-to-wav Audio Converter: reference/scripts/aac_to_wav.md
           - Audio Data Logger: reference/scripts/data_logger.md

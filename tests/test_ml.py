@@ -20,12 +20,12 @@ import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
 from speechline.classifiers import Wav2Vec2Classifier
-from speechline.config import Config, TranscriberConfig
+from speechline.config import Config, SegmenterConfig, TranscriberConfig
 from speechline.run import Runner
+from speechline.segmenters import SilenceSegmenter
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
-from speechline.utils.segmenter import AudioSegmenter
 
 
 def test_convert_to_wav(datadir):
@@ -44,7 +44,7 @@ def test_convert_to_wav(datadir):
 
 def test_prepare_dataframe(datadir):
     df = prepare_dataframe(datadir)
-    assert df.shape[1] == 4
+    assert df.shape[1] == 5
 
 
 def test_empty_dataframe():
@@ -143,7 +143,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         ],
     ]
 
-    segmenter = AudioSegmenter()
+    segmenter = SilenceSegmenter()
     segments = []
     for audio_path, offsets in zip(df["audio"], output_offsets):
         json_path = Path(audio_path).with_suffix(".json")
@@ -155,8 +155,8 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
             audio_path,
             tmpdir,
             offsets,
-            silence_duration=0.3,
             minimum_chunk_duration=0.7,
+            silence_duration=0.3,
         )
         segments.append(segment)
 
@@ -285,6 +285,22 @@ def test_runner_wav2vec2(datadir, tmpdir):
     assert len(glob(f"{tmpdir}/*/*.wav")) == 7
 
 
+def test_runner_wav2vec2_word(datadir, tmpdir):
+    args = Runner.parse_args(
+        [
+            "--input_dir",
+            str(datadir),
+            "--output_dir",
+            str(tmpdir),
+            "--config",
+            f"{datadir}/config_wav2vec2_word.json",
+        ]
+    )
+    config = Config(args.config)
+    Runner.run(config, args.input_dir, args.output_dir)
+    assert len(glob(f"{tmpdir}/*/*.wav")) == 4
+
+
 def test_runner_whisper(datadir, tmpdir):
     args = Runner.parse_args(
         [
@@ -310,3 +326,8 @@ def test_invalid_transcriber_config():
 
     with pytest.raises(ValueError):
         _ = TranscriberConfig("whisper", "model", "word", 0)
+
+
+def test_invalid_segmenter_config():
+    with pytest.raises(ValueError):
+        _ = SegmenterConfig("foo")

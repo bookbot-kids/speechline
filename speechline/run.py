@@ -22,11 +22,12 @@ from tqdm import tqdm
 
 from speechline.classifiers import Wav2Vec2Classifier
 from speechline.config import Config
+from speechline.segmenters import SilenceSegmenter, WordOverlapSegmenter
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.logger import logger
-from speechline.utils.segmenter import AudioSegmenter
+from speechline.utils.tokenizer import WordTokenizer
 
 
 @dataclass
@@ -126,9 +127,15 @@ class Runner:
         )
 
         # segment audios based on offsets
-        segmenter = AudioSegmenter()
-        for audio_path, offsets in tqdm(
-            zip(df["audio"], output_offsets),
+        if config.segmenter.type == "silence":
+            segmenter = SilenceSegmenter()
+        elif config.segmenter.type == "word_overlap":
+            segmenter = WordOverlapSegmenter()
+
+        tokenizer = WordTokenizer()
+
+        for audio_path, ground_truth, offsets in tqdm(
+            zip(df["audio"], df["ground_truth"], output_offsets),
             desc="Segmenting Audio into Chunks",
             total=len(df),
         ):
@@ -140,8 +147,9 @@ class Runner:
                 audio_path,
                 output_dir,
                 offsets,
-                silence_duration=config.segmenter.silence_duration,
                 minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
+                silence_duration=config.segmenter.silence_duration,
+                ground_truth=tokenizer(ground_truth),
             )
 
 

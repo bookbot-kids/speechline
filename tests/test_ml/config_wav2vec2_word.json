@@ -1,0 +1,13 @@
+{
+    "do_classify": false,
+    "transcriber": {
+        "type": "wav2vec2",
+        "model": "facebook/wav2vec2-base-960h",
+        "return_timestamps": "word",
+        "chunk_length_s": 30
+    },
+    "segmenter": {
+        "type": "word_overlap",
+        "minimum_chunk_duration": 0.7
+    }
+}
