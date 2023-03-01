@@ -27,6 +27,7 @@ class WordOverlapSegmenter(Segmenter):
         self,
         offsets: List[Dict[str, Union[str, float]]],
         ground_truth: List[str],
+        **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Chunk transcript offsets based on overlaps with ground truth.

@@ -22,6 +22,7 @@ class SilenceSegmenter(Segmenter):
         self,
         offsets: List[Dict[str, Union[str, float]]],
         silence_duration: float,
+        **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Chunk transcript offsets based on in-between silence duration.

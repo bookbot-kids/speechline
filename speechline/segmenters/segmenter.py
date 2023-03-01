@@ -82,7 +82,7 @@ class Segmenter:
         """
         segments = self.chunk_offsets(offsets, **kwargs)
         # skip empty segments (undetected transcripts)
-        if len(segments[0]) == 0:
+        if len(segments) == 0:
             return [[{}]]
 
         audio = AudioSegment.from_file(audio_path)

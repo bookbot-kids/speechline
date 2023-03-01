@@ -12,3 +12,4 @@ pydub==0.25.1
 requests
 gruut
 levenshtein
+nltk

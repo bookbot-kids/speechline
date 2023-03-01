@@ -94,6 +94,7 @@ nav:
           - Dataset: reference/utils/dataset.md
           - I/O: reference/utils/io.md
           - S3: reference/utils/s3.md
+          - Word Tokenizer: reference/utils/tokenizer.md
       - Scripts:
           - aac-to-wav Audio Converter: reference/scripts/aac_to_wav.md
           - Audio Data Logger: reference/scripts/data_logger.md
