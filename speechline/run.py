@@ -103,9 +103,7 @@ class Runner:
 
             # perform audio classification
             dataset = format_audio_dataset(df, sampling_rate=classifier.sampling_rate)
-            df["category"] = classifier.predict(
-                dataset, batch_size=config.classifier.batch_size
-            )
+            df["category"] = classifier.predict(dataset)
 
             # filter audio by category
             df = df[df["category"] == "child"]

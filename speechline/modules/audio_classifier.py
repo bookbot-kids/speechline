@@ -16,9 +16,7 @@ from typing import List
 
 import torch
 from datasets import Dataset
-from tqdm.auto import tqdm
 from transformers import pipeline
-from transformers.pipelines.pt_utils import KeyDataset
 
 from ..pipelines import AudioClassificationWithPaddingPipeline
 from .audio_module import AudioModule
@@ -43,32 +41,19 @@ class AudioClassifier(AudioModule):
         )
         super().__init__(pipeline=classifier)
 
-    def inference(self, batch: Dataset, batch_size: int = 1) -> List[str]:
+    def inference(self, batch: Dataset) -> List[str]:
         """
         Inference function for batched audio classification.
 
         Args:
             batch (Dataset):
                 Dataset to be inferred.
-            batch_size (int, optional):
-                Batch size during inference. Defaults to `1`.
 
         Returns:
             List[str]:
                 List of predicted labels.
         """
-        prediction = [
-            o["label"]
-            for out in tqdm(
-                self.pipeline(
-                    KeyDataset(batch["audio"], key="array"),
-                    batch_size=batch_size,
-                    top_k=1,
-                ),
-                total=len(batch),
-                desc="Classifying Audios",
-            )
-            for o in out
-        ]
+        prediction = self.pipeline(batch["audio"]["array"], top_k=1)
+        batch["prediction"] = prediction[0]["label"]
 
-        return prediction
+        return batch

@@ -33,21 +33,19 @@ class Wav2Vec2Classifier(AudioClassifier):
     def __init__(self, model_checkpoint: str, max_duration_s: float) -> None:
         super().__init__(model_checkpoint, max_duration_s=max_duration_s)
 
-    def predict(self, dataset: Dataset, batch_size: int = 1) -> List[str]:
+    def predict(self, dataset: Dataset) -> List[str]:
         """
-        Performs batch audio classification (inference) on `dataset`.
-        Preprocesses datasets, performs batch inference, then returns predictions.
+        Performs audio classification (inference) on `dataset`.
+        Preprocesses datasets, performs inference, then returns predictions.
 
         Args:
             dataset (Dataset):
                 Dataset to be inferred.
-            batch_size (int, optional):
-                Per device batch size. Defaults to `1`.
 
         Returns:
             List[str]:
                 List of predictions (as strings of labels).
         """
 
-        predictions = self.inference(dataset, batch_size=batch_size)
-        return predictions
+        dataset = dataset.map(self.inference, desc="Classifying Audios")
+        return dataset["prediction"]
