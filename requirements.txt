@@ -1,6 +1,8 @@
 torch
 torchaudio
 transformers
+kenlm
+pyctcdecode
 datasets[audio]
 librosa
 pandas
