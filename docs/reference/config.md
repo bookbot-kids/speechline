@@ -5,6 +5,7 @@
 ```json title="example_config.json"
 {
     "do_classify": true,
+    "filter_empty_transcript": true,
     "classifier": {
         "model": "bookbot/distil-wav2vec2-adult-child-cls-52m",
         "max_duration_s": 3.0,

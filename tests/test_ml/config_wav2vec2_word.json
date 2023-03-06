@@ -1,5 +1,6 @@
 {
     "do_classify": false,
+    "filter_empty_transcript": true,
     "transcriber": {
         "type": "wav2vec2",
         "model": "facebook/wav2vec2-base-960h",
