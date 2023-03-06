@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 from datasets import Audio, Dataset, DatasetDict
 from speechline.utils.g2p import get_g2p
+from tqdm.auto import tqdm
 
 
 def parse_args(args: List[str]) -> argparse.Namespace:
@@ -107,8 +108,10 @@ def create_dataset(
     df["speaker"] = df["audio"].apply(lambda x: x.split("/")[-1].split("_")[0])
     df["text"] = df["audio"].apply(lambda x: parse_tsv(Path(x).with_suffix(".tsv")))
 
+    tqdm.pandas(desc="Phonemization")
+
     if phonemize:
-        df["phonemes"] = df.apply(
+        df["phonemes"] = df.progress_apply(
             lambda row: get_g2p(row["language"].split("-")[0])(row["text"]), axis=1
         )
 
