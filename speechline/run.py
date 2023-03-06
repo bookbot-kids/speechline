@@ -94,6 +94,9 @@ class Runner:
         logger.info("Preparing DataFrame..")
         df = prepare_dataframe(input_dir, audio_extension="wav")
 
+        if config.filter_empty_transcript:
+            df = df[df["ground_truth"] != ""]
+
         if config.do_classify:
             # load classifier model
             classifier = Wav2Vec2Classifier(
