@@ -93,6 +93,8 @@ def create_dataset(
             HuggingFace dataset name.
         private (bool, optional):
             Set HuggingFace dataset as private. Defaults to `True`.
+        phonemize (bool, optional):
+            Phonemize text to phoneme strings. Defaults to `False`.
 
     Returns:
         DatasetDict:
@@ -145,4 +147,6 @@ def create_dataset(
 
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
-    dataset = create_dataset(args.input_dir, args.dataset_name, args.private)
+    dataset = create_dataset(
+        args.input_dir, args.dataset_name, args.private, args.phonemize
+    )
