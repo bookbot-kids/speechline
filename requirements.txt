@@ -15,3 +15,4 @@ requests
 gruut
 levenshtein
 nltk
+g2p_id_py
