@@ -112,6 +112,8 @@ class Config:
     def __post_init__(self):
         config = json.load(open(self.path))
         self.do_classify = config.get("do_classify", False)
+        self.filter_empty_transcript = config.get("filter_empty_transcript", False)
+
         if self.do_classify:
             self.classifier = ClassifierConfig(**config["classifier"])
 
