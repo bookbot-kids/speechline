@@ -97,7 +97,6 @@ class Runner:
         if config.filter_empty_transcript:
             df = df[df["ground_truth"] != ""]
 
-        # if dataframe is empty
         if config.do_classify:
             # load classifier model
             classifier = Wav2Vec2Classifier(
