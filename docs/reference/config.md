@@ -8,8 +8,7 @@
     "filter_empty_transcript": true,
     "classifier": {
         "model": "bookbot/distil-wav2vec2-adult-child-cls-52m",
-        "max_duration_s": 3.0,
-        "batch_size": 128
+        "max_duration_s": 3.0
     },
     "transcriber": {
         "type": "wav2vec2",

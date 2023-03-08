@@ -43,7 +43,7 @@ class AudioClassifier(AudioModule):
 
     def inference(self, batch: Dataset) -> List[str]:
         """
-        Inference function for batched audio classification.
+        Inference function for audio classification.
 
         Args:
             batch (Dataset):
