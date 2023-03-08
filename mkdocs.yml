@@ -64,9 +64,11 @@ nav:
       - Contributing: CONTRIBUTING.md
       - Project Charter: PROJECT_CHARTER.md
       - Code of Conduct: CODE_OF_CONDUCT.md
-  - Examples:
+  - Guides:
+      - Pipeline Explained: guides/pipeline.md
       - Running SpeechLine:
-          - AWS SageMaker: examples/sagemaker.md
+          - AWS SageMaker: guides/sagemaker.md
+          - Google Cloud Engine: guides/google-cloud.md
   - API Reference:
       - Runner: reference/runner.md
       - Config: reference/config.md
