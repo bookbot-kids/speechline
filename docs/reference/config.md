@@ -17,6 +17,7 @@
         "chunk_length_s": 30
     },
     "segmenter": {
+        "type": "silence",
         "silence_duration": 3.0,
         "minimum_chunk_duration": 0.2
     }
