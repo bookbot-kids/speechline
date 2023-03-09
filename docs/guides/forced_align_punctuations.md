@@ -2,7 +2,7 @@
 
 This guide will show the steps on how to align (or recover) punctuation using a Punctuation Alinger from SpeechLine. 
 
-As you may or may not know, phoneme transcription results from Wav2Vec 2.0 does not include punctuations. You can restore and align punctuations by simply passing in the ground truth text to [`speechline.aligners.PunctuationForcedAligner`](../../reference/aligners/punctuation_forced_aligner.md)
+As you may or may not know, phoneme transcription results from Wav2Vec 2.0 does not include punctuations. You can restore and align punctuations by simply passing in the ground truth text to [`speechline.aligners.PunctuationForcedAligner`](../../reference/aligners/punctuation_forced_aligner)
 
 The first step is, of course, to transcribe your text by loading in the transcription model
 
