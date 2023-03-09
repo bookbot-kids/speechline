@@ -4,6 +4,7 @@
 export PYTHONPATH = speechline
 
 check_dirs := examples speechline tests
+notebooks := $(wildcard notebooks/*.ipynb)
 
 # runs checks on all files
 
@@ -28,3 +29,8 @@ cov:
 
 test:
 		tox -r
+
+nb2md:
+		for nb in $(notebooks) ; do \
+			jupyter nbconvert --to markdown $$nb ; \
+		done
