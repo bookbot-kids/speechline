@@ -1,8 +1,19 @@
+# Force Aligning Punctuations
+
+This guide will show the steps on how to align (or recover) punctuation using a Punctuation Alinger from SpeechLine. 
+
+As you may or may not know, phoneme transcription results from Wav2Vec 2.0 does not include punctuations. You can restore and align punctuations by simply passing in the ground truth text to [`speechline.aligners.PunctuationForcedAligner`](../../reference/aligners/punctuation_forced_aligner.md)
+
+The first step is, of course, to transcribe your text by loading in the transcription model
+
+
 ```python
 from speechline.transcribers import Wav2Vec2Transcriber
 
 transcriber = Wav2Vec2Transcriber("bookbot/wav2vec2-ljspeech-gruut")
 ```
+
+Load the audio file into a `Dataset` format and pass it into the model
 
 
 ```python
@@ -20,6 +31,10 @@ phoneme_offsets = transcriber.predict(dataset, output_offsets=True)
 
     Transcribing Audios:   0%|          | 0/1 [00:00<?, ?ex/s]
 
+
+Now we will need utilize `gruut`, a grapheme-to-phoneme library that can help transform our ground truth text (given in `sample.txt`) into phonemes. Note that `gruut` retains punctuations during the g2p conversion. This information will be exploited by SpeechLine's `PunctuationForcedAlinger` to restore the punctuations from the Wav2Vec 2.0 output.
+
+Simply use the following g2p function to convert any text string into phonemes. You can, of course, provide your own g2p function if you wish to do so.
 
 
 ```python
@@ -49,6 +64,8 @@ text
     'Her red umbrella, is just the best!'
 
 
+
+Instantiate `PunctuationForcedAlinger` by passing into it your g2p function. Finally, you can perform punctuation restoration by feeding in the offsets from the transcription model and the ground truth text.
 
 
 ```python
@@ -89,3 +106,5 @@ pfa(phoneme_offsets[0], text)
      {'phoneme': '!', 'start_time': 2.4, 'end_time': 2.4}]
 
 
+
+And there we go, notice how there are now punctuations in `phoneme_offsets`.

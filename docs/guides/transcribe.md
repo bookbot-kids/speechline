@@ -1,8 +1,17 @@
+# Performing Audio Transcription
+
+This guide will explain how to transcribe audio files using SpeechLine.
+
+First, load in the your transcription model by passing its Hugging Face model checkpoint into `Wav2Vec2Transcriber`
+
+
 ```python
 from speechline.transcribers import Wav2Vec2Transcriber
 
 transcriber = Wav2Vec2Transcriber("bookbot/wav2vec2-ljspeech-gruut")
 ```
+
+Next, you will need to transform your input audio file (given by `sample.wav`) into a `Dataset` format like the following
 
 
 ```python
@@ -12,6 +21,8 @@ dataset = Dataset.from_dict({"audio": ["sample.wav"]})
 dataset = dataset.cast_column("audio", Audio(sampling_rate=transcriber.sampling_rate))
 ```
 
+Once preprocessing is finished, simply pass the input data into the transcriber.
+
 
 ```python
 phoneme_offsets = transcriber.predict(dataset, output_offsets=True)
@@ -20,6 +31,8 @@ phoneme_offsets = transcriber.predict(dataset, output_offsets=True)
 
     Transcribing Audios:   0%|          | 0/1 [00:00<?, ?ex/s]
 
+
+The output format of the transcription model is shown below. It is a list of dictionary containing the transcribed `phoneme`, `start_time` and `end_time` stamps of the corresponding phoneme.
 
 
 ```python
@@ -41,6 +54,10 @@ phoneme_offsets
 
 
 
+You can manually check the model output by playing a segment (using the start and end timestamps) of your input audio file. 
+
+First, load your audio file.
+
 
 ```python
 from pydub import AudioSegment
@@ -61,6 +78,8 @@ audio
 
 
 
+You can use the following function to play a segment of your audio from a given offset
+
 
 ```python
 def play_segment(offsets, index: int):
@@ -69,6 +88,8 @@ def play_segment(offsets, index: int):
     print(offsets[index]["phoneme"])
     return audio[start * 1000 : end * 1000]
 ```
+
+Here are some examples of the phoneme segments
 
 
 ```python
