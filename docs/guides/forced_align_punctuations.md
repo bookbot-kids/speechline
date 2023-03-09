@@ -89,8 +89,3 @@ pfa(phoneme_offsets[0], text)
      {'phoneme': '!', 'start_time': 2.4, 'end_time': 2.4}]
 
 
-
-
-```python
-
-```

@@ -249,8 +249,3 @@ play_segment(phoneme_offsets[0], 8)
 
 
 
-
-
-```python
-
-```

@@ -4,7 +4,7 @@
 export PYTHONPATH = speechline
 
 check_dirs := examples speechline tests
-notebooks := $(wildcard notebooks/*.ipynb)
+notebooks := $(wildcard notebooks/*/*.ipynb)
 
 # runs checks on all files
 
@@ -32,5 +32,5 @@ test:
 
 nb2md:
 		for nb in $(notebooks) ; do \
-			jupyter nbconvert --to markdown $$nb ; \
+			jupyter nbconvert --to markdown $$nb --RegexRemovePreprocessor.patterns="['\\s*\\Z']" --output-dir docs/guides/; \
 		done
