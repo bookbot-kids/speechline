@@ -19,6 +19,9 @@
     <a href="https://github.com/bookbot-kids/speechline/blob/main/CONTRIBUTING.md">
         <img alt="contributing guidelines" src="https://img.shields.io/badge/Contributing-Guidelines-brightgreen">
     </a>
+    <a href="https://discord.gg/gqwTPyPxa6">
+        <img alt="chat on Discord" src="https://img.shields.io/discord/1001447685645148169?logo=discord">
+    </a>
 </p>
 
 SpeechLine is a speech labeling pipeline that handles end-to-end, offline, batch audio categorization, transcription, segmentation, and logging.

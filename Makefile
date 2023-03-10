@@ -30,7 +30,9 @@ cov:
 test:
 		tox -r
 
+# execute and convert notebooks to markdown guides
+
 nb2md:
 		for nb in $(notebooks) ; do \
-			jupyter nbconvert --to markdown $$nb --RegexRemovePreprocessor.patterns="['\\s*\\Z']" --output-dir docs/guides/; \
+			jupyter nbconvert --to markdown $$nb --execute --RegexRemovePreprocessor.patterns="['\\s*\\Z']" --output-dir docs/guides/; \
 		done
