@@ -2,7 +2,21 @@
 
 ## Install with pip
 
-Coming soon!
+The easiest way to install SpeechLine is via `pip`. 
+
+### Latest PyPI Release
+
+```sh
+pip install speechline
+```
+
+This will install the latest **released** version of SpeechLine from PyPI. However, it might not be up to date with the one found in git. We recommend installing via `pip` but cloning the latest `main` branch.
+
+### Latest Git Main Branch
+
+```sh
+pip install git+https://github.com/bookbot-kids/speechline.git
+```
 
 ## Editable Install
 
