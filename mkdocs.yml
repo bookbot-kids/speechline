@@ -69,6 +69,9 @@ nav:
       - Running SpeechLine:
           - AWS SageMaker: guides/sagemaker.md
           - Google Cloud Engine: guides/google-cloud.md
+      - Tutorials: 
+          - Force Aligning Punctuations: guides/forced_align_punctuations.md
+          - Transcribing Audios: guides/transcribe.md
   - API Reference:
       - Runner: reference/runner.md
       - Config: reference/config.md

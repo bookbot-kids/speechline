@@ -11,3 +11,4 @@ mkdocstrings==0.19.1
 mkdocstrings-python-legacy==0.2.3
 Pygments==2.14.0
 moto
+nbconvert
