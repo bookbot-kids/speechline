@@ -19,6 +19,7 @@ from typing import Dict, List, Union
 import numpy as np
 from pydub import AudioSegment
 
+
 def pydub_to_np(audio: AudioSegment) -> np.ndarray:
     """
     Converts pydub AudioSegment into `np.float32` of shape

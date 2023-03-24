@@ -13,13 +13,12 @@
 # limitations under the License.
 
 import os
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Union
 
 from datasets import Audio, Dataset
 from pydub import AudioSegment
 
 from ..modules import AudioModule
-
 from ..utils.io import (
     export_segment_audio_wav,
     export_segment_transcripts_tsv,
@@ -36,7 +35,7 @@ class Segmenter:
         outdir: str,
         offsets: List[Dict[str, Union[str, float]]],
         do_noise_classify: bool = False,
-        minimum_chunk_duration: float=1.0,
+        minimum_chunk_duration: float = 1.0,
         **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
@@ -106,26 +105,26 @@ class Segmenter:
         noise_classifier: AudioModule,
         noise_classifier_threshold: float,
         empty_tag: str = "<EMPTY>",
-        **kwargs
+        **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Classify empty tags as noise.
 
         Args:
-            segments (List[List[Dict[str, Union[str, float]]]]): 
+            segments (List[List[Dict[str, Union[str, float]]]]):
                 List of chunked segments with empty tag.
-            audio_path (str): 
+            audio_path (str):
                 Path to audio file to chunk.
-            noise_classifier (AudioModule): 
+            noise_classifier (AudioModule):
                 Audio Module to perform noise classification.
             noise_classifier_threshold (float):
                 Minimum probability threshold for multi label classification.
-            empty_tag (str, optional): 
-                Special empty tag. 
+            empty_tag (str, optional):
+                Special empty tag.
                 Defaults to `"<EMPTY>"`.
 
         Returns:
-            List[List[Dict[str, Union[str, float]]]]: 
+            List[List[Dict[str, Union[str, float]]]]:
                 Chunk segments with classified noise tags.
         """
         pos, empty_tag_pos = 0, {}
@@ -136,7 +135,7 @@ class Segmenter:
                     pos += 1
 
         # return original segments if no empty tags
-        if len(empty_tag_pos) == 0: 
+        if len(empty_tag_pos) == 0:
             return segments
 
         audio = AudioSegment.from_file(audio_path)
@@ -158,7 +157,9 @@ class Segmenter:
             "audio", Audio(sampling_rate=noise_classifier.sampling_rate)
         )
 
-        outputs = noise_classifier.predict(dataset, threshold=noise_classifier_threshold)
+        outputs = noise_classifier.predict(
+            dataset, threshold=noise_classifier_threshold
+        )
 
         for idx, predictions in enumerate(outputs):
             if len(predictions) > 0:
@@ -174,7 +175,7 @@ class Segmenter:
         segments: List[List[Dict[str, Union[str, float]]]],
         minimum_empty_duration: float,
         empty_tag: str = "<EMPTY>",
-        **kwargs
+        **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Inserts special `<EMPTY>` tag to mark for noise classification.

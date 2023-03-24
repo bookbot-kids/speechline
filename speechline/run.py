@@ -160,7 +160,7 @@ class Runner:
                 noise_classifier=noise_classifier,
                 minimum_empty_duration=minimum_empty_duration,
                 minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
-                noise_classifier_threshold = noise_classifier_threshold,
+                noise_classifier_threshold=noise_classifier_threshold,
                 silence_duration=config.segmenter.silence_duration,
                 ground_truth=tokenizer(ground_truth),
             )
