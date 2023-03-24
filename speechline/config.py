@@ -44,10 +44,13 @@ class NoiseClassifierConfig:
     Args:
         model (str):
             HuggingFace Hub model hub checkpoint.
-        min_silence_duration (float, optional):
+        min_empty_duration (float, optional):
             Minimum non-transcribed segment duration to be segmented,
             and passed to noise classifier.
             Defaults to `1.0` seconds.
+        threshold (float, optional):
+            The probability threshold for the multi label classification.
+            Defaults to `0.3`.
         batch_size (int, optional):
             Batch size during inference. Defaults to `1`.
 
@@ -55,7 +58,7 @@ class NoiseClassifierConfig:
 
     model: str
     minimum_empty_duration: float = 1.0
-    threshold: float = 3.0
+    threshold: float = 0.3
     batch_size: int = 1
 
 

@@ -108,7 +108,26 @@ class Segmenter:
         empty_tag: str = "<EMPTY>",
         **kwargs
     ) -> List[List[Dict[str, Union[str, float]]]]:
+        """
+        Classify empty tags as noise.
 
+        Args:
+            segments (List[List[Dict[str, Union[str, float]]]]): 
+                List of chunked segments with empty tag.
+            audio_path (str): 
+                Path to audio file to chunk.
+            noise_classifier (AudioModule): 
+                Audio Module to perform noise classification.
+            noise_classifier_threshold (float):
+                Minimum probability threshold for multi label classification.
+            empty_tag (str, optional): 
+                Special empty tag. 
+                Defaults to `"<EMPTY>"`.
+
+        Returns:
+            List[List[Dict[str, Union[str, float]]]]: 
+                Chunk segments with classified noise tags.
+        """
         pos, empty_tag_pos = 0, {}
         for i, segment in enumerate(segments):
             for j, offset in enumerate(segment):
