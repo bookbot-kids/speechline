@@ -1,127 +1,127 @@
 [
   {
-    "phoneme": "s",
+    "end_time": 0.02,
     "start_time": 0.0,
-    "end_time": 0.02
+    "text": "s"
   },
   {
-    "phoneme": "\u0259",
+    "end_time": 0.3,
     "start_time": 0.26,
-    "end_time": 0.3
+    "text": "\u0259"
   },
   {
-    "phoneme": "b",
+    "end_time": 0.4,
     "start_time": 0.36,
-    "end_time": 0.4
+    "text": "b"
   },
   {
-    "phoneme": "l",
+    "end_time": 0.52,
     "start_time": 0.5,
-    "end_time": 0.52
+    "text": "l"
   },
   {
-    "phoneme": "\u025b",
+    "end_time": 0.56,
     "start_time": 0.54,
-    "end_time": 0.56
+    "text": "\u025b"
   },
   {
-    "phoneme": "n",
+    "end_time": 0.62,
     "start_time": 0.6,
-    "end_time": 0.62
+    "text": "n"
   },
   {
-    "phoneme": "s",
+    "end_time": 0.7,
     "start_time": 0.68,
-    "end_time": 0.7
+    "text": "s"
   },
   {
-    "phoneme": "\u026a",
+    "end_time": 0.76,
     "start_time": 0.74,
-    "end_time": 0.76
+    "text": "\u026a"
   },
   {
-    "phoneme": "p",
+    "end_time": 0.84,
     "start_time": 0.82,
-    "end_time": 0.84
+    "text": "p"
   },
   {
-    "phoneme": "z",
+    "end_time": 0.9,
     "start_time": 0.88,
-    "end_time": 0.9
+    "text": "z"
   },
   {
-    "phoneme": "\u0259",
+    "end_time": 1.08,
     "start_time": 1.04,
-    "end_time": 1.08
+    "text": "\u0259"
   },
   {
-    "phoneme": "f",
+    "end_time": 1.66,
     "start_time": 1.62,
-    "end_time": 1.66
+    "text": "f"
   },
   {
-    "phoneme": "i",
+    "end_time": 1.72,
     "start_time": 1.7,
-    "end_time": 1.72
+    "text": "i"
   },
   {
-    "phoneme": "t",
+    "end_time": 1.8,
     "start_time": 1.78,
-    "end_time": 1.8
+    "text": "t"
   },
   {
-    "phoneme": "p",
+    "end_time": 1.82,
     "start_time": 1.8,
-    "end_time": 1.82
+    "text": "p"
   },
   {
-    "phoneme": "l",
+    "end_time": 1.88,
     "start_time": 1.86,
-    "end_time": 1.88
+    "text": "l"
   },
   {
-    "phoneme": "i",
+    "end_time": 1.94,
     "start_time": 1.92,
-    "end_time": 1.94
+    "text": "i"
   },
   {
-    "phoneme": "s",
+    "end_time": 2.08,
     "start_time": 2.04,
-    "end_time": 2.08
+    "text": "s"
   },
   {
-    "phoneme": "\u00e6",
+    "end_time": 2.14,
     "start_time": 2.12,
-    "end_time": 2.14
+    "text": "\u00e6"
   },
   {
-    "phoneme": "\u00e6",
+    "end_time": 2.3,
     "start_time": 2.28,
-    "end_time": 2.3
+    "text": "\u00e6"
   },
   {
-    "phoneme": "p",
+    "end_time": 2.42,
     "start_time": 2.4,
-    "end_time": 2.42
+    "text": "p"
   },
   {
-    "phoneme": "l",
+    "end_time": 2.48,
     "start_time": 2.46,
-    "end_time": 2.48
+    "text": "l"
   },
   {
-    "phoneme": "\u00e6",
+    "end_time": 2.54,
     "start_time": 2.52,
-    "end_time": 2.54
+    "text": "\u00e6"
   },
   {
-    "phoneme": "p",
+    "end_time": 2.64,
     "start_time": 2.62,
-    "end_time": 2.64
+    "text": "p"
   },
   {
-    "phoneme": "\u0259",
+    "end_time": 2.8,
     "start_time": 2.78,
-    "end_time": 2.8
+    "text": "\u0259"
   }
 ]

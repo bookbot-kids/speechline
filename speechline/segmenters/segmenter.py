@@ -183,11 +183,12 @@ class Segmenter:
         if len(segments) == 0:
             return [[{}]]
 
+
         if do_noise_classify:
             segments = self.insert_silence_tag(segments, min_silence_duration)
             classifier = DistilAstNoiseClassifier(noise_classifier)
             segments = self.classify_noise(segments, classifier, audio_path)
-
+    
         audio = AudioSegment.from_file(audio_path)
         audio_segments: List[AudioSegment] = [
             audio[s[0]["start_time"] * 1000 : s[-1]["end_time"] * 1000]

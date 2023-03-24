@@ -1,47 +1,47 @@
 [
   {
-    "phoneme": "\u026a",
+    "end_time": 0.02,
     "start_time": 0.0,
-    "end_time": 0.02
+    "text": "\u026a"
   },
   {
-    "phoneme": "t",
+    "end_time": 0.3,
     "start_time": 0.26,
-    "end_time": 0.3
+    "text": "t"
   },
   {
-    "phoneme": "\u026a",
+    "end_time": 0.36,
     "start_time": 0.34,
-    "end_time": 0.36
+    "text": "\u026a"
   },
   {
-    "phoneme": "z",
+    "end_time": 0.44,
     "start_time": 0.42,
-    "end_time": 0.44
+    "text": "z"
   },
   {
-    "phoneme": "n",
+    "end_time": 0.54,
     "start_time": 0.5,
-    "end_time": 0.54
+    "text": "n"
   },
   {
-    "phoneme": "o\u028a",
+    "end_time": 0.58,
     "start_time": 0.54,
-    "end_time": 0.58
+    "text": "o\u028a"
   },
   {
-    "phoneme": "t",
+    "end_time": 0.62,
     "start_time": 0.58,
-    "end_time": 0.62
+    "text": "t"
   },
   {
-    "phoneme": "\u028c",
+    "end_time": 0.78,
     "start_time": 0.76,
-    "end_time": 0.78
+    "text": "\u028c"
   },
   {
-    "phoneme": "p",
+    "end_time": 0.94,
     "start_time": 0.92,
-    "end_time": 0.94
+    "text": "p"
   }
 ]

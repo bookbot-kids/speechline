@@ -19,7 +19,7 @@ from pathlib import Path
 import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
-from speechline.classifiers import Wav2Vec2Classifier
+from speechline.classifiers import Wav2Vec2Classifier, DistilAstNoiseClassifier
 from speechline.config import Config, SegmenterConfig, TranscriberConfig
 from speechline.run import Runner
 from speechline.segmenters import SilenceSegmenter
@@ -145,6 +145,8 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
 
     segmenter = SilenceSegmenter()
     segments = []
+    noise_classifier_checkpoint = "bookbot/distil-ast-audioset"
+    classifier = DistilAstNoiseClassifier(noise_classifier_checkpoint)
     for audio_path, offsets in zip(df["audio"], output_offsets):
         json_path = Path(audio_path).with_suffix(".json")
         export_transcripts_json(json_path, offsets)
@@ -158,83 +160,90 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
             minimum_chunk_duration=0.7,
             silence_duration=0.3,
         )
+
+        segment = segmenter.insert_silence_tag(segment, 0.2)
+        segment = segmenter.classify_noise(segment, classifier, audio_path)
         segments.append(segment)
 
     assert sum([len(s) for s in segments]) + len(df) == len(glob(f"{tmpdir}/*/*.wav"))
     assert segments == [
         [
             [
-                {"text": "h", "start_time": 0.0, "end_time": 0.04},
-                {"text": "h", "start_time": 0.14, "end_time": 0.2},
-                {"text": "ɚ", "start_time": 0.24, "end_time": 0.28},
-                {"text": "i", "start_time": 0.42, "end_time": 0.44},
-                {"text": "d", "start_time": 0.5, "end_time": 0.54},
-                {"text": "ʌ", "start_time": 0.64, "end_time": 0.66},
-                {"text": "m", "start_time": 0.7, "end_time": 0.74},
-                {"text": "b", "start_time": 0.78, "end_time": 0.82},
-                {"text": "ɹ", "start_time": 0.84, "end_time": 0.9},
-                {"text": "ɛ", "start_time": 0.92, "end_time": 0.94},
-                {"text": "l", "start_time": 1.0, "end_time": 1.04},
-                {"text": "ə", "start_time": 1.08, "end_time": 1.12},
-                {"text": "ɪ", "start_time": 1.36, "end_time": 1.38},
-                {"text": "z", "start_time": 1.54, "end_time": 1.58},
-                {"text": "d͡ʒ", "start_time": 1.58, "end_time": 1.62},
-                {"text": "ʌ", "start_time": 1.62, "end_time": 1.66},
-                {"text": "s", "start_time": 1.72, "end_time": 1.76},
-                {"text": "t", "start_time": 1.78, "end_time": 1.82},
-                {"text": "ð", "start_time": 1.86, "end_time": 1.88},
-                {"text": "ə", "start_time": 1.92, "end_time": 1.94},
-                {"text": "b", "start_time": 1.98, "end_time": 2.0},
-                {"text": "ɛ", "start_time": 2.04, "end_time": 2.06},
-                {"text": "s", "start_time": 2.22, "end_time": 2.26},
-                {"text": "t", "start_time": 2.38, "end_time": 2.4},
+                {"start_time": 0.0, "end_time": 0.04, "text": "h"},
+                {"start_time": 0.14, "end_time": 0.2, "text": "h"},
+                {"start_time": 0.24, "end_time": 0.28, "text": "ɚ"},
+                {"start_time": 0.42, "end_time": 0.44, "text": "i"},
+                {"start_time": 0.5, "end_time": 0.54, "text": "d"},
+                {"start_time": 0.64, "end_time": 0.66, "text": "ʌ"},
+                {"start_time": 0.7, "end_time": 0.74, "text": "m"},
+                {"start_time": 0.78, "end_time": 0.82, "text": "b"},
+                {"start_time": 0.84, "end_time": 0.9, "text": "ɹ"},
+                {"start_time": 0.92, "end_time": 0.94, "text": "ɛ"},
+                {"start_time": 1.0, "end_time": 1.04, "text": "l"},
+                {"start_time": 1.08, "end_time": 1.12, "text": "ə"},
+                {"start_time": 1.12, "end_time": 1.36, "text": "<SIL>"},
+                {"start_time": 1.36, "end_time": 1.38, "text": "ɪ"},
+                {"start_time": 1.54, "end_time": 1.58, "text": "z"},
+                {"start_time": 1.58, "end_time": 1.62, "text": "d͡ʒ"},
+                {"start_time": 1.62, "end_time": 1.66, "text": "ʌ"},
+                {"start_time": 1.72, "end_time": 1.76, "text": "s"},
+                {"start_time": 1.78, "end_time": 1.82, "text": "t"},
+                {"start_time": 1.86, "end_time": 1.88, "text": "ð"},
+                {"start_time": 1.92, "end_time": 1.94, "text": "ə"},
+                {"start_time": 1.98, "end_time": 2.0, "text": "b"},
+                {"start_time": 2.04, "end_time": 2.06, "text": "ɛ"},
+                {"start_time": 2.22, "end_time": 2.26, "text": "s"},
+                {"start_time": 2.38, "end_time": 2.4, "text": "t"},
             ]
         ],
         [
             [
-                {"text": "ɪ", "start_time": 0.0, "end_time": 0.02},
-                {"text": "t", "start_time": 0.26, "end_time": 0.3},
-                {"text": "ɪ", "start_time": 0.34, "end_time": 0.36},
-                {"text": "z", "start_time": 0.42, "end_time": 0.44},
-                {"text": "n", "start_time": 0.5, "end_time": 0.54},
-                {"text": "oʊ", "start_time": 0.54, "end_time": 0.58},
-                {"text": "t", "start_time": 0.58, "end_time": 0.62},
-                {"text": "ʌ", "start_time": 0.76, "end_time": 0.78},
-                {"text": "p", "start_time": 0.92, "end_time": 0.94},
+                {"start_time": 0.0, "end_time": 0.02, "text": "ɪ"},
+                {"start_time": 0.02, "end_time": 0.26, "text": "<SIL>"},
+                {"start_time": 0.26, "end_time": 0.3, "text": "t"},
+                {"start_time": 0.34, "end_time": 0.36, "text": "ɪ"},
+                {"start_time": 0.42, "end_time": 0.44, "text": "z"},
+                {"start_time": 0.5, "end_time": 0.54, "text": "n"},
+                {"start_time": 0.54, "end_time": 0.58, "text": "oʊ"},
+                {"start_time": 0.58, "end_time": 0.62, "text": "t"},
+                {"start_time": 0.76, "end_time": 0.78, "text": "ʌ"},
+                {"start_time": 0.92, "end_time": 0.94, "text": "p"},
             ]
         ],
         [
             [
-                {"text": "s", "start_time": 0.0, "end_time": 0.02},
-                {"text": "ə", "start_time": 0.26, "end_time": 0.3},
-                {"text": "b", "start_time": 0.36, "end_time": 0.4},
-                {"text": "l", "start_time": 0.5, "end_time": 0.52},
-                {"text": "ɛ", "start_time": 0.54, "end_time": 0.56},
-                {"text": "n", "start_time": 0.6, "end_time": 0.62},
-                {"text": "s", "start_time": 0.68, "end_time": 0.7},
-                {"text": "ɪ", "start_time": 0.74, "end_time": 0.76},
-                {"text": "p", "start_time": 0.82, "end_time": 0.84},
-                {"text": "z", "start_time": 0.88, "end_time": 0.9},
-                {"text": "ə", "start_time": 1.04, "end_time": 1.08},
+                {"start_time": 0.0, "end_time": 0.02, "text": "s"},
+                {"start_time": 0.02, "end_time": 0.26, "text": "<SIL>"},
+                {"start_time": 0.26, "end_time": 0.3, "text": "ə"},
+                {"start_time": 0.36, "end_time": 0.4, "text": "b"},
+                {"start_time": 0.5, "end_time": 0.52, "text": "l"},
+                {"start_time": 0.54, "end_time": 0.56, "text": "ɛ"},
+                {"start_time": 0.6, "end_time": 0.62, "text": "n"},
+                {"start_time": 0.68, "end_time": 0.7, "text": "s"},
+                {"start_time": 0.74, "end_time": 0.76, "text": "ɪ"},
+                {"start_time": 0.82, "end_time": 0.84, "text": "p"},
+                {"start_time": 0.88, "end_time": 0.9, "text": "z"},
+                {"start_time": 1.04, "end_time": 1.08, "text": "ə"},
             ],
             [
-                {"text": "f", "start_time": 0.0, "end_time": 0.04},
-                {"text": "i", "start_time": 0.08, "end_time": 0.1},
-                {"text": "t", "start_time": 0.16, "end_time": 0.18},
-                {"text": "p", "start_time": 0.18, "end_time": 0.2},
-                {"text": "l", "start_time": 0.24, "end_time": 0.26},
-                {"text": "i", "start_time": 0.3, "end_time": 0.32},
-                {"text": "s", "start_time": 0.42, "end_time": 0.46},
-                {"text": "æ", "start_time": 0.5, "end_time": 0.52},
-                {"text": "æ", "start_time": 0.66, "end_time": 0.68},
-                {"text": "p", "start_time": 0.78, "end_time": 0.8},
-                {"text": "l", "start_time": 0.84, "end_time": 0.86},
-                {"text": "æ", "start_time": 0.9, "end_time": 0.92},
-                {"text": "p", "start_time": 1.0, "end_time": 1.02},
-                {"text": "ə", "start_time": 1.16, "end_time": 1.18},
+                {"start_time": 0.0, "end_time": 0.04, "text": "f"},
+                {"start_time": 0.08, "end_time": 0.1, "text": "i"},
+                {"start_time": 0.16, "end_time": 0.18, "text": "t"},
+                {"start_time": 0.18, "end_time": 0.2, "text": "p"},
+                {"start_time": 0.24, "end_time": 0.26, "text": "l"},
+                {"start_time": 0.3, "end_time": 0.32, "text": "i"},
+                {"start_time": 0.42, "end_time": 0.46, "text": "s"},
+                {"start_time": 0.5, "end_time": 0.52, "text": "æ"},
+                {"start_time": 0.66, "end_time": 0.68, "text": "æ"},
+                {"start_time": 0.78, "end_time": 0.8, "text": "p"},
+                {"start_time": 0.84, "end_time": 0.86, "text": "l"},
+                {"start_time": 0.9, "end_time": 0.92, "text": "æ"},
+                {"start_time": 1.0, "end_time": 1.02, "text": "p"},
+                {"start_time": 1.16, "end_time": 1.18, "text": "ə"},
             ],
         ],
     ]
+
 
 
 def test_whisper_transcriber(datadir):
