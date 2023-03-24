@@ -19,7 +19,7 @@ from pathlib import Path
 import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
-from speechline.classifiers import Wav2Vec2Classifier
+from speechline.classifiers import ASTClassifier, Wav2Vec2Classifier
 from speechline.config import Config, SegmenterConfig, TranscriberConfig
 from speechline.run import Runner
 from speechline.segmenters import SilenceSegmenter
@@ -145,6 +145,9 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
 
     segmenter = SilenceSegmenter()
     segments = []
+    noise_classifier_checkpoint = "bookbot/distil-ast-audioset"
+    noise_classifier = ASTClassifier(noise_classifier_checkpoint)
+
     for audio_path, offsets in zip(df["audio"], output_offsets):
         json_path = Path(audio_path).with_suffix(".json")
         export_transcripts_json(json_path, offsets)
@@ -155,7 +158,11 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
             audio_path,
             tmpdir,
             offsets,
+            do_noise_classify=True,
+            noise_classifier=noise_classifier,
+            minimum_empty_duration=0.1,
             minimum_chunk_duration=0.7,
+            noise_classifier_threshold=0.3,
             silence_duration=0.3,
         )
         segments.append(segment)
@@ -165,10 +172,13 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         [
             [
                 {"text": "h", "start_time": 0.0, "end_time": 0.04},
+                {"text": "<EMPTY>", "start_time": 0.04, "end_time": 0.14},
                 {"text": "h", "start_time": 0.14, "end_time": 0.2},
                 {"text": "ɚ", "start_time": 0.24, "end_time": 0.28},
+                {"text": "<Speech>", "start_time": 0.28, "end_time": 0.42},
                 {"text": "i", "start_time": 0.42, "end_time": 0.44},
                 {"text": "d", "start_time": 0.5, "end_time": 0.54},
+                {"text": "<EMPTY>", "start_time": 0.54, "end_time": 0.64},
                 {"text": "ʌ", "start_time": 0.64, "end_time": 0.66},
                 {"text": "m", "start_time": 0.7, "end_time": 0.74},
                 {"text": "b", "start_time": 0.78, "end_time": 0.82},
@@ -176,7 +186,9 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"text": "ɛ", "start_time": 0.92, "end_time": 0.94},
                 {"text": "l", "start_time": 1.0, "end_time": 1.04},
                 {"text": "ə", "start_time": 1.08, "end_time": 1.12},
+                {"text": "<EMPTY>", "start_time": 1.12, "end_time": 1.36},
                 {"text": "ɪ", "start_time": 1.36, "end_time": 1.38},
+                {"text": "<EMPTY>", "start_time": 1.38, "end_time": 1.54},
                 {"text": "z", "start_time": 1.54, "end_time": 1.58},
                 {"text": "d͡ʒ", "start_time": 1.58, "end_time": 1.62},
                 {"text": "ʌ", "start_time": 1.62, "end_time": 1.66},
@@ -186,28 +198,35 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"text": "ə", "start_time": 1.92, "end_time": 1.94},
                 {"text": "b", "start_time": 1.98, "end_time": 2.0},
                 {"text": "ɛ", "start_time": 2.04, "end_time": 2.06},
+                {"text": "<Speech>", "start_time": 2.06, "end_time": 2.22},
                 {"text": "s", "start_time": 2.22, "end_time": 2.26},
+                {"text": "<EMPTY>", "start_time": 2.26, "end_time": 2.38},
                 {"text": "t", "start_time": 2.38, "end_time": 2.4},
             ]
         ],
         [
             [
                 {"text": "ɪ", "start_time": 0.0, "end_time": 0.02},
+                {"text": "<EMPTY>", "start_time": 0.02, "end_time": 0.26},
                 {"text": "t", "start_time": 0.26, "end_time": 0.3},
                 {"text": "ɪ", "start_time": 0.34, "end_time": 0.36},
                 {"text": "z", "start_time": 0.42, "end_time": 0.44},
                 {"text": "n", "start_time": 0.5, "end_time": 0.54},
                 {"text": "oʊ", "start_time": 0.54, "end_time": 0.58},
                 {"text": "t", "start_time": 0.58, "end_time": 0.62},
+                {"text": "<EMPTY>", "start_time": 0.62, "end_time": 0.76},
                 {"text": "ʌ", "start_time": 0.76, "end_time": 0.78},
+                {"text": "<EMPTY>", "start_time": 0.78, "end_time": 0.92},
                 {"text": "p", "start_time": 0.92, "end_time": 0.94},
             ]
         ],
         [
             [
                 {"text": "s", "start_time": 0.0, "end_time": 0.02},
+                {"text": "<EMPTY>", "start_time": 0.02, "end_time": 0.26},
                 {"text": "ə", "start_time": 0.26, "end_time": 0.3},
                 {"text": "b", "start_time": 0.36, "end_time": 0.4},
+                {"text": "<EMPTY>", "start_time": 0.4, "end_time": 0.5},
                 {"text": "l", "start_time": 0.5, "end_time": 0.52},
                 {"text": "ɛ", "start_time": 0.54, "end_time": 0.56},
                 {"text": "n", "start_time": 0.6, "end_time": 0.62},
@@ -215,6 +234,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"text": "ɪ", "start_time": 0.74, "end_time": 0.76},
                 {"text": "p", "start_time": 0.82, "end_time": 0.84},
                 {"text": "z", "start_time": 0.88, "end_time": 0.9},
+                {"text": "<Speech>", "start_time": 0.9, "end_time": 1.04},
                 {"text": "ə", "start_time": 1.04, "end_time": 1.08},
             ],
             [
@@ -224,13 +244,17 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"text": "p", "start_time": 0.18, "end_time": 0.2},
                 {"text": "l", "start_time": 0.24, "end_time": 0.26},
                 {"text": "i", "start_time": 0.3, "end_time": 0.32},
+                {"text": "<EMPTY>", "start_time": 0.32, "end_time": 0.42},
                 {"text": "s", "start_time": 0.42, "end_time": 0.46},
                 {"text": "æ", "start_time": 0.5, "end_time": 0.52},
+                {"text": "<EMPTY>", "start_time": 0.52, "end_time": 0.66},
                 {"text": "æ", "start_time": 0.66, "end_time": 0.68},
+                {"text": "<EMPTY>", "start_time": 0.68, "end_time": 0.78},
                 {"text": "p", "start_time": 0.78, "end_time": 0.8},
                 {"text": "l", "start_time": 0.84, "end_time": 0.86},
                 {"text": "æ", "start_time": 0.9, "end_time": 0.92},
                 {"text": "p", "start_time": 1.0, "end_time": 1.02},
+                {"text": "<Speech>", "start_time": 1.02, "end_time": 1.16},
                 {"text": "ə", "start_time": 1.16, "end_time": 1.18},
             ],
         ],

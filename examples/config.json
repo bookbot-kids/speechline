@@ -11,6 +11,12 @@
         "return_timestamps": "word",
         "chunk_length_s": 30
     },
+    "do_noise_classify": true,
+    "noise_classifier": {
+        "model": "bookbot/distil-ast-audioset",
+        "minimum_empty_duration": 0.3,
+        "threshold": 0.2
+    },
     "segmenter": {
         "type": "word_overlap",
         "minimum_chunk_duration": 1.0

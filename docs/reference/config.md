@@ -12,19 +12,25 @@
     },
     "transcriber": {
         "type": "wav2vec2",
-        "model": "facebook/wav2vec2-base-960h",
+        "model": "bookbot/wav2vec2-bookbot-en-lm",
         "return_timestamps": "word",
         "chunk_length_s": 30
     },
+    "do_noise_classify": true,
+    "noise_classifier": {
+        "model": "bookbot/distil-ast-audioset",
+        "minimum_empty_duration": 0.3,
+        "threshold": 0.2
+    },
     "segmenter": {
-        "type": "silence",
-        "silence_duration": 3.0,
-        "minimum_chunk_duration": 0.2
+        "type": "word_overlap",
+        "minimum_chunk_duration": 1.0
     }
 }
 ```
 
 ---
+::: speechline.config.NoiseClassifierConfig
 
 ::: speechline.config.ClassifierConfig
 

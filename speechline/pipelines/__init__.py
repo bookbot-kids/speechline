@@ -13,5 +13,9 @@
 # limitations under the License.
 
 from .audio_classification import AudioClassificationWithPaddingPipeline
+from .audio_multilabel_classification import AudioMultiLabelClassificationPipeline
 
-__all__ = ["AudioClassificationWithPaddingPipeline"]
+__all__ = [
+    "AudioClassificationWithPaddingPipeline",
+    "AudioMultiLabelClassificationPipeline",
+]

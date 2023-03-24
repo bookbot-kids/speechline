@@ -33,11 +33,11 @@ if __name__ == "__main__":
         long_description_content_type="text/markdown",
         author="w11wo",
         author_email="wilson@bookbotkids.com",
-        url="https://github.com/bookbot-kids/speech-pipeline-v2",
+        url="https://github.com/bookbot-kids/speechline",
         license="Apache License",
         packages=find_packages(),
         install_requires=requirements,
         include_package_data=True,
-        platforms=["linux", "unix", "windows"],
+        platforms=["linux"],
         python_requires=">=3.7",
     )

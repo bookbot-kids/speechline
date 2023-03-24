@@ -37,6 +37,32 @@ class ClassifierConfig:
 
 
 @dataclass
+class NoiseClassifierConfig:
+    """
+    Noise classifier config.
+
+    Args:
+        model (str):
+            HuggingFace Hub model hub checkpoint.
+        min_empty_duration (float, optional):
+            Minimum non-transcribed segment duration to be segmented,
+            and passed to noise classifier.
+            Defaults to `1.0` seconds.
+        threshold (float, optional):
+            The probability threshold for the multi label classification.
+            Defaults to `0.3`.
+        batch_size (int, optional):
+            Batch size during inference. Defaults to `1`.
+
+    """
+
+    model: str
+    minimum_empty_duration: float = 1.0
+    threshold: float = 0.3
+    batch_size: int = 1
+
+
+@dataclass
 class TranscriberConfig:
     """
     Audio transcriber config.
@@ -112,10 +138,14 @@ class Config:
     def __post_init__(self):
         config = json.load(open(self.path))
         self.do_classify = config.get("do_classify", False)
+        self.do_noise_classify = config.get("do_noise_classify", False)
         self.filter_empty_transcript = config.get("filter_empty_transcript", False)
 
         if self.do_classify:
             self.classifier = ClassifierConfig(**config["classifier"])
+
+        if self.do_noise_classify:
+            self.noise_classifier = NoiseClassifierConfig(**config["noise_classifier"])
 
         self.transcriber = TranscriberConfig(**config["transcriber"])
         self.segmenter = SegmenterConfig(**config["segmenter"])

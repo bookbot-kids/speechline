@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .ast import ASTClassifier
 from .wav2vec2 import Wav2Vec2Classifier
 
-__all__ = ["Wav2Vec2Classifier"]
+__all__ = ["Wav2Vec2Classifier", "ASTClassifier"]

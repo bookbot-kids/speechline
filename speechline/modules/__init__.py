@@ -14,6 +14,12 @@
 
 from .audio_classifier import AudioClassifier
 from .audio_module import AudioModule
+from .audio_multilabel_classifier import AudioMultiLabelClassifier
 from .audio_transcriber import AudioTranscriber
 
-__all__ = ["AudioModule", "AudioClassifier", "AudioTranscriber"]
+__all__ = [
+    "AudioModule",
+    "AudioClassifier",
+    "AudioTranscriber",
+    "AudioMultiLabelClassifier",
+]

@@ -16,7 +16,28 @@ import json
 import os
 from typing import Dict, List, Union
 
+import numpy as np
 from pydub import AudioSegment
+
+
+def pydub_to_np(audio: AudioSegment) -> np.ndarray:
+    """
+    Converts pydub AudioSegment into `np.float32` of shape
+    `[duration_in_seconds * sample_rate, channels]`,
+    where each value is in range `[-1.0, 1.0]`.
+    Source: [StackOverflow](https://stackoverflow.com/questions/38015319/how-to-create-a-numpy-array-from-a-pydub-audiosegment/66922265#66922265). # noqa: E501
+
+    Args:
+        audio (AudioSegment):
+            AudioSegment to convert.
+
+    Returns:
+        np.ndarray:
+            Resultant NumPy array of AudioSegment.
+    """
+    return np.array(audio.get_array_of_samples(), dtype=np.float32).reshape(
+        (-1, audio.channels)
+    ) / (1 << (8 * audio.sample_width - 1))
 
 
 def export_transcripts_json(
