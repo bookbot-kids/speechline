@@ -13,153 +13,36 @@
 # limitations under the License.
 
 import os
-import numpy as np
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Optional
 
+from datasets import Audio, Dataset
 from pydub import AudioSegment
-from speechline.classifiers import DistilAstNoiseClassifier
-from datasets import Dataset, Audio
+
+from ..modules import AudioModule
 
 from ..utils.io import (
     export_segment_audio_wav,
     export_segment_transcripts_tsv,
     get_chunk_path,
     get_outdir_path,
+    pydub_to_np,
 )
 
 
 class Segmenter:
-    def pydub_to_np(self, audio):
-        """
-        Converts pydub audio segment into np.float32 of shape [duration_in_seconds*sample_rate, channels],
-        where each value is in range [-1.0, 1.0].
-        Returns tuple (audio_np_array, sample_rate).
-        """
-        return (
-            np.array(audio.get_array_of_samples(), dtype=np.float32).reshape(
-                (-1, audio.channels)
-            )
-            / (1 << (8 * audio.sample_width - 1)),
-            audio.frame_rate,
-        )
-
-    def classify_noise(self, segments, classifier, audio_path):
-        # classify and insert noise here
-        audio_arrays = []
-        audio = AudioSegment.from_file(audio_path)
-        for segment in segments:
-            for word in segment:
-                if word["text"] == "<NOISE>":
-                    audio_segment: List[AudioSegment] = audio[
-                        word["start_time"] * 1000 : word["end_time"] * 1000
-                    ]
-                    audio_array, sr = self.pydub_to_np(audio_segment)
-                    audio_arrays.append(
-                        {"path": None, "array": audio_array, "sampling_rate": sr}
-                    )
-
-        if not audio_arrays:
-            return segments
-
-        audio_dataset = Dataset.from_dict({"audio": audio_arrays}).cast_column(
-            "audio", Audio()
-        )
-        preds = classifier.predict(audio_dataset, threshold=0.2)
-
-        i = 0
-        for segment in segments:
-            for word in segment:
-                if word["text"] == "<NOISE>":
-                    if preds[i]:
-                        max_idx = max(
-                            range(len(preds[i])),
-                            key=lambda index: preds[i][index]["score"],
-                        )
-                        word["text"] = f"<{preds[i][max_idx]['label']}>"
-                    else:
-                        word["text"] = "<SIL>"
-                    i += 1
-
-        return segments
-
-    def insert_silence_tag(
-        self, segments: List[List[Dict[str, Union[str, float]]]], min_silence_duration
-    ):
-        new_segments = []
-        for segment in segments:
-            segment2 = []
-
-            for curr, next in zip(segment, segment[1:]):
-                segment2.append(
-                    {
-                        "start_time": curr["start_time"],
-                        "end_time": curr["end_time"],
-                        "text": curr["text"],
-                    }
-                )
-
-                if (
-                    round(next["start_time"] - curr["end_time"], 3)
-                    >= min_silence_duration
-                ):
-                    segment2.append(
-                        {
-                            "start_time": curr["end_time"],
-                            "end_time": next["start_time"],
-                            "text": f"<NOISE>",
-                        }
-                    )
-
-            segment2.append(
-                {
-                    "start_time": next["start_time"],
-                    "end_time": next["end_time"],
-                    "text": next["text"],
-                }
-            )
-
-            new_segments.append(segment2)
-        return new_segments
-
-    def _shift_offsets(
-        self, offset: List[Dict[str, Union[str, float]]]
-    ) -> List[Dict[str, Union[str, float]]]:
-        """
-        Shift start and end time of offsets by index start time.
-        Subtracts all start and end times by index start time.
-
-        Args:
-            offset (List[Dict[str, Union[str, float]]]):
-                Offsets to shift.
-
-        Returns:
-            List[Dict[str, Union[str, float]]]:
-                Shifted offsets.
-        """
-        index_start = offset[0]["start_time"]
-        shifted_offset = [
-            {
-                "text": o["text"],
-                "start_time": round(o["start_time"] - index_start, 3),
-                "end_time": round(o["end_time"] - index_start, 3),
-            }
-            for o in offset
-        ]
-        return shifted_offset
-
     def chunk_audio_segments(
         self,
         audio_path: str,
         outdir: str,
         offsets: List[Dict[str, Union[str, float]]],
-        minimum_chunk_duration: float = 1.0,
-        noise_classifier="MIT/ast-finetuned-audioset-10-10-0.4593",
         do_noise_classify: bool = False,
-        min_silence_duration: float = 0.3,
+        noise_classifier: Optional[AudioModule] = None,
+        minimum_empty_duration_s: float = 0.3,
+        minimum_chunk_duration: float = 1.0,
         **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
-        Chunks an audio file based on its phoneme offsets.
+        Chunks an audio file based on its offsets.
         Generates and exports WAV audio chunks and aligned TSV phoneme transcripts.
 
         Args:
@@ -170,25 +53,31 @@ class Segmenter:
                 Per-region subfolders will be generated under this directory.
             offsets (List[Dict[str, Union[str, float]]]):
                 List of phoneme offsets.
+            do_noise_classify (bool, optional):
+                Whether to perform noise classification on empty chunks.
+                Defaults to `False`.
+            noise_classifier (Optional[AudioModule], optional):
+                Model to use for noise classification. Defaults to `None`.
+            minimum_empty_duration_s (float, optional):
+                Minimum empty duration in seconds to perform noise classification.
+                Defaults to 1.0 second.
             minimum_chunk_duration (float, optional):
                 Minimum chunk duration (in seconds) to be exported.
-                Defaults to 1.0 second.
+                Defaults to 0.3 second.
 
         Returns:
             List[List[Dict[str, Union[str, float]]]]:
-                List of phoneme offsets for every segment.
+                List of offsets for every segment.
         """
         segments = self.chunk_offsets(offsets, **kwargs)
         # skip empty segments (undetected transcripts)
         if len(segments) == 0:
             return [[{}]]
 
-
         if do_noise_classify:
-            segments = self.insert_silence_tag(segments, min_silence_duration)
-            classifier = DistilAstNoiseClassifier(noise_classifier)
-            segments = self.classify_noise(segments, classifier, audio_path)
-    
+            segments = self.insert_empty_tags(segments, minimum_empty_duration_s)
+            segments = self.classify_noise(segments, noise_classifier, audio_path)
+
         audio = AudioSegment.from_file(audio_path)
         audio_segments: List[AudioSegment] = [
             audio[s[0]["start_time"] * 1000 : s[-1]["end_time"] * 1000]
@@ -216,3 +105,123 @@ class Segmenter:
             export_segment_audio_wav(output_audio_path, audio_segment)
 
         return shifted_segments
+
+    def classify_noise(
+        self,
+        segments: List[List[Dict[str, Union[str, float]]]],
+        classifier: AudioModule,
+        audio_path: str,
+        threshold: float = 0.5,
+        empty_tag: str = "<EMPTY>",
+    ) -> List[List[Dict[str, Union[str, float]]]]:
+        empty_tag_indices = [
+            [idx for idx, offset in enumerate(segment) if offset["text"] == empty_tag]
+            for segment in segments
+        ]
+        empty_tag_pos = {
+            (i * len(sublist) + j): (i, j)
+            for i, sublist in enumerate(empty_tag_indices)
+            for j, _ in enumerate(sublist)
+        }
+
+        # return original segments if no empty tags
+        if not any(len(idxs) > 0 for idxs in empty_tag_indices):
+            return segments
+
+        audio = AudioSegment.from_file(audio_path)
+        audio_arrays = [
+            {
+                "path": None,
+                "array": pydub_to_np(
+                    audio[offset["start_time"] * 1000 : offset["end_time"] * 1000]
+                ),
+                "sampling_rate": audio.frame_rate,
+            }
+            for segment in segments
+            for offset in segment
+            if offset["text"] == empty_tag
+        ]
+
+        dataset = Dataset.from_dict({"audio": audio_arrays})
+        dataset = dataset.cast_column(
+            "audio", Audio(sampling_rate=classifier.sampling_rate)
+        )
+
+        outputs = classifier.predict(dataset, threshold=threshold)
+
+        for idx, predictions in enumerate(outputs):
+            if len(predictions) > 0:
+                i, j = empty_tag_pos[idx]
+                offset = segments[i][j]
+                label = max(predictions, key=lambda item: item["score"])["label"]
+                offset["text"] = f"<{label}>"
+
+        return segments
+
+    def insert_empty_tags(
+        self,
+        segments: List[List[Dict[str, Union[str, float]]]],
+        minimum_empty_duration_s: float,
+        empty_tag: str = "<EMPTY>",
+    ) -> List[List[Dict[str, Union[str, float]]]]:
+        """
+        Inserts special `<EMPTY>` tag to mark for noise classification.
+        Inserts tags at indices in segments where empty duration
+        is at least `minimum_empty_duration_s`.
+
+        Args:
+            segments (List[List[Dict[str, Union[str, float]]]]):
+                List of chunked segments to insert into.
+            minimum_empty_duration_s (float):
+                Minimum silence duration in seconds.
+            empty_tag (str, optional):
+                Special empty tag.
+                Defaults to "<EMPTY>".
+
+        Returns:
+            List[List[Dict[str, Union[str, float]]]]:
+                Updated segments where empty tags have been inserted.
+        """
+        for segment in segments:
+            gaps = [
+                round(next["start_time"] - curr["end_time"], 3)
+                for curr, next in zip(segment, segment[1:])
+            ]
+
+            for idx, gap in reversed(list(enumerate(gaps))):
+                if gap >= minimum_empty_duration_s:
+                    start_time = segment[idx]["end_time"]
+                    end_time = segment[idx + 1]["start_time"]
+                    empty_offset = {
+                        "text": empty_tag,
+                        "start_time": start_time,
+                        "end_time": end_time,
+                    }
+                    segment.insert(idx + 1, empty_offset)
+        return segments
+
+    def _shift_offsets(
+        self, offset: List[Dict[str, Union[str, float]]]
+    ) -> List[Dict[str, Union[str, float]]]:
+        """
+        Shift start and end time of offsets by index start time.
+        Subtracts all start and end times by index start time.
+
+        Args:
+            offset (List[Dict[str, Union[str, float]]]):
+                Offsets to shift.
+
+        Returns:
+            List[Dict[str, Union[str, float]]]:
+                Shifted offsets.
+        """
+        index_start = offset[0]["start_time"]
+        shifted_offset = [
+            {
+                "text": o["text"],
+                "start_time": round(o["start_time"] - index_start, 3),
+                "end_time": round(o["end_time"] - index_start, 3),
+            }
+            for o in offset
+        ]
+        return shifted_offset

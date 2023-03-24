@@ -19,7 +19,7 @@ from pathlib import Path
 import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
-from speechline.classifiers import Wav2Vec2Classifier, ASTClassifier
+from speechline.classifiers import ASTClassifier, Wav2Vec2Classifier
 from speechline.config import Config, SegmenterConfig, TranscriberConfig
 from speechline.run import Runner
 from speechline.segmenters import SilenceSegmenter
@@ -146,7 +146,8 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
     segmenter = SilenceSegmenter()
     segments = []
     noise_classifier_checkpoint = "bookbot/distil-ast-audioset"
-    classifier = ASTClassifier(noise_classifier_checkpoint)
+    noise_classifier = ASTClassifier(noise_classifier_checkpoint)
+
     for audio_path, offsets in zip(df["audio"], output_offsets):
         json_path = Path(audio_path).with_suffix(".json")
         export_transcripts_json(json_path, offsets)
@@ -157,12 +158,12 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
             audio_path,
             tmpdir,
             offsets,
+            do_noise_classify=True,
+            noise_classifier=noise_classifier,
+            minimum_empty_duration_s=0.2,
             minimum_chunk_duration=0.7,
             silence_duration=0.3,
         )
-
-        segment = segmenter.insert_silence_tag(segment, 0.2)
-        segment = segmenter.classify_noise(segment, classifier, audio_path)
         segments.append(segment)
 
     assert sum([len(s) for s in segments]) + len(df) == len(glob(f"{tmpdir}/*/*.wav"))
@@ -181,7 +182,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"start_time": 0.92, "end_time": 0.94, "text": "ɛ"},
                 {"start_time": 1.0, "end_time": 1.04, "text": "l"},
                 {"start_time": 1.08, "end_time": 1.12, "text": "ə"},
-                {"start_time": 1.12, "end_time": 1.36, "text": "<SIL>"},
+                {"start_time": 1.12, "end_time": 1.36, "text": "<EMPTY>"},
                 {"start_time": 1.36, "end_time": 1.38, "text": "ɪ"},
                 {"start_time": 1.54, "end_time": 1.58, "text": "z"},
                 {"start_time": 1.58, "end_time": 1.62, "text": "d͡ʒ"},
@@ -199,7 +200,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         [
             [
                 {"start_time": 0.0, "end_time": 0.02, "text": "ɪ"},
-                {"start_time": 0.02, "end_time": 0.26, "text": "<SIL>"},
+                {"start_time": 0.02, "end_time": 0.26, "text": "<EMPTY>"},
                 {"start_time": 0.26, "end_time": 0.3, "text": "t"},
                 {"start_time": 0.34, "end_time": 0.36, "text": "ɪ"},
                 {"start_time": 0.42, "end_time": 0.44, "text": "z"},
@@ -213,7 +214,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         [
             [
                 {"start_time": 0.0, "end_time": 0.02, "text": "s"},
-                {"start_time": 0.02, "end_time": 0.26, "text": "<SIL>"},
+                {"start_time": 0.02, "end_time": 0.26, "text": "<EMPTY>"},
                 {"start_time": 0.26, "end_time": 0.3, "text": "ə"},
                 {"start_time": 0.36, "end_time": 0.4, "text": "b"},
                 {"start_time": 0.5, "end_time": 0.52, "text": "l"},

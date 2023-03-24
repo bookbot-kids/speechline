@@ -146,21 +146,22 @@ class Runner:
             if config.do_noise_classify:
                 noise_classifier = config.noise_classifier.model
                 min_silence_duration = config.noise_classifier.min_silence_duration
-            else: 
+            else:
                 noise_classifier = None
                 min_silence_duration = None
             # chunk audio into segments
-            segments = segmenter.chunk_audio_segments(
+            segmenter.chunk_audio_segments(
                 audio_path,
                 output_dir,
                 offsets,
                 minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
-                noise_classifier = noise_classifier,
-                do_noise_classify = config.do_noise_classify,
-                min_silence_diration = min_silence_duration,
+                noise_classifier=noise_classifier,
+                do_noise_classify=config.do_noise_classify,
+                min_silence_diration=min_silence_duration,
                 silence_duration=config.segmenter.silence_duration,
-                ground_truth=tokenizer(ground_truth)
+                ground_truth=tokenizer(ground_truth),
             )
+
 
 if __name__ == "__main__":
     args = Runner.parse_args(sys.argv[1:])
