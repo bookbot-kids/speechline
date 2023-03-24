@@ -168,8 +168,6 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         segments.append(segment)
 
     assert sum([len(s) for s in segments]) + len(df) == len(glob(f"{tmpdir}/*/*.wav"))
-    print(segments)
-    # return
     assert segments == [
         [
             [
