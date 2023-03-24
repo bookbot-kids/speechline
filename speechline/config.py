@@ -35,6 +35,15 @@ class ClassifierConfig:
     max_duration_s: float = 3.0
     batch_size: int = 1
 
+@dataclass
+class NoiseClassifierConfig:
+    """
+    Noise classifier config.
+
+    """
+    model: str
+    min_silence_duration: float=1.0
+    batch_size: int = 1
 
 @dataclass
 class TranscriberConfig:
@@ -112,10 +121,13 @@ class Config:
     def __post_init__(self):
         config = json.load(open(self.path))
         self.do_classify = config.get("do_classify", False)
+        self.do_noise_classify = config.get("do_noise_classify", False)
         self.filter_empty_transcript = config.get("filter_empty_transcript", False)
 
         if self.do_classify:
             self.classifier = ClassifierConfig(**config["classifier"])
+        if self.do_noise_classify:
+            self.noise_classifier = NoiseClassifierConfig(**config["noise_classifier"])
 
         self.transcriber = TranscriberConfig(**config["transcriber"])
         self.segmenter = SegmenterConfig(**config["segmenter"])

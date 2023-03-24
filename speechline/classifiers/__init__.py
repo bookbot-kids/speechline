@@ -13,5 +13,6 @@
 # limitations under the License.
 
 from .wav2vec2 import Wav2Vec2Classifier
+from .distil_ast_noise_classifier import DistilAstNoiseClassifier
 
-__all__ = ["Wav2Vec2Classifier"]
+__all__ = ["Wav2Vec2Classifier", "DistilAstNoiseClassifier"]

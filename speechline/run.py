@@ -144,15 +144,17 @@ class Runner:
             # export JSON transcripts
             export_transcripts_json(str(json_path), offsets)
             # chunk audio into segments
-            segmenter.chunk_audio_segments(
+            segments = segmenter.chunk_audio_segments(
                 audio_path,
                 output_dir,
                 offsets,
                 minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
+                noise_classifier = config.noise_classifier.model,
+                do_noise_classify = config.do_noise_classify,
+                min_silence_diration = config.noise_classifier.min_silence_duration,
                 silence_duration=config.segmenter.silence_duration,
-                ground_truth=tokenizer(ground_truth),
+                ground_truth=tokenizer(ground_truth)
             )
-
 
 if __name__ == "__main__":
     args = Runner.parse_args(sys.argv[1:])

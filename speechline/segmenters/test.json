@@ -1,0 +1,475 @@
+[
+    {'start_time': 0.08, 'end_time': 0.12, 'text': 'he'
+    },
+    {'start_time': 0.24, 'end_time': 0.3, 'text': 'is'
+    },
+    {'start_time': 0.48, 'end_time': 0.78, 'text': 'going'
+    },
+    {'start_time': 0.94, 'end_time': 1.0, 'text': 'to'
+    },
+    {'start_time': 1.12, 'end_time': 1.16, 'text': 'do'
+    },
+    {'start_time': 1.44, 'end_time': 1.66, 'text': 'things'
+    },
+    {'start_time': 1.66, 'end_time': 1.96, 'text': '<Gasp>'
+    },
+    {'start_time': 1.96, 'end_time': 2.02, 'text': 'to'
+    },
+    {'start_time': 2.14, 'end_time': 2.32, 'text': 'help'
+    },
+    {'start_time': 2.5, 'end_time': 2.58, 'text': 'the'
+    },
+    {'start_time': 2.68, 'end_time': 3.12, 'text': 'animals'
+    },
+    {'start_time': 3.12, 'end_time': 3.64, 'text': '<Gasp>'
+    },
+    {'start_time': 3.64, 'end_time': 3.7, 'text': 'so'
+    },
+    {'start_time': 3.78, 'end_time': 3.92, 'text': 'that'
+    },
+    {'start_time': 4.02, 'end_time': 4.24, 'text': 'they'
+    },
+    {'start_time': 4.3, 'end_time': 4.42, 'text': 'can'
+    },
+    {'start_time': 4.6, 'end_time': 4.8, 'text': 'see'
+    },
+    {'start_time': 4.92, 'end_time': 4.98, 'text': 'he'
+    },
+    {'start_time': 5.06, 'end_time': 5.12, 'text': 'is'
+    }
+],
+[
+    {'start_time': 5.42, 'end_time': 5.64, 'text': 'great'
+    },
+    {'start_time': 5.84, 'end_time': 6.08, 'text': 'bird'
+    },
+    {'start_time': 6.34, 'end_time': 6.38, 'text': 'to'
+    },
+    {'start_time': 6.46, 'end_time': 6.6, 'text': 'have'
+    },
+    {'start_time': 6.66, 'end_time': 7.06, 'text': 'around'
+    }
+]
+]
+Noise Classify is True
+Segmenting Audio into Chunks: 9%|███████████                                                                                                              | 1/11 [
+00: 09<01: 36,
+9.66s/it[
+    [
+        {'start_time': 0.06, 'end_time': 0.22, 'text': 'tim'
+        },
+        {'start_time': 0.5, 'end_time': 0.58, 'text': 'is'
+        },
+        {'start_time': 0.74, 'end_time': 0.98, 'text': 'doing'
+        },
+        {'start_time': 1.06, 'end_time': 1.18, 'text': 'his'
+        },
+        {'start_time': 1.32, 'end_time': 1.5, 'text': 'best'
+        },
+        {'start_time': 1.5, 'end_time': 1.84, 'text': '<Gasp>'
+        },
+        {'start_time': 1.84, 'end_time': 1.96, 'text': 'not'
+        },
+        {'start_time': 2.12, 'end_time': 2.18, 'text': 'to'
+        },
+        {'start_time': 2.22, 'end_time': 2.34, 'text': 'look'
+        },
+        {'start_time': 2.38, 'end_time': 2.42, 'text': 'at'
+        },
+        {'start_time': 2.46, 'end_time': 2.54, 'text': 'the'
+        },
+        {'start_time': 2.6, 'end_time': 2.88, 'text': 'ground'
+        },
+        {'start_time': 2.88, 'end_time': 3.34, 'text': '<Speech>'
+        },
+        {'start_time': 3.34, 'end_time': 3.4, 'text': 'so'
+        },
+        {'start_time': 3.44, 'end_time': 3.56, 'text': 'that'
+        },
+        {'start_time': 3.68, 'end_time': 3.74, 'text': 'he'
+        },
+        {'start_time': 3.9, 'end_time': 4.04, 'text': 'can'
+        },
+        {'start_time': 4.18, 'end_time': 4.48, 'text': 'stay'
+        },
+        {'start_time': 4.66, 'end_time': 4.8, 'text': 'on'
+        },
+        {'start_time': 4.8, 'end_time': 5.1, 'text': '<Music>'
+        },
+        {'start_time': 5.1, 'end_time': 5.24, 'text': 'track'
+        }
+    ]
+]
+Noise Classify is True
+Segmenting Audio into Chunks: 18%|██████████████████████                                                                                                   | 2/11 [
+    00: 19<01: 25,
+    9.48s/it[
+        [
+            {'start_time': 0.22, 'end_time': 0.46, 'text': 'zom'
+            },
+            {'start_time': 0.68, 'end_time': 0.86, 'text': 'makes'
+            }
+        ],
+        [
+            {'start_time': 1.14, 'end_time': 1.5, 'text': 'little'
+            },
+            {'start_time': 1.66, 'end_time': 1.88, 'text': 'pen'
+            },
+            {'start_time': 1.88, 'end_time': 2.3, 'text': '<Sound effect>'
+            },
+            {'start_time': 2.3, 'end_time': 2.42, 'text': 'that'
+            },
+            {'start_time': 2.64, 'end_time': 2.7, 'text': 'he'
+            },
+            {'start_time': 2.92, 'end_time': 3.08, 'text': 'can'
+            }
+        ],
+        [
+            {'start_time': 3.68, 'end_time': 3.82, 'text': 'some'
+            },
+            {'start_time': 3.94, 'end_time': 4.24, 'text': 'rabbits'
+            },
+            {'start_time': 4.42, 'end_time': 4.5, 'text': 'in'
+            }
+        ]
+    ]
+Noise Classify is True
+Segmenting Audio into Chunks: 27%|█████████████████████████████████                                                                                        | 3/11 [
+        00: 27<01: 13,
+        9.18s/it[
+            [
+                {'start_time': 0.0, 'end_time': 0.14, 'text': 'their'
+                },
+                {'start_time': 0.26, 'end_time': 0.5, 'text': 'mum'
+                },
+                {'start_time': 0.64, 'end_time': 0.92, 'text': 'says'
+                },
+                {'start_time': 1.1, 'end_time': 1.16, 'text': 'it'
+                },
+                {'start_time': 1.22, 'end_time': 1.28, 'text': 'is'
+                },
+                {'start_time': 1.48, 'end_time': 1.62, 'text': 'good'
+                },
+                {'start_time': 1.74, 'end_time': 1.8, 'text': 'to'
+                },
+                {'start_time': 1.9, 'end_time': 2.14, 'text': 'rest'
+                },
+                {'start_time': 2.14, 'end_time': 2.68, 'text': '<Sound effect>'
+                },
+                {'start_time': 2.68, 'end_time': 2.74, 'text': 'so'
+                },
+                {'start_time': 2.82, 'end_time': 2.96, 'text': 'that'
+                },
+                {'start_time': 3.02, 'end_time': 3.2, 'text': 'they'
+                },
+                {'start_time': 3.26, 'end_time': 3.42, 'text': 'have'
+                },
+                {'start_time': 3.46, 'end_time': 3.54, 'text': 'the'
+                },
+                {'start_time': 3.68, 'end_time': 4.06, 'text': 'energy'
+                },
+                {'start_time': 4.26, 'end_time': 4.34, 'text': 'to'
+                },
+                {'start_time': 4.44, 'end_time': 4.52, 'text': 'do'
+                },
+                {'start_time': 4.72, 'end_time': 4.92, 'text': 'things'
+                },
+                {'start_time': 5.08, 'end_time': 5.22, 'text': 'when'
+                },
+                {'start_time': 5.28, 'end_time': 5.4, 'text': 'they'
+                },
+                {'start_time': 5.46, 'end_time': 5.66, 'text': 'need'
+                },
+                {'start_time': 5.84, 'end_time': 5.9, 'text': 'to'
+                }
+            ]
+        ]
+Noise Classify is True
+Segmenting Audio into Chunks: 36%|████████████████████████████████████████████                                                                             | 4/11 [
+            00: 36<01: 03,
+            9.14s/it[
+                [
+                    {'start_time': 0.1, 'end_time': 0.18, 'text': 'she'
+                    },
+                    {'start_time': 0.32, 'end_time': 0.38, 'text': 'is'
+                    },
+                    {'start_time': 0.54, 'end_time': 0.66, 'text': 'on'
+                    }
+                ],
+                [
+                    {'start_time': 0.86, 'end_time': 1.24, 'text': 'mission'
+                    },
+                    {'start_time': 1.4, 'end_time': 1.46, 'text': 'to'
+                    },
+                    {'start_time': 1.58, 'end_time': 1.84, 'text': 'find'
+                    },
+                    {'start_time': 1.94, 'end_time': 2.1, 'text': 'out'
+                    },
+                    {'start_time': 2.32, 'end_time': 2.48, 'text': 'what'
+                    },
+                    {'start_time': 2.6, 'end_time': 2.68, 'text': 'the'
+                    },
+                    {'start_time': 2.82, 'end_time': 3.08, 'text': 'crab'
+                    },
+                    {'start_time': 3.26, 'end_time': 3.48, 'text': 'likes'
+                    },
+                    {'start_time': 3.48, 'end_time': 3.86, 'text': '<Gasp>'
+                    },
+                    {'start_time': 3.86, 'end_time': 3.92, 'text': 'to'
+                    },
+                    {'start_time': 4.14, 'end_time': 4.3, 'text': 'eat'
+                    },
+                    {'start_time': 4.58, 'end_time': 4.76, 'text': 'best'
+                    }
+                ]
+            ]
+Noise Classify is True
+Segmenting Audio into Chunks: 45%|███████████████████████████████████████████████████████                                                                  | 5/11 [
+                00: 45<00: 54,
+                9.10s/it[
+                    [
+                        {'start_time': 0.02, 'end_time': 0.08, 'text': 'it'
+                        },
+                        {'start_time': 0.14, 'end_time': 0.3, 'text': 'will'
+                        },
+                        {'start_time': 0.38, 'end_time': 0.42, 'text': 'be'
+                        },
+                        {'start_time': 0.42, 'end_time': 0.74, 'text': '<Speech>'
+                        },
+                        {'start_time': 0.74, 'end_time': 0.9, 'text': 'good'
+                        },
+                        {'start_time': 0.9, 'end_time': 1.2, 'text': '<Sound effect>'
+                        },
+                        {'start_time': 1.2, 'end_time': 1.26, 'text': 'to'
+                        },
+                        {'start_time': 1.38, 'end_time': 1.56, 'text': 'have'
+                        },
+                        {'start_time': 1.66, 'end_time': 1.74, 'text': 'the'
+                        },
+                        {'start_time': 1.84, 'end_time': 2.06, 'text': 'walk'
+                        },
+                        {'start_time': 2.26, 'end_time': 2.5, 'text': 'home'
+                        },
+                        {'start_time': 2.68, 'end_time': 2.72, 'text': 'to'
+                        },
+                        {'start_time': 2.86, 'end_time': 3.02, 'text': 'help'
+                        },
+                        {'start_time': 3.14, 'end_time': 3.26, 'text': 'with'
+                        },
+                        {'start_time': 3.36, 'end_time': 3.56, 'text': 'that'
+                        },
+                        {'start_time': 3.82, 'end_time': 3.96, 'text': 'too'
+                        }
+                    ]
+                ]
+Noise Classify is True
+Segmenting Audio into Chunks: 55%|██████████████████████████████████████████████████████████████████                                                       | 6/11 [
+                    00: 55<00: 45,
+                    9.16s/it
+                ][
+                    [
+                        {'start_time': 0.04, 'end_time': 0.1, 'text': 'he'
+                        },
+                        {'start_time': 0.16, 'end_time': 0.3, 'text': 'will'
+                        },
+                        {'start_time': 0.34, 'end_time': 0.46, 'text': 'have'
+                        },
+                        {'start_time': 0.58, 'end_time': 0.62, 'text': 'to'
+                        },
+                        {'start_time': 0.72, 'end_time': 0.92, 'text': 'try'
+                        },
+                        {'start_time': 1.08, 'end_time': 1.4, 'text': 'hard'
+                        },
+                        {'start_time': 1.52, 'end_time': 1.66, 'text': 'when'
+                        },
+                        {'start_time': 1.76, 'end_time': 1.82, 'text': 'he'
+                        },
+                        {'start_time': 1.88, 'end_time': 1.94, 'text': 'is'
+                        },
+                        {'start_time': 2.18, 'end_time': 2.32, 'text': 'not'
+                        },
+                        {'start_time': 2.56, 'end_time': 2.64, 'text': 'in'
+                        },
+                        {'start_time': 2.7, 'end_time': 2.78, 'text': 'the'
+                        },
+                        {'start_time': 2.84, 'end_time': 3.1, 'text': 'mood'
+                        }
+                    ]
+                ]
+Noise Classify is True
+Segmenting Audio into Chunks: 64%|█████████████████████████████████████████████████████████████████████████████                                            | 7/11 [
+                    00: 59<00: 29,
+                    7.43s/it
+                ][
+                    [
+                        {'start_time': 0.04, 'end_time': 0.32, 'text': 'gran'
+                        },
+                        {'start_time': 0.48, 'end_time': 0.7, 'text': 'says'
+                        },
+                        {'start_time': 0.84, 'end_time': 0.98, 'text': 'that'
+                        },
+                        {'start_time': 1.1, 'end_time': 1.2, 'text': 'she'
+                        },
+                        {'start_time': 1.32, 'end_time': 1.54, 'text': 'likes'
+                        },
+                        {'start_time': 1.76, 'end_time': 1.82, 'text': 'to'
+                        },
+                        {'start_time': 1.9, 'end_time': 2.06, 'text': 'have'
+                        }
+                    ],
+                    [
+                        {'start_time': 2.32, 'end_time': 2.52, 'text': 'few'
+                        },
+                        {'start_time': 2.66, 'end_time': 2.84, 'text': 'books'
+                        },
+                        {'start_time': 3.12, 'end_time': 3.22, 'text': 'on'
+                        },
+                        {'start_time': 3.3, 'end_time': 3.36, 'text': 'the'
+                        },
+                        {'start_time': 3.48, 'end_time': 3.54, 'text': 'go'
+                        }
+                    ]
+                ]
+Noise Classify is True
+Segmenting Audio into Chunks: 73%|████████████████████████████████████████████████████████████████████████████████████████                                 | 8/11 [
+                    01: 03<00: 19,
+                    6.36s/it[
+                        [
+                            {'start_time': 0.02, 'end_time': 0.1, 'text': 'we'
+                            },
+                            {'start_time': 0.3, 'end_time': 0.48, 'text': 'must'
+                            },
+                            {'start_time': 0.48, 'end_time': 0.9, 'text': '<Gasp>'
+                            },
+                            {'start_time': 0.9, 'end_time': 1.2, 'text': 'try'
+                            },
+                            {'start_time': 1.36, 'end_time': 1.4, 'text': 'to'
+                            },
+                            {'start_time': 1.52, 'end_time': 1.64, 'text': 'hit'
+                            },
+                            {'start_time': 1.78, 'end_time': 1.86, 'text': 'the'
+                            },
+                            {'start_time': 1.96, 'end_time': 2.22, 'text': 'ball'
+                            },
+                            {'start_time': 2.46, 'end_time': 2.5, 'text': 'to'
+                            }
+                        ],
+                        [
+                            {'start_time': 2.74, 'end_time': 2.94, 'text': 'tough'
+                            },
+                            {'start_time': 3.12, 'end_time': 3.38, 'text': 'spot'
+                            },
+                            {'start_time': 3.62, 'end_time': 3.7, 'text': 'in'
+                            },
+                            {'start_time': 3.78, 'end_time': 3.86, 'text': 'the'
+                            }
+                        ],
+                        [
+                            {'start_time': 4.54, 'end_time': 4.66, 'text': 'where'
+                            },
+                            {'start_time': 4.72, 'end_time': 4.82, 'text': 'they'
+                            },
+                            {'start_time': 4.86, 'end_time': 5.0, 'text': 'will'
+                            },
+                            {'start_time': 5.1, 'end_time': 5.26, 'text': 'not'
+                            },
+                            {'start_time': 5.44, 'end_time': 5.5, 'text': 'be'
+                            },
+                            {'start_time': 5.6, 'end_time': 5.88, 'text': 'able'
+                            },
+                            {'start_time': 6.0, 'end_time': 6.06, 'text': 'to'
+                            },
+                            {'start_time': 6.16, 'end_time': 6.28, 'text': 'hit'
+                            },
+                            {'start_time': 6.38, 'end_time': 6.44, 'text': 'it'
+                            },
+                            {'start_time': 6.62, 'end_time': 6.76, 'text': 'back'
+                            }
+                        ]
+                    ]
+Noise Classify is True
+Segmenting Audio into Chunks: 82%|███████████████████████████████████████████████████████████████████████████████████████████████████                      | 9/11 [
+                        01: 12<00: 14,
+                        7.36s/it[
+                            [
+                                {'start_time': 0.0, 'end_time': 0.14, 'text': 'there'
+                                },
+                                {'start_time': 0.18, 'end_time': 0.26, 'text': 'is'
+                                }
+                            ],
+                            [
+                                {'start_time': 0.52, 'end_time': 0.72, 'text': 'dog'
+                                },
+                                {'start_time': 0.88, 'end_time': 0.96, 'text': 'in'
+                                },
+                                {'start_time': 1.02, 'end_time': 1.12, 'text': 'the'
+                                },
+                                {'start_time': 1.26, 'end_time': 1.56, 'text': 'field'
+                                },
+                                {'start_time': 1.56, 'end_time': 1.98, 'text': '<Speech>'
+                                },
+                                {'start_time': 1.98, 'end_time': 2.12, 'text': 'that'
+                                },
+                                {'start_time': 2.2, 'end_time': 2.28, 'text': 'is'
+                                },
+                                {'start_time': 2.5, 'end_time': 2.78, 'text': 'very'
+                                },
+                                {'start_time': 2.96, 'end_time': 3.1, 'text': 'much'
+                                },
+                                {'start_time': 3.32, 'end_time': 3.66, 'text': 'looking'
+                                },
+                                {'start_time': 3.88, 'end_time': 4.04, 'text': 'like'
+                                },
+                                {'start_time': 4.14, 'end_time': 4.2, 'text': 'it'
+                                },
+                                {'start_time': 4.36, 'end_time': 4.56, 'text': 'wants'
+                                },
+                                {'start_time': 4.82, 'end_time': 4.86, 'text': 'to'
+                                },
+                                {'start_time': 5.0, 'end_time': 5.22, 'text': 'try'
+                                }
+                            ],
+                            [
+                                {'start_time': 5.56, 'end_time': 6.04, 'text': 'rainbow'
+                                },
+                                {'start_time': 6.18, 'end_time': 6.34, 'text': 'cake'
+                                },
+                                {'start_time': 6.54, 'end_time': 6.62, 'text': 'pop'
+                                }
+                            ]
+                        ]
+Noise Classify is True
+Segmenting Audio into Chunks: 91%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 10/11 [
+                            01: 21<00: 07,
+                            7.91s/it[
+                                [
+                                    {'start_time': 0.02, 'end_time': 0.08, 'text': 'it'
+                                    },
+                                    {'start_time': 0.14, 'end_time': 0.22, 'text': 'is'
+                                    },
+                                    {'start_time': 0.36, 'end_time': 0.48, 'text': 'not'
+                                    },
+                                    {'start_time': 0.66, 'end_time': 0.7, 'text': 'so'
+                                    },
+                                    {'start_time': 0.9, 'end_time': 1.12, 'text': 'bad'
+                                    },
+                                    {'start_time': 1.26, 'end_time': 1.3, 'text': 'to'
+                                    },
+                                    {'start_time': 1.38, 'end_time': 1.44, 'text': 'be'
+                                    }
+                                ],
+                                [
+                                    {'start_time': 1.76, 'end_time': 1.96, 'text': 'fish'
+                                    },
+                                    {'start_time': 1.96, 'end_time': 2.26, 'text': '<Gasp>'
+                                    },
+                                    {'start_time': 2.26, 'end_time': 2.4, 'text': 'with'
+                                    }
+                                ],
+                                [
+                                    {'start_time': 2.64, 'end_time': 2.84, 'text': 'frog'
+                                    },
+                                    {'start_time': 3.04, 'end_time': 3.36, 'text': 'pal'
+                                    }
+                                ]
+                            ]

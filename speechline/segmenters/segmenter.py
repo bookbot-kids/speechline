@@ -13,9 +13,12 @@
 # limitations under the License.
 
 import os
+import numpy as np
 from typing import Dict, List, Union
 
 from pydub import AudioSegment
+from speechline.classifiers import DistilAstNoiseClassifier
+from datasets import Dataset, Audio
 
 from ..utils.io import (
     export_segment_audio_wav,
@@ -26,6 +29,98 @@ from ..utils.io import (
 
 
 class Segmenter:
+    def pydub_to_np(self, audio):
+        """
+        Converts pydub audio segment into np.float32 of shape [duration_in_seconds*sample_rate, channels],
+        where each value is in range [-1.0, 1.0].
+        Returns tuple (audio_np_array, sample_rate).
+        """
+        return (
+            np.array(audio.get_array_of_samples(), dtype=np.float32).reshape(
+                (-1, audio.channels)
+            )
+            / (1 << (8 * audio.sample_width - 1)),
+            audio.frame_rate,
+        )
+
+    def classify_noise(self, segments, classifier, audio_path):
+        # classify and insert noise here
+        audio_arrays = []
+        audio = AudioSegment.from_file(audio_path)
+        for segment in segments:
+            for word in segment:
+                if word["text"] == "<NOISE>":
+                    audio_segment: List[AudioSegment] = audio[
+                        word["start_time"] * 1000 : word["end_time"] * 1000
+                    ]
+                    audio_array, sr = self.pydub_to_np(audio_segment)
+                    audio_arrays.append(
+                        {"path": None, "array": audio_array, "sampling_rate": sr}
+                    )
+
+        if not audio_arrays:
+            return segments
+
+        audio_dataset = Dataset.from_dict({"audio": audio_arrays}).cast_column(
+            "audio", Audio()
+        )
+        preds = classifier.predict(audio_dataset, threshold=0.2)
+
+        i = 0
+        for segment in segments:
+            for word in segment:
+                if word["text"] == "<NOISE>":
+                    if preds[i]:
+                        max_idx = max(
+                            range(len(preds[i])),
+                            key=lambda index: preds[i][index]["score"],
+                        )
+                        word["text"] = f"<{preds[i][max_idx]['label']}>"
+                    else:
+                        word["text"] = "<SIL>"
+                    i += 1
+
+        return segments
+
+    def insert_silence_tag(
+        self, segments: List[List[Dict[str, Union[str, float]]]], min_silence_duration
+    ):
+        new_segments = []
+        for segment in segments:
+            segment2 = []
+
+            for curr, next in zip(segment, segment[1:]):
+                segment2.append(
+                    {
+                        "start_time": curr["start_time"],
+                        "end_time": curr["end_time"],
+                        "text": curr["text"],
+                    }
+                )
+
+                if (
+                    round(next["start_time"] - curr["end_time"], 3)
+                    >= min_silence_duration
+                ):
+                    segment2.append(
+                        {
+                            "start_time": curr["end_time"],
+                            "end_time": next["start_time"],
+                            "text": f"<NOISE>",
+                        }
+                    )
+
+            segment2.append(
+                {
+                    "start_time": next["start_time"],
+                    "end_time": next["end_time"],
+                    "text": next["text"],
+                }
+            )
+
+            new_segments.append(segment2)
+        return new_segments
+
     def _shift_offsets(
         self, offset: List[Dict[str, Union[str, float]]]
     ) -> List[Dict[str, Union[str, float]]]:
@@ -58,6 +153,9 @@ class Segmenter:
         outdir: str,
         offsets: List[Dict[str, Union[str, float]]],
         minimum_chunk_duration: float = 1.0,
+        noise_classifier="MIT/ast-finetuned-audioset-10-10-0.4593",
+        do_noise_classify: bool = False,
+        min_silence_duration: float = 0.3,
         **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
@@ -84,6 +182,11 @@ class Segmenter:
         # skip empty segments (undetected transcripts)
         if len(segments) == 0:
             return [[{}]]
+
+        if do_noise_classify:
+            segments = self.insert_silence_tag(segments, min_silence_duration)
+            classifier = DistilAstNoiseClassifier(noise_classifier)
+            segments = self.classify_noise(segments, classifier, audio_path)
 
         audio = AudioSegment.from_file(audio_path)
         audio_segments: List[AudioSegment] = [
