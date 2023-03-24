@@ -145,19 +145,22 @@ class Runner:
             export_transcripts_json(str(json_path), offsets)
             if config.do_noise_classify:
                 noise_classifier = config.noise_classifier.model
-                min_silence_duration = config.noise_classifier.min_silence_duration
+                minimum_empty_duration = config.noise_classifier.minimum_empty_duration
+                noise_classifier_threshold = config.noise_classifier.threshold
             else:
                 noise_classifier = None
-                min_silence_duration = None
+                minimum_empty_duration = None
+                noise_classifier_threshold = None
             # chunk audio into segments
             segmenter.chunk_audio_segments(
                 audio_path,
                 output_dir,
                 offsets,
-                minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
-                noise_classifier=noise_classifier,
                 do_noise_classify=config.do_noise_classify,
-                min_silence_diration=min_silence_duration,
+                noise_classifier=noise_classifier,
+                minimum_empty_duration=minimum_empty_duration,
+                minimum_chunk_duration=config.segmenter.minimum_chunk_duration,
+                noise_classifier_threshold = noise_classifier_threshold,
                 silence_duration=config.segmenter.silence_duration,
                 ground_truth=tokenizer(ground_truth),
             )

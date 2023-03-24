@@ -1,127 +1,47 @@
 [
   {
-    "end_time": 0.02,
-    "start_time": 0.0,
-    "text": "s"
-  },
-  {
-    "end_time": 0.3,
-    "start_time": 0.26,
-    "text": "\u0259"
-  },
-  {
-    "end_time": 0.4,
-    "start_time": 0.36,
-    "text": "b"
-  },
-  {
-    "end_time": 0.52,
-    "start_time": 0.5,
-    "text": "l"
-  },
-  {
-    "end_time": 0.56,
-    "start_time": 0.54,
-    "text": "\u025b"
+    "end_time": 0.26,
+    "start_time": 0.2,
+    "text": "so"
   },
   {
     "end_time": 0.62,
-    "start_time": 0.6,
-    "text": "n"
-  },
-  {
-    "end_time": 0.7,
-    "start_time": 0.68,
-    "text": "s"
+    "start_time": 0.38,
+    "text": "pulling"
   },
   {
     "end_time": 0.76,
-    "start_time": 0.74,
-    "text": "\u026a"
-  },
-  {
-    "end_time": 0.84,
-    "start_time": 0.82,
-    "text": "p"
-  },
-  {
-    "end_time": 0.9,
-    "start_time": 0.88,
-    "text": "z"
+    "start_time": 0.68,
+    "text": "the"
   },
   {
     "end_time": 1.08,
-    "start_time": 1.04,
-    "text": "\u0259"
-  },
-  {
-    "end_time": 1.66,
-    "start_time": 1.62,
-    "text": "f"
-  },
-  {
-    "end_time": 1.72,
-    "start_time": 1.7,
-    "text": "i"
-  },
-  {
-    "end_time": 1.8,
-    "start_time": 1.78,
-    "text": "t"
-  },
-  {
-    "end_time": 1.82,
-    "start_time": 1.8,
-    "text": "p"
+    "start_time": 0.8,
+    "text": "polar"
   },
   {
     "end_time": 1.88,
-    "start_time": 1.86,
-    "text": "l"
+    "start_time": 1.64,
+    "text": "feel"
   },
   {
-    "end_time": 1.94,
-    "start_time": 1.92,
-    "text": "i"
-  },
-  {
-    "end_time": 2.08,
+    "end_time": 2.2,
     "start_time": 2.04,
-    "text": "s"
+    "text": "sang"
   },
   {
-    "end_time": 2.14,
-    "start_time": 2.12,
-    "text": "\u00e6"
+    "end_time": 2.34,
+    "start_time": 2.26,
+    "text": "up"
   },
   {
-    "end_time": 2.3,
-    "start_time": 2.28,
-    "text": "\u00e6"
-  },
-  {
-    "end_time": 2.42,
+    "end_time": 2.56,
     "start_time": 2.4,
-    "text": "p"
-  },
-  {
-    "end_time": 2.48,
-    "start_time": 2.46,
-    "text": "l"
-  },
-  {
-    "end_time": 2.54,
-    "start_time": 2.52,
-    "text": "\u00e6"
-  },
-  {
-    "end_time": 2.64,
-    "start_time": 2.62,
-    "text": "p"
+    "text": "that"
   },
   {
     "end_time": 2.8,
-    "start_time": 2.78,
-    "text": "\u0259"
+    "start_time": 2.62,
+    "text": "bar"
   }
 ]

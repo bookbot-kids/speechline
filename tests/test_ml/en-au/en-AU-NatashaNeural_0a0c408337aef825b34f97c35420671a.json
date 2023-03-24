@@ -1,122 +1,37 @@
 [
   {
-    "end_time": 0.04,
-    "start_time": 0.0,
-    "text": "h"
+    "end_time": 0.22,
+    "start_time": 0.16,
+    "text": "he"
   },
   {
-    "end_time": 0.2,
-    "start_time": 0.14,
-    "text": "h"
+    "end_time": 0.5,
+    "start_time": 0.34,
+    "text": "red"
   },
   {
-    "end_time": 0.28,
-    "start_time": 0.24,
-    "text": "\u025a"
-  },
-  {
-    "end_time": 0.44,
-    "start_time": 0.42,
-    "text": "i"
-  },
-  {
-    "end_time": 0.54,
-    "start_time": 0.5,
-    "text": "d"
-  },
-  {
-    "end_time": 0.66,
+    "end_time": 1.08,
     "start_time": 0.64,
-    "text": "\u028c"
+    "text": "umbrella"
   },
   {
-    "end_time": 0.74,
-    "start_time": 0.7,
-    "text": "m"
-  },
-  {
-    "end_time": 0.82,
-    "start_time": 0.78,
-    "text": "b"
-  },
-  {
-    "end_time": 0.9,
-    "start_time": 0.84,
-    "text": "\u0279"
-  },
-  {
-    "end_time": 0.94,
-    "start_time": 0.92,
-    "text": "\u025b"
-  },
-  {
-    "end_time": 1.04,
-    "start_time": 1.0,
-    "text": "l"
-  },
-  {
-    "end_time": 1.12,
-    "start_time": 1.08,
-    "text": "\u0259"
-  },
-  {
-    "end_time": 1.38,
+    "end_time": 1.44,
     "start_time": 1.36,
-    "text": "\u026a"
+    "text": "is"
   },
   {
-    "end_time": 1.58,
-    "start_time": 1.54,
-    "text": "z"
-  },
-  {
-    "end_time": 1.62,
+    "end_time": 1.74,
     "start_time": 1.58,
-    "text": "d\u0361\u0292"
+    "text": "just"
   },
   {
-    "end_time": 1.66,
-    "start_time": 1.62,
-    "text": "\u028c"
+    "end_time": 1.92,
+    "start_time": 1.84,
+    "text": "the"
   },
   {
-    "end_time": 1.76,
-    "start_time": 1.72,
-    "text": "s"
-  },
-  {
-    "end_time": 1.82,
-    "start_time": 1.78,
-    "text": "t"
-  },
-  {
-    "end_time": 1.88,
-    "start_time": 1.86,
-    "text": "\u00f0"
-  },
-  {
-    "end_time": 1.94,
-    "start_time": 1.92,
-    "text": "\u0259"
-  },
-  {
-    "end_time": 2.0,
+    "end_time": 2.18,
     "start_time": 1.98,
-    "text": "b"
-  },
-  {
-    "end_time": 2.06,
-    "start_time": 2.04,
-    "text": "\u025b"
-  },
-  {
-    "end_time": 2.26,
-    "start_time": 2.22,
-    "text": "s"
-  },
-  {
-    "end_time": 2.4,
-    "start_time": 2.38,
-    "text": "t"
+    "text": "best"
   }
 ]

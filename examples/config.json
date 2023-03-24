@@ -14,7 +14,8 @@
     "do_noise_classify": true,
     "noise_classifier": {
         "model": "bookbot/distil-ast-audioset",
-        "min_silence_duration": 0.3
+        "minimum_empty_duration": 0.3,
+        "threshold": 0.2
     },
     "segmenter": {
         "type": "word_overlap",

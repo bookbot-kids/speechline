@@ -36,9 +36,7 @@ class Segmenter:
         outdir: str,
         offsets: List[Dict[str, Union[str, float]]],
         do_noise_classify: bool = False,
-        noise_classifier: Optional[AudioModule] = None,
-        minimum_empty_duration_s: float = 0.3,
-        minimum_chunk_duration: float = 1.0,
+        minimum_chunk_duration: float=1.0,
         **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
@@ -56,11 +54,6 @@ class Segmenter:
             do_noise_classify (bool, optional):
                 Whether to perform noise classification on empty chunks.
                 Defaults to `False`.
-            noise_classifier (Optional[AudioModule], optional):
-                Model to use for noise classification. Defaults to `None`.
-            minimum_empty_duration_s (float, optional):
-                Minimum empty duration in seconds to perform noise classification.
-                Defaults to 1.0 second.
             minimum_chunk_duration (float, optional):
                 Minimum chunk duration (in seconds) to be exported.
                 Defaults to 0.3 second.
@@ -75,8 +68,8 @@ class Segmenter:
             return [[{}]]
 
         if do_noise_classify:
-            segments = self.insert_empty_tags(segments, minimum_empty_duration_s)
-            segments = self.classify_noise(segments, noise_classifier, audio_path)
+            segments = self.insert_empty_tags(segments, **kwargs)
+            segments = self.classify_noise(segments, audio_path, **kwargs)
 
         audio = AudioSegment.from_file(audio_path)
         audio_segments: List[AudioSegment] = [
@@ -109,23 +102,22 @@ class Segmenter:
     def classify_noise(
         self,
         segments: List[List[Dict[str, Union[str, float]]]],
-        classifier: AudioModule,
         audio_path: str,
-        threshold: float = 0.5,
+        noise_classifier: AudioModule,
+        noise_classifier_threshold: float,
         empty_tag: str = "<EMPTY>",
+        **kwargs
     ) -> List[List[Dict[str, Union[str, float]]]]:
-        empty_tag_indices = [
-            [idx for idx, offset in enumerate(segment) if offset["text"] == empty_tag]
-            for segment in segments
-        ]
-        empty_tag_pos = {
-            (i * len(sublist) + j): (i, j)
-            for i, sublist in enumerate(empty_tag_indices)
-            for j, _ in enumerate(sublist)
-        }
+
+        pos, empty_tag_pos = 0, {}
+        for i, segment in enumerate(segments):
+            for j, offset in enumerate(segment):
+                if offset["text"] == empty_tag:
+                    empty_tag_pos[pos] = (i, j)
+                    pos += 1
 
         # return original segments if no empty tags
-        if not any(len(idxs) > 0 for idxs in empty_tag_indices):
+        if len(empty_tag_pos) == 0: 
             return segments
 
         audio = AudioSegment.from_file(audio_path)
@@ -144,10 +136,10 @@ class Segmenter:
 
         dataset = Dataset.from_dict({"audio": audio_arrays})
         dataset = dataset.cast_column(
-            "audio", Audio(sampling_rate=classifier.sampling_rate)
+            "audio", Audio(sampling_rate=noise_classifier.sampling_rate)
         )
 
-        outputs = classifier.predict(dataset, threshold=threshold)
+        outputs = noise_classifier.predict(dataset, threshold=noise_classifier_threshold)
 
         for idx, predictions in enumerate(outputs):
             if len(predictions) > 0:
@@ -161,18 +153,19 @@ class Segmenter:
     def insert_empty_tags(
         self,
         segments: List[List[Dict[str, Union[str, float]]]],
-        minimum_empty_duration_s: float,
+        minimum_empty_duration: float,
         empty_tag: str = "<EMPTY>",
+        **kwargs
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Inserts special `<EMPTY>` tag to mark for noise classification.
         Inserts tags at indices in segments where empty duration
-        is at least `minimum_empty_duration_s`.
+        is at least `minimum_empty_duration`.
 
         Args:
             segments (List[List[Dict[str, Union[str, float]]]]):
                 List of chunked segments to insert into.
-            minimum_empty_duration_s (float):
+            minimum_empty_duration (float):
                 Minimum silence duration in seconds.
             empty_tag (str, optional):
                 Special empty tag.
@@ -189,7 +182,7 @@ class Segmenter:
             ]
 
             for idx, gap in reversed(list(enumerate(gaps))):
-                if gap >= minimum_empty_duration_s:
+                if gap >= minimum_empty_duration:
                     start_time = segment[idx]["end_time"]
                     end_time = segment[idx + 1]["start_time"]
                     empty_offset = {

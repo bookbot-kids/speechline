@@ -54,7 +54,8 @@ class NoiseClassifierConfig:
     """
 
     model: str
-    min_silence_duration: float = 1.0
+    minimum_empty_duration: float = 1.0
+    threshold: float = 3.0
     batch_size: int = 1
 
 
