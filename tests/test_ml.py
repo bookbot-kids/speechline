@@ -19,7 +19,7 @@ from pathlib import Path
 import pytest
 
 from scripts.aac_to_wav import convert_to_wav, parse_args
-from speechline.classifiers import Wav2Vec2Classifier, DistilAstNoiseClassifier
+from speechline.classifiers import Wav2Vec2Classifier, ASTClassifier
 from speechline.config import Config, SegmenterConfig, TranscriberConfig
 from speechline.run import Runner
 from speechline.segmenters import SilenceSegmenter
@@ -146,7 +146,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
     segmenter = SilenceSegmenter()
     segments = []
     noise_classifier_checkpoint = "bookbot/distil-ast-audioset"
-    classifier = DistilAstNoiseClassifier(noise_classifier_checkpoint)
+    classifier = ASTClassifier(noise_classifier_checkpoint)
     for audio_path, offsets in zip(df["audio"], output_offsets):
         json_path = Path(audio_path).with_suffix(".json")
         export_transcripts_json(json_path, offsets)
@@ -243,7 +243,6 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
             ],
         ],
     ]
-
 
 
 def test_whisper_transcriber(datadir):

@@ -35,15 +35,28 @@ class ClassifierConfig:
     max_duration_s: float = 3.0
     batch_size: int = 1
 
+
 @dataclass
 class NoiseClassifierConfig:
     """
     Noise classifier config.
 
+    Args:
+        model (str):
+            HuggingFace Hub model hub checkpoint.
+        min_silence_duration (float, optional):
+            Minimum non-transcribed segment duration to be segmented,
+            and passed to noise classifier.
+            Defaults to `1.0` seconds.
+        batch_size (int, optional):
+            Batch size during inference. Defaults to `1`.
+
     """
+
     model: str
-    min_silence_duration: float=1.0
+    min_silence_duration: float = 1.0
     batch_size: int = 1
+
 
 @dataclass
 class TranscriberConfig:
@@ -126,6 +139,7 @@ class Config:
 
         if self.do_classify:
             self.classifier = ClassifierConfig(**config["classifier"])
+
         if self.do_noise_classify:
             self.noise_classifier = NoiseClassifierConfig(**config["noise_classifier"])
 

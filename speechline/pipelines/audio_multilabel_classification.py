@@ -12,44 +12,49 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Dict, Tuple
 
 import numpy as np
 import torch
 from transformers import AudioClassificationPipeline
+from transformers.utils import ModelOutput
 
 
-class MultiLabelAudioClassificationPipeline(AudioClassificationPipeline):
+class AudioMultiLabelClassificationPipeline(AudioClassificationPipeline):
     """
     Subclass of `AudioClassificationPipeline`.
-    Pads/truncates audio array to maximum length before performing audio classification.
+    Performs multi-label audio classification instead of multi-class classification.
+    Applies Sigmoid on logits instead of Softmax.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
+    def _sanitize_parameters(self, **kwargs) -> Tuple[Dict, Dict, Dict]:
+        """
+        Forces post-processor to return all probabilities.
 
-    def _sanitize_parameters(self, top_k=None, **kwargs):
-        # No parameters on this pipeline right now
-        postprocess_params = {}
-        if top_k is not None:
-            if top_k > self.model.config.num_labels:
-                top_k = self.model.config.num_labels
-            postprocess_params["top_k"] = top_k
-        postprocess_params["top_k"] = self.model.config.num_labels
+        Returns:
+            Tuple[Dict, Dict, Dict]:
+                Tuple consisting of:
+
+                    1. Preprocess parameters (empty).
+                    2. Forward parameters (empty).
+                    3. Postprocess parameters (`top_k = num_labels`).
+        """
+        postprocess_params = {"top_k": self.model.config.num_labels}
         return {}, {}, postprocess_params
 
+    def postprocess(self, model_outputs: ModelOutput, **kwargs) -> np.ndarray:
+        """
+        Applies Sigmoid on logits.
 
-    def postprocess(self, model_outputs, top_k=None):
+        Args:
+            model_outputs (ModelOutput):
+                Generic HuggingFace model outputs.
 
+        Returns:
+            np.ndarray:
+                List of probabilities.
+        """
         probs = model_outputs.logits[0]
         sigmoid = torch.nn.Sigmoid()
         scores = sigmoid(probs).cpu().numpy()
-
-
-        # scores, ids = scores.topk(self.model.config.num_labels)
-            
-        # scores = scores.cpu().numpy().tolist()
-        # ids = ids.tolist()
-        
-
         return scores

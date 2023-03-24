@@ -12,28 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from typing import Dict, List, Union
 
 from datasets import Dataset
 
 from ..modules import AudioMultiLabelClassifier
 
 
-class DistilAstNoiseClassifier(AudioMultiLabelClassifier):
+class ASTClassifier(AudioMultiLabelClassifier):
     """
     Audio classifier with feature extractor.
 
     Args:
         model_checkpoint (str):
             HuggingFace model hub checkpoint.
-        max_duration_s (float):
-            Maximum audio duration in seconds.
     """
 
     def __init__(self, model_checkpoint: str) -> None:
         super().__init__(model_checkpoint)
 
-    def predict(self, dataset: Dataset, threshold: int = 0.5 ) -> List[str]:
+    def predict(
+        self, dataset: Dataset, threshold: float = 0.5
+    ) -> List[Dict[str, Union[str, float]]]:
         """
         Performs audio classification (inference) on `dataset`.
         Preprocesses datasets, performs inference, then returns predictions.
@@ -41,11 +41,19 @@ class DistilAstNoiseClassifier(AudioMultiLabelClassifier):
         Args:
             dataset (Dataset):
                 Dataset to be inferred.
+            threshold (float):
+                Threshold probability for predicted labels.
+                Anything above this threshold will be considered as a valid prediction.
 
         Returns:
-            List[str]:
-                List of predictions (as strings of labels).
+            List[Dict[str, Union[str, float]]]:
+                List of predictions in the format of dictionaries,
+                consisting of the predicted label and probability.
         """
-        
-        dataset = dataset.map(self.inference, fn_kwargs={"threshold": threshold}, desc="Classifying Audios")
+
+        dataset = dataset.map(
+            self.inference,
+            fn_kwargs={"threshold": threshold},
+            desc="Classifying Audios",
+        )
         return dataset["prediction"]
