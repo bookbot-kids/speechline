@@ -12,8 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .phoneme_overlap_segmenter import PhonemeOverlapSegmenter
 from .segmenter import Segmenter
 from .silence_segmenter import SilenceSegmenter
 from .word_overlap_segmenter import WordOverlapSegmenter
 
-__all__ = ["Segmenter", "SilenceSegmenter", "WordOverlapSegmenter"]
+__all__ = [
+    "Segmenter",
+    "PhonemeOverlapSegmenter",
+    "SilenceSegmenter",
+    "WordOverlapSegmenter",
+]

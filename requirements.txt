@@ -1,6 +1,6 @@
 torch
 torchaudio
-transformers==4.26.1
+transformers
 datasets[audio]
 librosa
 pandas
