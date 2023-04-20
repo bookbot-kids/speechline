@@ -270,7 +270,7 @@ def test_whisper_transcriber(datadir):
     assert transcriptions == [
         "Her red umbrella is just the best.",
         "It is not up.",
-        "Sepulang sekolah, fitri sangat lapar.",
+        "Suppulant Secola, Fitri Sangat Lappar.",
     ]
 
     offsets = transcriber.predict(dataset, output_offsets=True)
@@ -285,7 +285,7 @@ def test_whisper_transcriber(datadir):
         [{"text": "It is not up.", "start_time": 0.0, "end_time": 2.0}],
         [
             {
-                "text": "Sepulang sekolah, fitri sangat lapar.",
+                "text": "Suppulant Secola, Fitri Sangat Lappar.",
                 "start_time": 0.0,
                 "end_time": 3.0,
             }
