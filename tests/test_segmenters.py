@@ -12,7 +12,65 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from speechline.segmenters import SilenceSegmenter, WordOverlapSegmenter
+from speechline.segmenters import (
+    PhonemeOverlapSegmenter,
+    SilenceSegmenter,
+    WordOverlapSegmenter,
+)
+
+
+def test_phoneme_overlap_segmenter():
+    offsets = [
+        {"text": "h", "start_time": 0.16, "end_time": 0.18},
+        {"text": "ɝ", "start_time": 0.26, "end_time": 0.28},
+        {"text": " ", "start_time": 0.3, "end_time": 0.34},
+        {"text": "ɹ", "start_time": 0.36, "end_time": 0.38},
+        {"text": "ɛ", "start_time": 0.44, "end_time": 0.46},
+        {"text": "d", "start_time": 0.5, "end_time": 0.52},
+        {"text": " ", "start_time": 0.6, "end_time": 0.64},
+        {"text": "ə", "start_time": 0.72, "end_time": 0.74},
+        {"text": "m", "start_time": 0.76, "end_time": 0.78},
+        {"text": "b", "start_time": 0.82, "end_time": 0.84},
+        {"text": "ɹ", "start_time": 0.84, "end_time": 0.88},
+        {"text": "ɛ", "start_time": 0.92, "end_time": 0.94},
+        {"text": "l", "start_time": 0.98, "end_time": 1.0},
+        {"text": "ə", "start_time": 1.12, "end_time": 1.14},
+        {"text": " ", "start_time": 1.3, "end_time": 1.34},
+        {"text": "ɪ", "start_time": 1.4, "end_time": 1.42},
+        {"text": "z", "start_time": 1.44, "end_time": 1.46},
+        {"text": " ", "start_time": 1.52, "end_time": 1.56},
+        {"text": "dʒ", "start_time": 1.58, "end_time": 1.6},
+        {"text": "ʌ", "start_time": 1.66, "end_time": 1.68},
+        {"text": "s", "start_time": 1.7, "end_time": 1.72},
+        {"text": "t", "start_time": 1.78, "end_time": 1.8},
+        {"text": " ", "start_time": 1.84, "end_time": 1.88},
+        {"text": "θ", "start_time": 1.88, "end_time": 1.9},
+        {"text": " ", "start_time": 1.96, "end_time": 2.0},
+        {"text": "b", "start_time": 2.0, "end_time": 2.02},
+        {"text": "ɛ", "start_time": 2.12, "end_time": 2.14},
+        {"text": "s", "start_time": 2.18, "end_time": 2.2},
+        {"text": "t", "start_time": 2.32, "end_time": 2.34},
+    ]
+    ground_truth = ["Her", "red", "umbrella", "is", "just", "the", "best"]
+    lexicon = {
+        "her": ["h ˈɚ", "h ɜ ɹ", "ɜ ɹ", "h ɜː ɹ", "ə ɹ"],
+        "red": ["ɹ ˈɛ d", "ɹ ɛ d"],
+        "umbrella": ["ˈʌ m b ɹ ˌɛ l ə", "ʌ m b ɹ ɛ l ə"],
+        "is": ["ˈɪ z", "ɪ z"],
+        "just": ["d͡ʒ ˈʌ s t", "d͡ʒ ʌ s t"],
+        "the": ["ð ə", "ð i", "ð iː", "ð ɪ"],
+        "best": ["b ˈɛ s t", "b ɛ s t"],
+    }
+    segmenter = PhonemeOverlapSegmenter(lexicon)
+    segments = segmenter.chunk_offsets(offsets, ground_truth)
+    assert segments == [
+        [{"text": "ɹ ɛ d", "start_time": 0.36, "end_time": 0.52}],
+        [
+            {"text": "ɪ z", "start_time": 1.4, "end_time": 1.46},
+            {"text": "dʒ ʌ s t", "start_time": 1.58, "end_time": 1.8},
+        ],
+        [{"text": "b ɛ s t", "start_time": 2.0, "end_time": 2.34}],
+    ]
 
 
 def test_word_overlap_segmenter():
@@ -26,8 +84,8 @@ def test_word_overlap_segmenter():
         {"end_time": 2.3, "start_time": 1.98, "text": "BEST"},
     ]
     ground_truth = ["red", "umbrella", "just", "the", "best"]
-    segmenters = WordOverlapSegmenter()
-    segments = segmenters.chunk_offsets(offsets, ground_truth)
+    segmenter = WordOverlapSegmenter()
+    segments = segmenter.chunk_offsets(offsets, ground_truth)
     assert segments == [
         [
             {"end_time": 0.52, "start_time": 0.34, "text": "RED"},
