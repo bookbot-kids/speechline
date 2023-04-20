@@ -98,6 +98,7 @@ nav:
           - Audio Segmenter: reference/segmenters/segmenter.md
           - Silence Segmenter: reference/segmenters/silence_segmenter.md
           - Word Overlap Segmenter: reference/segmenters/word_overlap_segmenter.md
+          - Phoneme Overlap Segmenter: reference/segmenters/phoneme_overlap_segmenter.md
       - Utilities:
           - AirTable Interface: reference/utils/airtable.md
           - Dataset: reference/utils/dataset.md
