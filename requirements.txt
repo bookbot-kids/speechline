@@ -14,3 +14,4 @@ babygruut
 levenshtein
 nltk
 g2p_id_py
+lexikos
