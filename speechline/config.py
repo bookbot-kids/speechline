@@ -115,9 +115,10 @@ class SegmenterConfig:
     type: str
     silence_duration: float = 0.0
     minimum_chunk_duration: float = 0.2
+    lexicon_path: str = None
 
     def __post_init__(self):
-        SUPPORTED_TYPES = {"silence", "word_overlap"}
+        SUPPORTED_TYPES = {"silence", "word_overlap", "phoneme_overlap"}
 
         if self.type not in SUPPORTED_TYPES:
             raise ValueError(f"Segmenter of type {self.type} is not yet supported!")

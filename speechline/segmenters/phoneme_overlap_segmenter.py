@@ -206,5 +206,8 @@ class PhonemeOverlapSegmenter(Segmenter):
             if max_matches == len(ground_truth):
                 break
 
+        if not hyp_idx:
+            return [{}]
+
         segments = [merged_offsets[i:j] for (i, j) in hyp_idx]
         return segments

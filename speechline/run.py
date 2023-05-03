@@ -13,16 +13,22 @@
 # limitations under the License.
 
 import argparse
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
+from lexikos import Lexicon
 from tqdm import tqdm
 
 from speechline.classifiers import Wav2Vec2Classifier
 from speechline.config import Config
-from speechline.segmenters import SilenceSegmenter, WordOverlapSegmenter
+from speechline.segmenters import (
+    PhonemeOverlapSegmenter,
+    SilenceSegmenter,
+    WordOverlapSegmenter,
+)
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
@@ -132,9 +138,20 @@ class Runner:
             segmenter = SilenceSegmenter()
         elif config.segmenter.type == "word_overlap":
             segmenter = WordOverlapSegmenter()
+        elif config.segmenter.type == "phoneme_overlap":
+            lexicon = Lexicon()
 
+            if config.segmenter.lexicon_path:
+                with open(config.segmenter.lexicon_path) as json_file:
+                    oov = json.load(json_file)
+
+                for k, v in oov.items():
+                    if k in lexicon:
+                        lexicon[k] = lexicon[k].union(set(v))
+                    else:
+                        lexicon[k] = v
+            segmenter = PhonemeOverlapSegmenter(lexicon)
         tokenizer = WordTokenizer()
-
         for audio_path, ground_truth, offsets in tqdm(
             zip(df["audio"], df["ground_truth"], output_offsets),
             desc="Segmenting Audio into Chunks",
