@@ -140,18 +140,16 @@ class Runner:
             segmenter = WordOverlapSegmenter()
         elif config.segmenter.type == "phoneme_overlap":
             lexicon = Lexicon()
-
             if config.segmenter.lexicon_path:
                 with open(config.segmenter.lexicon_path) as json_file:
-                    oov = json.load(json_file)
-
-                for k, v in oov.items():
-                    if k in lexicon:
-                        lexicon[k] = lexicon[k].union(set(v))
-                    else:
-                        lexicon[k] = v
+                    lex = json.load(json_file)
+                # merge dict with lexicon
+                for k, v in lex.items():
+                    lexicon[k] = lexicon[k].union(set(v)) if k in lexicon else set(v)
             segmenter = PhonemeOverlapSegmenter(lexicon)
+
         tokenizer = WordTokenizer()
+
         for audio_path, ground_truth, offsets in tqdm(
             zip(df["audio"], df["ground_truth"], output_offsets),
             desc="Segmenting Audio into Chunks",
