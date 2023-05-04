@@ -131,6 +131,9 @@ class Runner:
             chunk_length_s=config.transcriber.chunk_length_s,
             output_offsets=True,
             return_timestamps=config.transcriber.return_timestamps,
+            keep_whitespace=True
+            if config.segmenter.type == "phoneme_overlap"
+            else False,
         )
 
         # segment audios based on offsets

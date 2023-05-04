@@ -197,7 +197,7 @@ class PhonemeOverlapSegmenter(Segmenter):
             idxs = [
                 (i1, i2) for tag, i1, i2, *_ in matcher.get_opcodes() if tag == "equal"
             ]
-            num_matches = len(idxs)
+            num_matches = sum(idx[1] - idx[0] for idx in idxs)
             if num_matches > max_matches:
                 max_matches = num_matches
                 hyp_idx = idxs
@@ -207,7 +207,7 @@ class PhonemeOverlapSegmenter(Segmenter):
                 break
 
         if not hyp_idx:
-            return [{}]
+            return []
 
         segments = [merged_offsets[i:j] for (i, j) in hyp_idx]
         return segments
