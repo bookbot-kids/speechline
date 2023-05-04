@@ -323,6 +323,21 @@ def test_runner_wav2vec2_word(datadir, tmpdir):
     config = Config(args.config)
     Runner.run(config, args.input_dir, args.output_dir)
     assert len(glob(f"{tmpdir}/*/*.wav")) == 4
+    
+def test_runner_wav2vec2_phoneme(datadir, tmpdir):
+    args = Runner.parse_args(
+        [
+            "--input_dir",
+            str(datadir),
+            "--output_dir",
+            str(tmpdir),
+            "--config",
+            f"{datadir}/config_wav2vec2_phoneme.json",
+        ]
+    )
+    config = Config(args.config)
+    Runner.run(config, args.input_dir, args.output_dir)
+    assert len(glob(f"{tmpdir}/*/*.wav")) == 4
 
 
 def test_runner_whisper(datadir, tmpdir):
