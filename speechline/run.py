@@ -17,10 +17,10 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Union
 
 from lexikos import Lexicon
-from tqdm import tqdm
+from p_tqdm import p_map
 
 from speechline.classifiers import Wav2Vec2Classifier
 from speechline.config import Config
@@ -131,9 +131,7 @@ class Runner:
             chunk_length_s=config.transcriber.chunk_length_s,
             output_offsets=True,
             return_timestamps=config.transcriber.return_timestamps,
-            keep_whitespace=True
-            if config.segmenter.type == "phoneme_overlap"
-            else False,
+            keep_whitespace=config.segmenter.keep_whitespace,
         )
 
         # segment audios based on offsets
@@ -153,22 +151,23 @@ class Runner:
 
         tokenizer = WordTokenizer()
 
-        for audio_path, ground_truth, offsets in tqdm(
-            zip(df["audio"], df["ground_truth"], output_offsets),
-            desc="Segmenting Audio into Chunks",
-            total=len(df),
+        if config.do_noise_classify:
+            noise_classifier = config.noise_classifier.model
+            minimum_empty_duration = config.noise_classifier.minimum_empty_duration
+            noise_classifier_threshold = config.noise_classifier.threshold
+        else:
+            noise_classifier = None
+            minimum_empty_duration = None
+            noise_classifier_threshold = None
+
+        def export_and_chunk(
+            audio_path: str,
+            ground_truth: str,
+            offsets: List[Dict[str, Union[str, float]]],
         ):
             json_path = Path(audio_path).with_suffix(".json")
             # export JSON transcripts
             export_transcripts_json(str(json_path), offsets)
-            if config.do_noise_classify:
-                noise_classifier = config.noise_classifier.model
-                minimum_empty_duration = config.noise_classifier.minimum_empty_duration
-                noise_classifier_threshold = config.noise_classifier.threshold
-            else:
-                noise_classifier = None
-                minimum_empty_duration = None
-                noise_classifier_threshold = None
             # chunk audio into segments
             segmenter.chunk_audio_segments(
                 audio_path,
@@ -182,6 +181,15 @@ class Runner:
                 silence_duration=config.segmenter.silence_duration,
                 ground_truth=tokenizer(ground_truth),
             )
+
+        _ = p_map(
+            export_and_chunk,
+            df["audio"],
+            df["ground_truth"],
+            output_offsets,
+            desc="Segmenting Audio into Chunks",
+            total=len(df),
+        )
 
 
 if __name__ == "__main__":
