@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from difflib import SequenceMatcher
-from itertools import product
 from typing import Dict, List, Union
 
 from .segmenter import Segmenter
@@ -190,24 +188,32 @@ class PhonemeOverlapSegmenter(Segmenter):
         merged_offsets = self._merge_offsets(offsets)
         transcripts = [self.normalize_phonemes(o["text"]) for o in merged_offsets]
 
-        max_matches, hyp_idx = 0, None
-        # N (number of words) x M (number of phoneme combinations)
-        for hyp in product(*ground_truth):
-            matcher = SequenceMatcher(None, transcripts, hyp)
-            idxs = [
-                (i1, i2) for tag, i1, i2, *_ in matcher.get_opcodes() if tag == "equal"
-            ]
-            num_matches = sum(idx[1] - idx[0] for idx in idxs)
-            if num_matches > max_matches:
-                max_matches = num_matches
-                hyp_idx = idxs
-
-            # stop if we found a perfect match
-            if max_matches == len(ground_truth):
+        idxs, index = [], 0  # index in ground truth
+        for i, word in enumerate(transcripts):
+            if index >= len(ground_truth):
                 break
+            for var in ground_truth[index:]:
+                # match
+                if word in var:
+                    idxs.append(i)
+                    break
+            index += 1
 
-        if not hyp_idx:
+        # if no matches
+        if not idxs:
             return []
 
-        segments = [merged_offsets[i:j] for (i, j) in hyp_idx]
+        # collapse longest consecutive indices
+        merged_idxs = []
+        start, end = idxs[0], idxs[0] + 1
+        for i in idxs[1:]:
+            if i == end:
+                end += 1
+            else:
+                merged_idxs.append((start, end))
+                start, end = i, i + 1
+        merged_idxs.append((start, end))
+
+        # segment according to longest consecutive indices
+        segments = [merged_offsets[i:j] for (i, j) in merged_idxs]
         return segments

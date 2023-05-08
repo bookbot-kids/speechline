@@ -91,6 +91,18 @@ def test_phoneme_overlap_segmenter():
     segments = segmenter.chunk_offsets(offsets, ground_truth)
     assert segments == []
 
+    offsets = [
+        {"text": "h", "start_time": 0.16, "end_time": 0.18},
+        {"text": "ɝ", "start_time": 0.26, "end_time": 0.28},
+        {"text": " ", "start_time": 0.3, "end_time": 0.34},
+        {"text": "ɹ", "start_time": 0.36, "end_time": 0.38},
+        {"text": "ɛ", "start_time": 0.44, "end_time": 0.46},
+        {"text": "d", "start_time": 0.5, "end_time": 0.52},
+    ]
+    ground_truth = ["her"]
+    segments = segmenter.chunk_offsets(offsets, ground_truth)
+    assert segments == []
+
 
 def test_word_overlap_segmenter():
     offsets = [
