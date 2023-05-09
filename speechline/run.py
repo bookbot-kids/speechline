@@ -20,7 +20,7 @@ from pathlib import Path
 from typing import List, Dict, Union
 
 from lexikos import Lexicon
-from p_tqdm import p_map
+from tqdm.contrib.concurrent import thread_map
 
 from speechline.classifiers import Wav2Vec2Classifier
 from speechline.config import Config
@@ -182,7 +182,7 @@ class Runner:
                 ground_truth=tokenizer(ground_truth),
             )
 
-        _ = p_map(
+        thread_map(
             export_and_chunk,
             df["audio"],
             df["ground_truth"],

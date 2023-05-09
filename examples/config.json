@@ -7,7 +7,7 @@
     },
     "transcriber": {
         "type": "wav2vec2",
-        "model": "bookbot/wav2vec2-conformer-rel-pos-large-libriphone-timit",
+        "model": "bookbot/wav2vec2-conformer-rel-pos-large-libriphone-timit-cv",
         "return_timestamps": "char",
         "chunk_length_s": 30
     },
@@ -18,8 +18,9 @@
         "threshold": 0.2
     },
     "segmenter": {
-        "type": "phoneme_overlap",
-        "lexicon_path": "examples/oov.json", 
-        "minimum_chunk_duration": 1.0
+        "type": "silence",
+        "silence_duration": 3.0,
+        "minimum_chunk_duration": 1.0,
+        "keep_whitespace": true
     }
 }

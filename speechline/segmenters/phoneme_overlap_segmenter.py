@@ -26,13 +26,13 @@ class PhonemeOverlapSegmenter(Segmenter):
             lexicon (Dict[str, List[str]]):
                 Lexicon of words and their phoneme variations.
         """
-        self.lexicon = lexicon
+        self.lexicon = self._normalize_lexicon(lexicon)
 
-    def normalize_text(self, text: str) -> str:
+    def _normalize_text(self, text: str) -> str:
         text = text.lower().strip()
         return text
 
-    def normalize_phonemes(self, phonemes: str) -> str:
+    def _normalize_phonemes(self, phonemes: str) -> str:
         """
         Remove diacritics from phonemes.
         Modified from: [Michael McAuliffe](https://memcauliffe.com/speaker-dictionaries-and-multilingual-ipa.html#multilingual-ipa-mode) # noqa: E501
@@ -49,6 +49,23 @@ class PhonemeOverlapSegmenter(Segmenter):
         for d in diacritics:
             phonemes = phonemes.replace(d, "")
         return phonemes.strip()
+
+    def _normalize_lexicon(self, lexicon: Dict[str, List[str]]) -> Dict[str, List[str]]:
+        """
+        Normalizes phonemes in lexicon and deduplicates.
+
+        Args:
+            lexicon (Dict[str, List[str]]):
+                Lexicon to normalize.
+
+        Returns:
+            Dict[str, List[str]]:
+                Normalized lexicon.
+        """
+        return {
+            word: set(self._normalize_phonemes(p) for p in phonemes)
+            for word, phonemes in lexicon.items()
+        }
 
     def _merge_offsets(
         self, offsets: List[Dict[str, Union[str, float]]]
@@ -99,8 +116,7 @@ class PhonemeOverlapSegmenter(Segmenter):
         """
         combinations = []
         for word in ground_truth:
-            phonemes = self.lexicon[self.normalize_text(word)]
-            phonemes = set(self.normalize_phonemes(p) for p in phonemes)
+            phonemes = self.lexicon[self._normalize_text(word)]
             combinations.append(phonemes)
         return combinations
 
@@ -108,7 +124,7 @@ class PhonemeOverlapSegmenter(Segmenter):
         self,
         offsets: List[Dict[str, Union[str, float]]],
         ground_truth: List[str],
-        **kwargs
+        **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Chunk phoneme-level offsets into word-bounded phoneme offsets.
@@ -186,7 +202,7 @@ class PhonemeOverlapSegmenter(Segmenter):
 
         ground_truth = self._generate_combinations(ground_truth)
         merged_offsets = self._merge_offsets(offsets)
-        transcripts = [self.normalize_phonemes(o["text"]) for o in merged_offsets]
+        transcripts = [self._normalize_phonemes(o["text"]) for o in merged_offsets]
 
         idxs, index = [], 0  # index in ground truth
         for i, word in enumerate(transcripts):
