@@ -172,7 +172,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         [
             [
                 {"text": "h", "start_time": 0.0, "end_time": 0.04},
-                {"text": "<EMPTY>", "start_time": 0.04, "end_time": 0.14},
+                {"text": "<Speech>", "start_time": 0.04, "end_time": 0.14},
                 {"text": "h", "start_time": 0.14, "end_time": 0.2},
                 {"text": "ɚ", "start_time": 0.24, "end_time": 0.28},
                 {"text": "<Speech>", "start_time": 0.28, "end_time": 0.42},
@@ -198,7 +198,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"text": "ə", "start_time": 1.92, "end_time": 1.94},
                 {"text": "b", "start_time": 1.98, "end_time": 2.0},
                 {"text": "ɛ", "start_time": 2.04, "end_time": 2.06},
-                {"text": "<Speech>", "start_time": 2.06, "end_time": 2.22},
+                {"text": "<EMPTY>", "start_time": 2.06, "end_time": 2.22},
                 {"text": "s", "start_time": 2.22, "end_time": 2.26},
                 {"text": "<EMPTY>", "start_time": 2.26, "end_time": 2.38},
                 {"text": "t", "start_time": 2.38, "end_time": 2.4},
@@ -223,10 +223,10 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
         [
             [
                 {"text": "s", "start_time": 0.0, "end_time": 0.02},
-                {"text": "<EMPTY>", "start_time": 0.02, "end_time": 0.26},
+                {"text": "<Speech>", "start_time": 0.02, "end_time": 0.26},
                 {"text": "ə", "start_time": 0.26, "end_time": 0.3},
                 {"text": "b", "start_time": 0.36, "end_time": 0.4},
-                {"text": "<EMPTY>", "start_time": 0.4, "end_time": 0.5},
+                {"text": "<Speech>", "start_time": 0.4, "end_time": 0.5},
                 {"text": "l", "start_time": 0.5, "end_time": 0.52},
                 {"text": "ɛ", "start_time": 0.54, "end_time": 0.56},
                 {"text": "n", "start_time": 0.6, "end_time": 0.62},
@@ -234,7 +234,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"text": "ɪ", "start_time": 0.74, "end_time": 0.76},
                 {"text": "p", "start_time": 0.82, "end_time": 0.84},
                 {"text": "z", "start_time": 0.88, "end_time": 0.9},
-                {"text": "<Speech>", "start_time": 0.9, "end_time": 1.04},
+                {"text": "<EMPTY>", "start_time": 0.9, "end_time": 1.04},
                 {"text": "ə", "start_time": 1.04, "end_time": 1.08},
             ],
             [
@@ -254,7 +254,7 @@ def test_wav2vec2_transcriber(datadir, tmpdir):
                 {"text": "l", "start_time": 0.84, "end_time": 0.86},
                 {"text": "æ", "start_time": 0.9, "end_time": 0.92},
                 {"text": "p", "start_time": 1.0, "end_time": 1.02},
-                {"text": "<Speech>", "start_time": 1.02, "end_time": 1.16},
+                {"text": "<EMPTY>", "start_time": 1.02, "end_time": 1.16},
                 {"text": "ə", "start_time": 1.16, "end_time": 1.18},
             ],
         ],

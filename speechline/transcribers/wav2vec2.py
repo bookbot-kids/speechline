@@ -87,17 +87,11 @@ class Wav2Vec2Transcriber(AudioTranscriber):
         ]
         ```
         """
-
-        dataset = dataset.map(
-            self.inference,
-            desc="Transcribing Audios",
-            fn_kwargs={
-                "chunk_length_s": chunk_length_s,
-                "output_offsets": output_offsets,
-                "offset_key": "text",
-                "return_timestamps": return_timestamps,
-                "keep_whitespace": keep_whitespace,
-            },
+        return self.inference(
+            dataset,
+            chunk_length_s=chunk_length_s,
+            output_offsets=output_offsets,
+            offset_key="text",
+            return_timestamps=return_timestamps,
+            keep_whitespace=keep_whitespace,
         )
-
-        return dataset["prediction"]

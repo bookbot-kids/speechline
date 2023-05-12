@@ -14,8 +14,10 @@
 
 from typing import Dict, List, Tuple, Union
 
+import numpy as np
 import torch
 from datasets import Dataset
+from tqdm.auto import tqdm
 from transformers import pipeline
 
 from .audio_module import AudioModule
@@ -40,20 +42,20 @@ class AudioTranscriber(AudioModule):
 
     def inference(
         self,
-        batch: Dataset,
+        dataset: Dataset,
         chunk_length_s: int = 0,
         output_offsets: bool = False,
         offset_key: str = "text",
         return_timestamps: Union[str, bool] = True,
         keep_whitespace: bool = False,
         **kwargs,
-    ) -> Dataset:
+    ) -> Union[List[List[Dict[str, Union[str, float]]]], List[str]]:
         """
         Inference/prediction function to be mapped to a dataset.
 
         Args:
-            batch (Dataset):
-                Batch of dataset.
+            dataset (Dataset):
+                Dataset to be inferred.
             chunk_length_s (int, optional):
                 Audio chunk length in seconds. Defaults to `30`.
             output_offsets (bool, optional):
@@ -69,8 +71,8 @@ class AudioTranscriber(AudioModule):
                 Whether to presere whitespace predictions. Defaults to `False`.
 
         Returns:
-            Dataset:
-                Dataset with inferred predictions in `prediction` column.
+            Union[List[List[Dict[str, Union[str, float]]]], List[str]]:
+                List of predictions.
         """
 
         def _format_timestamps_to_offsets(
@@ -143,20 +145,33 @@ class AudioTranscriber(AudioModule):
                 [o["text"].strip() for o in timestamps["chunks"] if o["text"] != " "]
             )
 
-        prediction = self.pipeline(
-            batch["audio"]["array"],
-            chunk_length_s=chunk_length_s,
-            return_timestamps=return_timestamps,
-            **kwargs,
-        )
+        def _get_audio_array(
+            dataset: Dataset,
+        ) -> Dict[str, Union[np.ndarray, int, str]]:
+            for item in dataset:
+                yield {**item["audio"]}
 
-        if output_offsets:
-            batch["prediction"] = _format_timestamps_to_offsets(
-                prediction,
-                offset_key=offset_key,
-                keep_whitespace=keep_whitespace,
+        results = []
+
+        for out in tqdm(
+            self.pipeline(
+                _get_audio_array(dataset),
+                chunk_length_s=chunk_length_s,
+                return_timestamps=return_timestamps,
+                **kwargs,
+            ),
+            total=len(dataset),
+            desc="Transcribing Audios",
+        ):
+            prediction = (
+                _format_timestamps_to_offsets(
+                    out,
+                    offset_key=offset_key,
+                    keep_whitespace=keep_whitespace,
+                )
+                if output_offsets
+                else _format_timestamps_to_transcript(out)
             )
-        else:
-            batch["prediction"] = _format_timestamps_to_transcript(prediction)
+            results.append(prediction)
 
-        return batch
+        return results

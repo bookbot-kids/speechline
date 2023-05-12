@@ -46,6 +46,4 @@ class Wav2Vec2Classifier(AudioClassifier):
             List[str]:
                 List of predictions (as strings of labels).
         """
-
-        dataset = dataset.map(self.inference, desc="Classifying Audios")
-        return dataset["prediction"]
+        return self.inference(dataset)
