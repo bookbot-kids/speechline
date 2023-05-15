@@ -56,6 +56,7 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         - `ground_truth`
     """
     audios = sorted(glob(f"{path_to_files}/*/*.{audio_extension}"))
+    audios = [a for a in audios if Path(a).stat().st_size > 0]
     if len(audios) == 0:
         raise ValueError("No audio files found!")
 
