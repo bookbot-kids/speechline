@@ -19,5 +19,5 @@ from .automatic_speech_recognition import AutomaticSpeechRecognitionFilteredPipe
 __all__ = [
     "AudioClassificationWithPaddingPipeline",
     "AudioMultiLabelClassificationPipeline",
-    "AutomaticSpeechRecognitionFilteredPipeline"
+    "AutomaticSpeechRecognitionFilteredPipeline",
 ]

@@ -14,8 +14,8 @@
 
 from typing import List
 
-import torch
 import numpy as np
+import torch
 from datasets import Dataset
 from tqdm.auto import tqdm
 from transformers import pipeline

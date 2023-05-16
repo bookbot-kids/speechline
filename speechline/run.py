@@ -17,7 +17,7 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Dict, Union
+from typing import Dict, List, Union
 
 from lexikos import Lexicon
 from tqdm.contrib.concurrent import thread_map

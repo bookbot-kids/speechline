@@ -20,8 +20,8 @@ from datasets import Dataset
 from tqdm.auto import tqdm
 from transformers import pipeline
 
-from .audio_module import AudioModule
 from ..pipelines import AutomaticSpeechRecognitionFilteredPipeline
+from .audio_module import AudioModule
 
 
 class AudioTranscriber(AudioModule):
@@ -38,7 +38,7 @@ class AudioTranscriber(AudioModule):
             "automatic-speech-recognition",
             model=model_checkpoint,
             device=0 if torch.cuda.is_available() else -1,
-            pipeline_class=AutomaticSpeechRecognitionFilteredPipeline
+            pipeline_class=AutomaticSpeechRecognitionFilteredPipeline,
         )
         super().__init__(pipeline=asr)
 
