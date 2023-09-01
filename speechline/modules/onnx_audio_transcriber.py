@@ -56,6 +56,7 @@ class ONNXAudioTranscriber(AudioModule):
             device=0 if torch.cuda.is_available() else -1,
             accelerator="ort",
         )
+        asr.model.use_io_binding = False
         super().__init__(pipeline=asr)
 
     def inference(
