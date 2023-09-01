@@ -86,7 +86,7 @@ class TranscriberConfig:
     model: str
     return_timestamps: Union[str, bool]
     chunk_length_s: int
-    hotwords_keys: str = None
+    hotwords_key: str = None
 
     def __post_init__(self):
         SUPPORTED_MODELS = {"wav2vec2", "whisper", "onnx_wav2vec2"}
