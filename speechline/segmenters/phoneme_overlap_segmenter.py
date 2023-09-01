@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from difflib import SequenceMatcher
-from itertools import product
 from typing import Dict, List, Union
 
 from .segmenter import Segmenter
@@ -28,13 +26,13 @@ class PhonemeOverlapSegmenter(Segmenter):
             lexicon (Dict[str, List[str]]):
                 Lexicon of words and their phoneme variations.
         """
-        self.lexicon = lexicon
+        self.lexicon = self._normalize_lexicon(lexicon)
 
-    def normalize_text(self, text: str) -> str:
+    def _normalize_text(self, text: str) -> str:
         text = text.lower().strip()
         return text
 
-    def normalize_phonemes(self, phonemes: str) -> str:
+    def _normalize_phonemes(self, phonemes: str) -> str:
         """
         Remove diacritics from phonemes.
         Modified from: [Michael McAuliffe](https://memcauliffe.com/speaker-dictionaries-and-multilingual-ipa.html#multilingual-ipa-mode) # noqa: E501
@@ -51,6 +49,23 @@ class PhonemeOverlapSegmenter(Segmenter):
         for d in diacritics:
             phonemes = phonemes.replace(d, "")
         return phonemes.strip()
+
+    def _normalize_lexicon(self, lexicon: Dict[str, List[str]]) -> Dict[str, List[str]]:
+        """
+        Normalizes phonemes in lexicon and deduplicates.
+
+        Args:
+            lexicon (Dict[str, List[str]]):
+                Lexicon to normalize.
+
+        Returns:
+            Dict[str, List[str]]:
+                Normalized lexicon.
+        """
+        return {
+            word: set(self._normalize_phonemes(p) for p in phonemes)
+            for word, phonemes in lexicon.items()
+        }
 
     def _merge_offsets(
         self, offsets: List[Dict[str, Union[str, float]]]
@@ -101,8 +116,7 @@ class PhonemeOverlapSegmenter(Segmenter):
         """
         combinations = []
         for word in ground_truth:
-            phonemes = self.lexicon[self.normalize_text(word)]
-            phonemes = set(self.normalize_phonemes(p) for p in phonemes)
+            phonemes = self.lexicon[self._normalize_text(word)]
             combinations.append(phonemes)
         return combinations
 
@@ -110,7 +124,7 @@ class PhonemeOverlapSegmenter(Segmenter):
         self,
         offsets: List[Dict[str, Union[str, float]]],
         ground_truth: List[str],
-        **kwargs
+        **kwargs,
     ) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Chunk phoneme-level offsets into word-bounded phoneme offsets.
@@ -188,23 +202,34 @@ class PhonemeOverlapSegmenter(Segmenter):
 
         ground_truth = self._generate_combinations(ground_truth)
         merged_offsets = self._merge_offsets(offsets)
-        transcripts = [self.normalize_phonemes(o["text"]) for o in merged_offsets]
+        transcripts = [self._normalize_phonemes(o["text"]) for o in merged_offsets]
 
-        max_matches, hyp_idx = 0, None
-        # N (number of words) x M (number of phoneme combinations)
-        for hyp in product(*ground_truth):
-            matcher = SequenceMatcher(None, transcripts, hyp)
-            idxs = [
-                (i1, i2) for tag, i1, i2, *_ in matcher.get_opcodes() if tag == "equal"
-            ]
-            num_matches = len(idxs)
-            if num_matches > max_matches:
-                max_matches = num_matches
-                hyp_idx = idxs
-
-            # stop if we found a perfect match
-            if max_matches == len(ground_truth):
+        idxs, index = [], 0  # index in ground truth
+        for i, word in enumerate(transcripts):
+            if index >= len(ground_truth):
                 break
+            for var in ground_truth[index:]:
+                # match
+                if word in var:
+                    idxs.append(i)
+                    break
+            index += 1
 
-        segments = [merged_offsets[i:j] for (i, j) in hyp_idx]
+        # if no matches
+        if not idxs:
+            return []
+
+        # collapse longest consecutive indices
+        merged_idxs = []
+        start, end = idxs[0], idxs[0] + 1
+        for i in idxs[1:]:
+            if i == end:
+                end += 1
+            else:
+                merged_idxs.append((start, end))
+                start, end = i, i + 1
+        merged_idxs.append((start, end))
+
+        # segment according to longest consecutive indices
+        segments = [merged_offsets[i:j] for (i, j) in merged_idxs]
         return segments

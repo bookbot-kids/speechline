@@ -14,8 +14,10 @@
 
 from .audio_classification import AudioClassificationWithPaddingPipeline
 from .audio_multilabel_classification import AudioMultiLabelClassificationPipeline
+from .automatic_speech_recognition import AutomaticSpeechRecognitionFilteredPipeline
 
 __all__ = [
     "AudioClassificationWithPaddingPipeline",
     "AudioMultiLabelClassificationPipeline",
+    "AutomaticSpeechRecognitionFilteredPipeline",
 ]

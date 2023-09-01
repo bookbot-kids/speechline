@@ -50,10 +50,4 @@ class ASTClassifier(AudioMultiLabelClassifier):
                 List of predictions in the format of dictionaries,
                 consisting of the predicted label and probability.
         """
-
-        dataset = dataset.map(
-            self.inference,
-            fn_kwargs={"threshold": threshold},
-            desc="Classifying Audios",
-        )
-        return dataset["prediction"]
+        return self.inference(dataset, threshold)

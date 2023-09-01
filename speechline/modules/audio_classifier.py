@@ -14,8 +14,10 @@
 
 from typing import List
 
+import numpy as np
 import torch
 from datasets import Dataset
+from tqdm.auto import tqdm
 from transformers import pipeline
 
 from ..pipelines import AudioClassificationWithPaddingPipeline
@@ -41,19 +43,33 @@ class AudioClassifier(AudioModule):
         )
         super().__init__(pipeline=classifier)
 
-    def inference(self, batch: Dataset) -> List[str]:
+    def inference(self, dataset: Dataset) -> List[str]:
         """
         Inference function for audio classification.
 
         Args:
-            batch (Dataset):
+            dataset (Dataset):
                 Dataset to be inferred.
 
         Returns:
             List[str]:
                 List of predicted labels.
         """
-        prediction = self.pipeline(batch["audio"]["array"], top_k=1)
-        batch["prediction"] = prediction[0]["label"]
 
-        return batch
+        def _get_audio_array(
+            dataset: Dataset,
+        ) -> np.ndarray:
+            for item in dataset:
+                yield item["audio"]["array"]
+
+        results = []
+
+        for out in tqdm(
+            self.pipeline(_get_audio_array(dataset), top_k=1),
+            total=len(dataset),
+            desc="Classifying Audios",
+        ):
+            prediction = out[0]["label"]
+            results.append(prediction)
+
+        return results

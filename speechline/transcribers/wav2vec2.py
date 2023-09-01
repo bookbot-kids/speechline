@@ -37,6 +37,7 @@ class Wav2Vec2Transcriber(AudioTranscriber):
         chunk_length_s: int = 30,
         output_offsets: bool = False,
         return_timestamps: str = "word",
+        keep_whitespace: bool = False,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
         """
         Performs inference on `dataset`.
@@ -50,6 +51,8 @@ class Wav2Vec2Transcriber(AudioTranscriber):
                 Whether to output timestamps. Defaults to `False`.
             return_timestamps (str, optional):
                 Returned timestamp level. Defaults to `"word"`.
+            keep_whitespace (bool, optional):
+                Whether to presere whitespace predictions. Defaults to `False`.
 
         Returns:
             Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
@@ -84,16 +87,11 @@ class Wav2Vec2Transcriber(AudioTranscriber):
         ]
         ```
         """
-
-        dataset = dataset.map(
-            self.inference,
-            desc="Transcribing Audios",
-            fn_kwargs={
-                "chunk_length_s": chunk_length_s,
-                "output_offsets": output_offsets,
-                "offset_key": "text",
-                "return_timestamps": return_timestamps,
-            },
+        return self.inference(
+            dataset,
+            chunk_length_s=chunk_length_s,
+            output_offsets=output_offsets,
+            offset_key="text",
+            return_timestamps=return_timestamps,
+            keep_whitespace=keep_whitespace,
         )
-
-        return dataset["prediction"]

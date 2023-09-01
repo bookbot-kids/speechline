@@ -110,14 +110,20 @@ class SegmenterConfig:
         minimum_chunk_duration (float, optional):
             Minimum chunk duration (in seconds) to be exported.
             Defaults to 0.2 second.
+        lexicon_path (str, optional):
+            Path to lexicon file. Defaults to `None`.
+        keep_whitespace (bool, optional):
+            Whether to keep whitespace in transcript. Defaults to `False`.
     """
 
     type: str
     silence_duration: float = 0.0
     minimum_chunk_duration: float = 0.2
+    lexicon_path: str = None
+    keep_whitespace: bool = False
 
     def __post_init__(self):
-        SUPPORTED_TYPES = {"silence", "word_overlap"}
+        SUPPORTED_TYPES = {"silence", "word_overlap", "phoneme_overlap"}
 
         if self.type not in SUPPORTED_TYPES:
             raise ValueError(f"Segmenter of type {self.type} is not yet supported!")

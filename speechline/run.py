@@ -13,16 +13,22 @@
 # limitations under the License.
 
 import argparse
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
+from typing import Dict, List, Union
 
-from tqdm import tqdm
+from lexikos import Lexicon
+from tqdm.contrib.concurrent import thread_map
 
 from speechline.classifiers import Wav2Vec2Classifier
 from speechline.config import Config
-from speechline.segmenters import SilenceSegmenter, WordOverlapSegmenter
+from speechline.segmenters import (
+    PhonemeOverlapSegmenter,
+    SilenceSegmenter,
+    WordOverlapSegmenter,
+)
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
@@ -125,6 +131,7 @@ class Runner:
             chunk_length_s=config.transcriber.chunk_length_s,
             output_offsets=True,
             return_timestamps=config.transcriber.return_timestamps,
+            keep_whitespace=config.segmenter.keep_whitespace,
         )
 
         # segment audios based on offsets
@@ -132,25 +139,35 @@ class Runner:
             segmenter = SilenceSegmenter()
         elif config.segmenter.type == "word_overlap":
             segmenter = WordOverlapSegmenter()
+        elif config.segmenter.type == "phoneme_overlap":
+            lexicon = Lexicon()
+            if config.segmenter.lexicon_path:
+                with open(config.segmenter.lexicon_path) as json_file:
+                    lex = json.load(json_file)
+                # merge dict with lexicon
+                for k, v in lex.items():
+                    lexicon[k] = lexicon[k].union(set(v)) if k in lexicon else set(v)
+            segmenter = PhonemeOverlapSegmenter(lexicon)
 
         tokenizer = WordTokenizer()
 
-        for audio_path, ground_truth, offsets in tqdm(
-            zip(df["audio"], df["ground_truth"], output_offsets),
-            desc="Segmenting Audio into Chunks",
-            total=len(df),
+        if config.do_noise_classify:
+            noise_classifier = config.noise_classifier.model
+            minimum_empty_duration = config.noise_classifier.minimum_empty_duration
+            noise_classifier_threshold = config.noise_classifier.threshold
+        else:
+            noise_classifier = None
+            minimum_empty_duration = None
+            noise_classifier_threshold = None
+
+        def export_and_chunk(
+            audio_path: str,
+            ground_truth: str,
+            offsets: List[Dict[str, Union[str, float]]],
         ):
             json_path = Path(audio_path).with_suffix(".json")
             # export JSON transcripts
             export_transcripts_json(str(json_path), offsets)
-            if config.do_noise_classify:
-                noise_classifier = config.noise_classifier.model
-                minimum_empty_duration = config.noise_classifier.minimum_empty_duration
-                noise_classifier_threshold = config.noise_classifier.threshold
-            else:
-                noise_classifier = None
-                minimum_empty_duration = None
-                noise_classifier_threshold = None
             # chunk audio into segments
             segmenter.chunk_audio_segments(
                 audio_path,
@@ -164,6 +181,15 @@ class Runner:
                 silence_duration=config.segmenter.silence_duration,
                 ground_truth=tokenizer(ground_truth),
             )
+
+        thread_map(
+            export_and_chunk,
+            df["audio"],
+            df["ground_truth"],
+            output_offsets,
+            desc="Segmenting Audio into Chunks",
+            total=len(df),
+        )
 
 
 if __name__ == "__main__":

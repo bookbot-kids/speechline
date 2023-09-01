@@ -17,6 +17,7 @@ from typing import Dict, List, Union
 import numpy as np
 import torch
 from datasets import Dataset
+from tqdm.auto import tqdm
 from transformers import pipeline
 
 from ..pipelines import AudioMultiLabelClassificationPipeline
@@ -44,13 +45,13 @@ class AudioMultiLabelClassifier(AudioModule):
         super().__init__(pipeline=classifier)
 
     def inference(
-        self, batch: Dataset, threshold: float = 0.5
+        self, dataset: Dataset, threshold: float = 0.5
     ) -> List[Dict[str, Union[str, float]]]:
         """
         Inference function for audio classification.
 
         Args:
-            batch (Dataset):
+            dataset (Dataset):
                 Dataset to be inferred.
             threshold (float):
                 Threshold probability for predicted labels.
@@ -62,19 +63,28 @@ class AudioMultiLabelClassifier(AudioModule):
                 consisting of the predicted label and probability.
         """
 
-        prediction = []
-        outputs = self.pipeline(batch["audio"]["array"])
-        ids = np.where(outputs >= threshold)[0].tolist()
+        def _get_audio_array(
+            dataset: Dataset,
+        ) -> np.ndarray:
+            for item in dataset:
+                yield item["audio"]["array"]
 
-        if len(ids) > 0:
-            prediction = [
-                {
-                    "label": self.pipeline.model.config.id2label[id],
-                    "score": outputs[id],
-                }
-                for id in ids
-            ]
+        results = []
 
-        batch["prediction"] = prediction
+        for out in tqdm(
+            self.pipeline(_get_audio_array(dataset), top_k=1),
+            total=len(dataset),
+            desc="Classifying Audios",
+        ):
+            ids = np.where(out >= threshold)[0].tolist()
+            if len(ids) > 0:
+                prediction = [
+                    {
+                        "label": self.pipeline.model.config.id2label[id],
+                        "score": out[id],
+                    }
+                    for id in ids
+                ]
+                results.append(prediction)
 
-        return batch
+        return results
