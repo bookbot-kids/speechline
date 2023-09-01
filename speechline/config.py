@@ -78,6 +78,8 @@ class TranscriberConfig:
             `True` for Whisper-based models.
         chunk_length_s (int):
             Audio chunk length in seconds.
+        hotwords_key (str, optional):
+            Hotwords key in Dataset. Defaults to `None`.
     """
 
     type: str

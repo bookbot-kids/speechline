@@ -170,7 +170,7 @@ class ONNXAudioTranscriber(AudioModule):
 
         for datum in tqdm(dataset, total=len(dataset), desc="Transcribing Audios"):
             if hotwords_key:
-                decoder_kwargs = {"hotwords": datum[hotwords_key]}
+                decoder_kwargs = {"hotwords": datum[hotwords_key].split()}
             else:
                 decoder_kwargs = {}
 
