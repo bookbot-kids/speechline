@@ -6,10 +6,11 @@
         "max_duration_s": 3.0
     },
     "transcriber": {
-        "type": "wav2vec2",
-        "model": "bookbot/wav2vec2-conformer-rel-pos-large-libriphone-timit-cv",
-        "return_timestamps": "char",
-        "chunk_length_s": 30
+        "type": "onnx_wav2vec2",
+        "model": "bookbot/onnx-wav2vec2-xls-r-bookbot-id-lm",
+        "return_timestamps": "word",
+        "chunk_length_s": 30,
+        "hotwords_key": "ground_truth"
     },
     "do_noise_classify": false,
     "noise_classifier": {
