@@ -17,6 +17,9 @@ from pathlib import Path
 
 import pandas as pd
 from datasets import Audio, Dataset, config, load_from_disk
+from tqdm.auto import tqdm
+
+tqdm.pandas()
 
 
 def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.DataFrame:
@@ -55,7 +58,14 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         - `language_code`
         - `ground_truth`
     """
-    audios = sorted(glob(f"{path_to_files}/*/*.{audio_extension}"))
+
+    def read_file(path: Path) -> str:
+        if path.exists():
+            with open(path, "r") as f:
+                return f.read()
+        return ""
+
+    audios = sorted(glob(f"{path_to_files}/**/*.{audio_extension}", recursive=True))
     audios = [a for a in audios if Path(a).stat().st_size > 0]
     if len(audios) == 0:
         raise ValueError("No audio files found!")
@@ -68,9 +78,7 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     df["language"] = df["language_code"].apply(lambda f: f.split("-")[0])
     # ground truth is same filename, except with .txt extension
     df["ground_truth"] = df["audio"].apply(lambda p: Path(p).with_suffix(".txt"))
-    df["ground_truth"] = df["ground_truth"].apply(
-        lambda p: open(p).read() if p.exists() else ""
-    )
+    df["ground_truth"] = df["ground_truth"].progress_apply(read_file)
     return df
 
 
