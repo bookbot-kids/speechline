@@ -38,6 +38,7 @@ class Wav2Vec2Transcriber(AudioTranscriber):
         output_offsets: bool = False,
         return_timestamps: str = "word",
         keep_whitespace: bool = False,
+        **kwargs,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
         """
         Performs inference on `dataset`.

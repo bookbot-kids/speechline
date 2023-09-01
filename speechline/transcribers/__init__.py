@@ -14,5 +14,6 @@
 
 from .wav2vec2 import Wav2Vec2Transcriber
 from .whisper import WhisperTranscriber
+from .onnx_wav2vec2 import ONNXWav2Vec2Transcriber
 
-__all__ = ["Wav2Vec2Transcriber", "WhisperTranscriber"]
+__all__ = ["Wav2Vec2Transcriber", "WhisperTranscriber", "ONNXWav2Vec2Transcriber"]

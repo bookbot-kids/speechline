@@ -29,7 +29,11 @@ from speechline.segmenters import (
     SilenceSegmenter,
     WordOverlapSegmenter,
 )
-from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
+from speechline.transcribers import (
+    Wav2Vec2Transcriber,
+    WhisperTranscriber,
+    ONNXWav2Vec2Transcriber,
+)
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.logger import logger
@@ -122,6 +126,8 @@ class Runner:
             transcriber = Wav2Vec2Transcriber(config.transcriber.model)
         elif config.transcriber.type == "whisper":
             transcriber = WhisperTranscriber(config.transcriber.model)
+        elif config.transcriber.type == "onnx_wav2vec2":
+            transcriber = ONNXWav2Vec2Transcriber(config.transcriber.model)
 
         # perform audio transcription
         dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
@@ -132,6 +138,7 @@ class Runner:
             output_offsets=True,
             return_timestamps=config.transcriber.return_timestamps,
             keep_whitespace=config.segmenter.keep_whitespace,
+            hotwords_key=config.transcriber.hotwords_key,
         )
 
         # segment audios based on offsets

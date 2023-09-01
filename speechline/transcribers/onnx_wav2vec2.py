@@ -16,29 +16,29 @@ from typing import Dict, List, Union
 
 from datasets import Dataset
 
-from ..modules import AudioTranscriber
+from ..modules import ONNXAudioTranscriber
 
 
-class WhisperTranscriber(AudioTranscriber):
+class ONNXWav2Vec2Transcriber(ONNXAudioTranscriber):
     """
-    Whisper model for seq2seq speech recognition with its processor.
+    ONNX Wav2Vec2-CTC model for speech recognition.
 
     Args:
         model_checkpoint (str):
             HuggingFace model hub checkpoint.
     """
 
-    def __init__(self, model_checkpoint: str) -> None:
-        super().__init__(model_checkpoint)
+    def __init__(self, model_checkpoint: str, file_name: str = "model.onnx") -> None:
+        super().__init__(model_checkpoint, file_name)
 
     def predict(
         self,
         dataset: Dataset,
-        chunk_length_s: int = 0,
+        chunk_length_s: int = 30,
         output_offsets: bool = False,
-        return_timestamps: bool = True,
+        hotwords_key: str = None,
+        return_timestamps: str = "word",
         keep_whitespace: bool = False,
-        **kwargs,
     ) -> Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
         """
         Performs inference on `dataset`.
@@ -47,39 +47,45 @@ class WhisperTranscriber(AudioTranscriber):
             dataset (Dataset):
                 Dataset to be inferred.
             chunk_length_s (int):
-                Audio chunk length during inference. Defaults to `0`.
+                Audio chunk length during inference. Defaults to `30`.
             output_offsets (bool, optional):
                 Whether to output timestamps. Defaults to `False`.
-            return_timestamps (bool, optional):
-                Returned timestamp level. Defaults to `True`.
+            hotwords_key (str, optional):
+                Hotwords key in Dataset. Defaults to `None`.
+            return_timestamps (str, optional):
+                Returned timestamp level. Defaults to `"word"`.
             keep_whitespace (bool, optional):
                 Whether to presere whitespace predictions. Defaults to `False`.
 
         Returns:
             Union[List[str], List[List[Dict[str, Union[str, float]]]]]:
                 Defaults to list of transcriptions.
-                If `output_offsets` is `True`, return list of text offsets.
+                If `output_offsets` is `True`, return list of offsets.
 
         ### Example
         ```pycon title="example_transcriber_predict.py"
-        >>> from speechline.transcribers import WhisperTranscriber
+        >>> from speechline.transcribers import Wav2Vec2Transcriber
         >>> from datasets import Dataset, Audio
-        >>> transcriber = WhisperTranscriber("openai/whisper-tiny")
+        >>> transcriber = Wav2Vec2Transcriber("bookbot/wav2vec2-ljspeech-gruut")
         >>> dataset = Dataset.from_dict({"audio": ["sample.wav"]}).cast_column(
         ...     "audio", Audio(sampling_rate=transcriber.sr)
         ... )
         >>> transcripts = transcriber.predict(dataset)
         >>> transcripts
-        ["Her red umbrella is just the best."]
+        ["ɪ t ɪ z n oʊ t ʌ p"]
         >>> offsets = transcriber.predict(dataset, output_offsets=True)
         >>> offsets
         [
             [
-                {
-                    "text": "Her red umbrella is just the best.",
-                    "start_time": 0.0,
-                    "end_time": 3.0,
-                }
+                {"text": "ɪ", "start_time": 0.0, "end_time": 0.02},
+                {"text": "t", "start_time": 0.26, "end_time": 0.3},
+                {"text": "ɪ", "start_time": 0.34, "end_time": 0.36},
+                {"text": "z", "start_time": 0.42, "end_time": 0.44},
+                {"text": "n", "start_time": 0.5, "end_time": 0.54},
+                {"text": "oʊ", "start_time": 0.54, "end_time": 0.58},
+                {"text": "t", "start_time": 0.58, "end_time": 0.62},
+                {"text": "ʌ", "start_time": 0.76, "end_time": 0.78},
+                {"text": "p", "start_time": 0.92, "end_time": 0.94},
             ]
         ]
         ```
@@ -89,7 +95,7 @@ class WhisperTranscriber(AudioTranscriber):
             chunk_length_s=chunk_length_s,
             output_offsets=output_offsets,
             offset_key="text",
+            hotwords_key=hotwords_key,
             return_timestamps=return_timestamps,
             keep_whitespace=keep_whitespace,
-            generate_kwargs={"max_new_tokens": 448},
         )

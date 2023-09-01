@@ -1,6 +1,7 @@
 torch
 torchaudio
 transformers
+optimum
 datasets[audio]
 librosa
 pandas

@@ -16,10 +16,12 @@ from .audio_classifier import AudioClassifier
 from .audio_module import AudioModule
 from .audio_multilabel_classifier import AudioMultiLabelClassifier
 from .audio_transcriber import AudioTranscriber
+from .onnx_audio_transcriber import ONNXAudioTranscriber
 
 __all__ = [
     "AudioModule",
     "AudioClassifier",
     "AudioTranscriber",
     "AudioMultiLabelClassifier",
+    "ONNXAudioTranscriber",
 ]

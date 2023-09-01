@@ -84,15 +84,19 @@ class TranscriberConfig:
     model: str
     return_timestamps: Union[str, bool]
     chunk_length_s: int
+    hotwords_keys: str = None
 
     def __post_init__(self):
-        SUPPORTED_MODELS = {"wav2vec2", "whisper"}
+        SUPPORTED_MODELS = {"wav2vec2", "whisper", "onnx_wav2vec2"}
         WAV2VEC_TIMESTAMPS = {"word", "char"}
 
         if self.type not in SUPPORTED_MODELS:
             raise ValueError(f"Transcriber of type {self.type} is not yet supported!")
 
-        if self.type == "wav2vec2" and self.return_timestamps not in WAV2VEC_TIMESTAMPS:
+        if (
+            self.type in ["wav2vec2", "onnx_wav2vec2"]
+            and self.return_timestamps not in WAV2VEC_TIMESTAMPS
+        ):
             raise ValueError("wav2vec2 only supports `'word'` or `'char'` timestamps!")
         elif self.type == "whisper" and self.return_timestamps is not True:
             raise ValueError("Whisper only supports `True` timestamps!")
