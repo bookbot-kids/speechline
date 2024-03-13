@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict, List, Tuple, Union
+from typing import Dict, Generator, List, Tuple, Union
 
 import numpy as np
 import torch
@@ -78,9 +78,7 @@ class AudioTranscriber(AudioModule):
         """
 
         def _format_timestamps_to_offsets(
-            timestamps: Dict[
-                str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]
-            ],
+            timestamps: Dict[str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]],
             offset_key: str = "text",
             keep_whitespace: bool = False,
         ) -> List[Dict[str, Union[str, float]]]:
@@ -127,9 +125,7 @@ class AudioTranscriber(AudioModule):
             ]
 
         def _format_timestamps_to_transcript(
-            timestamps: Dict[
-                str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]
-            ],
+            timestamps: Dict[str, Union[str, List[Dict[str, Union[str, Tuple[float, float]]]]]],
         ) -> str:
             """
             Formats `AutomaticSpeechRecognitionPipeline`'s timestamp outputs
@@ -143,13 +139,11 @@ class AudioTranscriber(AudioModule):
                 str:
                     Transcript string.
             """
-            return " ".join(
-                [o["text"].strip() for o in timestamps["chunks"] if o["text"] != " "]
-            )
+            return " ".join([o["text"].strip() for o in timestamps["chunks"] if o["text"] != " "])
 
         def _get_audio_array(
             dataset: Dataset,
-        ) -> Dict[str, Union[np.ndarray, int, str]]:
+        ) -> Generator[Dict[str, Union[np.ndarray, int, str]], None, None]:
             for item in dataset:
                 yield {**item["audio"]}
 
