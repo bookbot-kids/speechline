@@ -19,6 +19,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
+from tqdm.contrib.concurrent import thread_map
+
 
 from datasets import Audio, load_dataset
 from lexikos import Lexicon
@@ -136,6 +138,7 @@ class Runner:
         """
         num_proc = os.cpu_count()
         dataset = load_dataset(dataset_name, dataset_config, split=dataset_split, trust_remote_code=True)
+        # dataset = dataset.select(range(100))
 
         if config.filter_empty_transcript:
             dataset = dataset.filter(lambda example: example[text_column_name] != "", num_proc=num_proc)
@@ -162,6 +165,15 @@ class Runner:
             keep_whitespace=config.segmenter.keep_whitespace,
         )
 
+        def export_offsets(idx: int):
+            datum = dataset[idx]
+            json_path = Path(datum[audio_column_name]["path"]).with_suffix(".json")
+            json_path = os.path.normpath(json_path).split(os.sep)[-2:]
+            export_path = os.path.join(output_dir, *json_path)
+            export_transcripts_json(export_path, output_offsets[idx])
+
+        thread_map(export_offsets, range(len(dataset)), desc="Exporting offsets to JSON", total=len(dataset))
+
         # segment audios based on offsets
         if config.segmenter.type == "silence":
             segmenter = SilenceSegmenter()
@@ -179,7 +191,8 @@ class Runner:
 
         tokenizer = WordTokenizer()
 
-        def export_and_chunk(example, idx):
+        def segment_audio(idx):
+            example = dataset[idx]
             offset = output_offsets[idx]
             # chunk audio into segments
             segmenter.chunk_audio_segments(
@@ -191,10 +204,7 @@ class Runner:
                 ground_truth=tokenizer(example[text_column_name]),
             )
 
-        dataset = dataset.map(
-            export_and_chunk, with_indices=True, num_proc=num_proc, desc="Segmenting Audio into Chunks"
-        )
-
+        thread_map(segment_audio, range(len(dataset)), desc="Segmenting Audio into Chunks", total=len(dataset))
 
 if __name__ == "__main__":
     args = Runner.parse_args(sys.argv[1:])

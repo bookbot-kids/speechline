@@ -15,7 +15,7 @@
 import json
 import os
 from typing import Dict, List, Union
-
+from pathlib import Path
 import numpy as np
 from pydub import AudioSegment
 
@@ -82,6 +82,7 @@ def export_transcripts_json(
         offsets (List[Dict[str, Union[str, float]]]):
             List of offsets.
     """
+    _ = Path(output_json_path).parent.mkdir(parents=True, exist_ok=True)
     with open(output_json_path, "w") as f:
         json.dump(offsets, f, indent=2)
 
