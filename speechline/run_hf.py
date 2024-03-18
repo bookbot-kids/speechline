@@ -155,7 +155,7 @@ class Runner:
         )
 
         if config.filter_empty_transcript:
-            dataset = dataset.filter(lambda example: example[text_column_name] != "", num_proc=num_proc)
+            dataset = dataset.filter(lambda example: example != "", num_proc=num_proc, input_columns=[text_column_name])
 
         output_offsets = transcriber.predict(
             dataset,
