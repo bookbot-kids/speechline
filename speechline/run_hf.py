@@ -140,9 +140,6 @@ class Runner:
         dataset = load_dataset(dataset_name, dataset_config, split=dataset_split, trust_remote_code=True)
         # dataset = dataset.select(range(100))
 
-        if config.filter_empty_transcript:
-            dataset = dataset.filter(lambda example: example[text_column_name] != "", num_proc=num_proc)
-
         # load transcriber model
         if config.transcriber.type == "wav2vec2":
             transcriber = Wav2Vec2Transcriber(config.transcriber.model)
@@ -156,6 +153,9 @@ class Runner:
             num_proc=num_proc,
             remove_columns=list(set(dataset.column_names) - set([audio_column_name, text_column_name])),
         )
+
+        if config.filter_empty_transcript:
+            dataset = dataset.filter(lambda example: example[text_column_name] != "", num_proc=num_proc)
 
         output_offsets = transcriber.predict(
             dataset,
@@ -205,6 +205,7 @@ class Runner:
             )
 
         thread_map(segment_audio, range(len(dataset)), desc="Segmenting Audio into Chunks", total=len(dataset))
+
 
 if __name__ == "__main__":
     args = Runner.parse_args(sys.argv[1:])

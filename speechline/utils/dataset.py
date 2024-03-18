@@ -114,5 +114,5 @@ def preprocess_audio_transcript(text: str) -> str:
     text = re.sub(chars_to_remove_regex, " ", text).lower().strip()
     text = re.sub(r"\s+", " ", text).strip()
     for tag in tags:
-        text = text.replace(tag, "").strip()
+        text = text.replace(tag.lower(), "").strip()
     return text
