@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 from glob import glob
 from pathlib import Path
 
@@ -68,9 +69,7 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     df["language"] = df["language_code"].apply(lambda f: f.split("-")[0])
     # ground truth is same filename, except with .txt extension
     df["ground_truth"] = df["audio"].apply(lambda p: Path(p).with_suffix(".txt"))
-    df["ground_truth"] = df["ground_truth"].apply(
-        lambda p: open(p).read() if p.exists() else ""
-    )
+    df["ground_truth"] = df["ground_truth"].apply(lambda p: open(p).read() if p.exists() else "")
     return df
 
 
@@ -90,7 +89,30 @@ def format_audio_dataset(df: pd.DataFrame, sampling_rate: int = 16000) -> Datase
     dataset = Dataset.from_pandas(df)
     dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
     saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
-    saved_dataset = saved_dataset.cast_column(
-        "audio", Audio(sampling_rate=sampling_rate)
-    )
+    saved_dataset = saved_dataset.cast_column("audio", Audio(sampling_rate=sampling_rate))
     return saved_dataset
+
+
+def preprocess_audio_transcript(text: str) -> str:
+    """
+    Preprocesses audio transcript.
+    - Removes punctuation.
+    - Converts to lowercase.
+    - Removes special tags (e.g. GigaSpeech).
+    """
+    tags = [
+        "<COMMA>",
+        "<PERIOD>",
+        "<QUESTIONMARK>",
+        "<EXCLAMATIONPOINT>",
+        "<SIL>",
+        "<MUSIC>",
+        "<NOISE>",
+        "<OTHER>",
+    ]
+    chars_to_remove_regex = "[\,\?\.\!\-\;\:\"\“\%\‘\”\�'\’]"
+    text = re.sub(chars_to_remove_regex, " ", text).lower().strip()
+    text = re.sub(r"\s+", " ", text).strip()
+    for tag in tags:
+        text = text.replace(tag.lower(), "").strip()
+    return text

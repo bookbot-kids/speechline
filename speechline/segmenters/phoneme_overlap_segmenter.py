@@ -14,6 +14,8 @@
 
 from typing import Dict, List, Union
 
+from gruut import sentences
+
 from .segmenter import Segmenter
 
 
@@ -62,14 +64,9 @@ class PhonemeOverlapSegmenter(Segmenter):
             Dict[str, List[str]]:
                 Normalized lexicon.
         """
-        return {
-            word: set(self._normalize_phonemes(p) for p in phonemes)
-            for word, phonemes in lexicon.items()
-        }
+        return {word: set(self._normalize_phonemes(p) for p in phonemes) for word, phonemes in lexicon.items()}
 
-    def _merge_offsets(
-        self, offsets: List[Dict[str, Union[str, float]]]
-    ) -> List[List[Dict[str, Union[str, float]]]]:
+    def _merge_offsets(self, offsets: List[Dict[str, Union[str, float]]]) -> List[List[Dict[str, Union[str, float]]]]:
         """
         Merge phoneme-level offsets into word-bounded phoneme offsets.
 
@@ -114,9 +111,24 @@ class PhonemeOverlapSegmenter(Segmenter):
             List[List[str]]:
                 List of phoneme combinations.
         """
+
+        def g2p(text: str) -> List[str]:
+            phonemes = []
+            for words in sentences(text):
+                for word in words:
+                    if word.is_major_break or word.is_minor_break:
+                        phonemes.append(word.text)
+                    else:
+                        phonemes.append(" ".join(word.phonemes))
+            return phonemes
+
         combinations = []
         for word in ground_truth:
-            phonemes = self.lexicon[self._normalize_text(word)]
+            normalized_word = self._normalize_text(word)
+            if normalized_word in self.lexicon:
+                phonemes = self.lexicon[normalized_word]
+            else:
+                phonemes = g2p(normalized_word)
             combinations.append(phonemes)
         return combinations
 

@@ -15,7 +15,7 @@
 import json
 import os
 from typing import Dict, List, Union
-
+from pathlib import Path
 import numpy as np
 from pydub import AudioSegment
 
@@ -35,9 +35,22 @@ def pydub_to_np(audio: AudioSegment) -> np.ndarray:
         np.ndarray:
             Resultant NumPy array of AudioSegment.
     """
-    return np.array(audio.get_array_of_samples(), dtype=np.float32).reshape(
-        (-1, audio.channels)
-    ) / (1 << (8 * audio.sample_width - 1))
+    return np.array(audio.get_array_of_samples(), dtype=np.float32).reshape((-1, audio.channels)) / (
+        1 << (8 * audio.sample_width - 1)
+    )
+
+
+def np_f32_to_pydub(audio: Dict[str, Union[np.ndarray, str]]):
+    array = audio["array"]
+    sampling_rate = audio["sampling_rate"]
+    array = np.int16(array * 32767)
+    audio_bytes = array.tobytes()
+    return AudioSegment(
+        data=audio_bytes,
+        sample_width=array.dtype.itemsize,
+        frame_rate=sampling_rate,
+        channels=array.ndim,
+    )
 
 
 def export_transcripts_json(
@@ -69,13 +82,12 @@ def export_transcripts_json(
         offsets (List[Dict[str, Union[str, float]]]):
             List of offsets.
     """
+    _ = Path(output_json_path).parent.mkdir(parents=True, exist_ok=True)
     with open(output_json_path, "w") as f:
         json.dump(offsets, f, indent=2)
 
 
-def export_segment_transcripts_tsv(
-    output_tsv_path: str, segment: List[Dict[str, Union[str, float]]]
-) -> None:
+def export_segment_transcripts_tsv(output_tsv_path: str, segment: List[Dict[str, Union[str, float]]]) -> None:
     """
     Export segment transcripts to TSV of structure:
 
