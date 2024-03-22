@@ -1,0 +1,2099 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../forced_align_punctuations/">
+      
+      
+        <link rel="next" href="../../reference/runner/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
+    
+    
+      
+        <title>Transcribing Audios - SpeechLine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.10ba22f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../css/extras.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="pink" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#performing-audio-transcription" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SpeechLine" class="md-header__button md-logo" aria-label="SpeechLine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SpeechLine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Transcribing Audios
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="pink" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="pink" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bookbot-kids/speechline" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  SpeechLine
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../pipeline/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="https://huggingface.co/spaces/bookbot/SpeechLine" class="md-tabs__link">
+        
+  
+    
+  
+  Demo
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/runner/" class="md-tabs__link">
+          
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SpeechLine" class="md-nav__button md-logo" aria-label="SpeechLine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SpeechLine
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bookbot-kids/speechline" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    SpeechLine
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            SpeechLine
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INSTALLATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PROJECT_CHARTER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Charter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pipeline Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Running SpeechLine
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Running SpeechLine
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sagemaker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS SageMaker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../google-cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Google Cloud Engine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../forced_align_punctuations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Force Aligning Punctuations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Transcribing Audios
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://huggingface.co/spaces/bookbot/SpeechLine" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Demo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/runner/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Runner
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Config
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Classifiers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Classifiers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/classifiers/wav2vec2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wav2Vec2 Classifier
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/classifiers/ast/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Spectogram Transformer Classifier
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Transcribers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Transcribers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/transcribers/wav2vec2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wav2Vec2 Transcriber
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/transcribers/whisper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Whisper Transcriber
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Base Modules
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Base Modules
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/modules/audio_classifier/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Classifier
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/modules/audio_multilabel_classifier/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Multilabel Classifier
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/modules/audio_transcriber/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Transcriber
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/modules/audio_module/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Module
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pipelines
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Pipelines
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/pipelines/audio_classification_with_padding/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Classification with Padding
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/pipelines/audio_multilabel_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Multilabel Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Aligners
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Aligners
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/aligners/punctuation_forced_aligner/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Punctuation Forced Aligner
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Metrics
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Metrics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/metrics/phoneme_error_rate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Phoneme Error Rate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Segmenters
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Segmenters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/segmenters/segmenter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Segmenter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/segmenters/silence_segmenter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Silence Segmenter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/segmenters/word_overlap_segmenter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Word Overlap Segmenter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/segmenters/phoneme_overlap_segmenter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Phoneme Overlap Segmenter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Utilities
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            Utilities
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/utils/airtable/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AirTable Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/utils/dataset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dataset
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/utils/g2p/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grapheme-to-Phoneme Converter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/utils/io/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    I/O
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/utils/s3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    S3
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/utils/tokenizer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Word Tokenizer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_11" id="__nav_4_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Scripts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_11">
+            <span class="md-nav__icon md-icon"></span>
+            Scripts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/scripts/aac_to_wav/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aac-to-wav Audio Converter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/scripts/data_logger/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Data Logger
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/scripts/create_hf_dataset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Create HuggingFace Dataset
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/scripts/download_s3_bucket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    S3 Bucket Downloader
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/scripts/upload_s3_bucket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    S3 Bucket Uploader
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="performing-audio-transcription">Performing Audio Transcription</h1>
+<p>This guide will explain how to transcribe audio files using SpeechLine.</p>
+<p>First, load in the your transcription model by passing its Hugging Face model checkpoint into <a href="../../reference/transcribers/wav2vec2"><code>Wav2Vec2Transcriber</code></a>.</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">speechline.transcribers</span> <span class="kn">import</span> <span class="n">Wav2Vec2Transcriber</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">transcriber</span> <span class="o">=</span> <span class="n">Wav2Vec2Transcriber</span><span class="p">(</span><span class="s2">&quot;bookbot/wav2vec2-ljspeech-gruut&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Next, you will need to transform your input audio file (given by <code>sample.wav</code>) into a <code>Dataset</code> format like the following</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">Audio</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;audio&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sample.wav&quot;</span><span class="p">]})</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">cast_column</span><span class="p">(</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span> <span class="n">Audio</span><span class="p">(</span><span class="n">sampling_rate</span><span class="o">=</span><span class="n">transcriber</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">))</span>
+</code></pre></div>
+<p>Once preprocessing is finished, simply pass the input data into the transcriber.</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">phoneme_offsets</span> <span class="o">=</span> <span class="n">transcriber</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">output_offsets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_timestamps</span><span class="o">=</span><span class="s2">&quot;char&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>Transcribing Audios:   0%|          | 0/1 [00:00&lt;?, ?ex/s]
+</code></pre></div>
+<p>The output format of the transcription model is shown below. It is a list of dictionary containing the transcribed <code>text</code>, <code>start_time</code> and <code>end_time</code> stamps of the corresponding phoneme token.</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">phoneme_offsets</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>[[{&#39;end_time&#39;: 0.02, &#39;start_time&#39;: 0.0, &#39;text&#39;: &#39;ɪ&#39;},
+  {&#39;end_time&#39;: 0.3, &#39;start_time&#39;: 0.26, &#39;text&#39;: &#39;t&#39;},
+  {&#39;end_time&#39;: 0.36, &#39;start_time&#39;: 0.34, &#39;text&#39;: &#39;ɪ&#39;},
+  {&#39;end_time&#39;: 0.44, &#39;start_time&#39;: 0.42, &#39;text&#39;: &#39;z&#39;},
+  {&#39;end_time&#39;: 0.54, &#39;start_time&#39;: 0.5, &#39;text&#39;: &#39;n&#39;},
+  {&#39;end_time&#39;: 0.58, &#39;start_time&#39;: 0.54, &#39;text&#39;: &#39;oʊ&#39;},
+  {&#39;end_time&#39;: 0.62, &#39;start_time&#39;: 0.58, &#39;text&#39;: &#39;t&#39;},
+  {&#39;end_time&#39;: 0.78, &#39;start_time&#39;: 0.76, &#39;text&#39;: &#39;ʌ&#39;},
+  {&#39;end_time&#39;: 0.94, &#39;start_time&#39;: 0.92, &#39;text&#39;: &#39;p&#39;}]]
+</code></pre></div>
+<p>You can manually check the model output by playing a segment (using the start and end timestamps) of your input audio file. </p>
+<p>First, load your audio file.</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">pydub</span> <span class="kn">import</span> <span class="n">AudioSegment</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;sample.wav&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">audio</span>
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,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" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<p>You can use the following function to play a segment of your audio from a given offset</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span> <span class="nf">play_segment</span><span class="p">(</span><span class="n">offsets</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">start</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;start_time&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">end</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">offsets</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="k">return</span> <span class="n">audio</span><span class="p">[</span><span class="n">start</span> <span class="o">*</span> <span class="mi">1000</span> <span class="p">:</span> <span class="n">end</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">]</span>
+</code></pre></div>
+<p>Here are some examples of the phoneme segments</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>ɪ
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAfgAkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJ////////////////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQDQAAAAAAAAAH4RCJYDwAAAAAAAAAAAAAA//M4xAAAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//M4xF8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//M4xKAAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>t
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAABAAAAmQAeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4paWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpdLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL/////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQEQAAAAAAAAAJkz4h9eAAAAAAAAAAAAAAA//M4xAATsH6oBUYQABI/YwgAAAAAgLJ20Q0EAGAwsmTJkyZMAAAAQCAIAmD4Pg+D4IAgCAIAmD4Pg+D4IAhgMHz/+Jz8YCAIHP/8EMoAwfB993T/lwfB9/0icH0AAaqqqoEVBZTX/ri50ziU//M4xBAYCJbFk5h4AG7xUDQy56MGxXIgxsr08/AIfdeiY3nWNePxQNKfWJz4Z2VCQmp5dgJ4hasFAuA2DYrYLjgcU4e8I/CTDBmfGXlZ3W/3b9YxJ0Ui4Pf+Lf8MKpAAHAUHA4IAAA5ILp0s//M4xA4XohayUZJoAAIsL/LXg4hOrJYlo7Bla+EWGDG0LatlfHgRxLiXI1er44S4WkkXyj/+YsskjZFH//OF5JZqio2S///OmqKCSS0Vqcy//LgqCRUAmQ6Cv//BKkxBTUUzLjEwMKqqqqqq//M4xA4AAANIAcAAAKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>ɪ
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAfgAkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJ////////////////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQDQAAAAAAAAAH4XMX/qwAAAAAAAAAAAAAA//M4xAAU4Ha0pUwQAMBYmcpSlFgkATBuT38pSk07W169evXgAACAIAgCYPg+D4PggCAIAgZrB8Pu5cP/5cHwfD9QIAgn+oEwfB8/BAMSgDB8Hz8Z0/EAIBjB8Hz/lwfB9a0NQ+9FWyloI8JT//M4xAsXKhq4AZiAABkbEq0PQM5DuXaAEOO01EelZjJ6icNlpGLJeyKkkO7fomlRhr0vz6pElF4V1JZSZaJS/myUrrUTdjZkDbMjf/zAtt6+xSPqer/yiyh4azSr/1IbSCug5BqB0RYlxKEo//M4xA0PQG3sN8wYAJyYEgPLwRABHUegJFkrCUqZMT3mg12+qV/LPK/qPfkSx4r1HhKs7/9YaUHf/U//6ExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>z
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAfgAkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJ////////////////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQDQAAAAAAAAAH4PFSuoQAAAAAAAAAAAAAA//M4xAAPCC6NE0MYAIQIna2Hd/iIAAYGH8HHLB+6UEAJ8HwQdgmHy4Ph+IHfg+PB8HzQgd/wfD/plw//y4Y//KO4IAgCAIAmD6q2W3W3DYbDYSiUSBsKBuTByE7tsm4RSEH9Xl7Wm2BjgChp//M4xCIdYp7eX49AAsFoRCn7AcPsoBFL/xMbRQjCpQdXf/nDkKRKdKxv/94yDW5gsGwsWN//xXRt6M0fafQ3//9u1H9c1Q247/duW////ImbeEmsacAjQKVNKaj/B//hOgCkAsAYDRMmKRSz//M4xAsSy0HIUckQAEqhQ4sia2MpS8Y55NzPl+bLVqGfv2///9cxnUtSt///+Z6lab/+j5f/zGyllKyGNUxnlKyGL/9SlZDFaYxnKFNVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>n
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAABAAAAmQAeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4paWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpdLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL/////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQEQAAAAAAAAAJkjLMIhgAAAAAAAAAAAAAA//M4xAASWFK0DUkYAHh4jRoyMVitHtIyMEwBgDBMNk6NAwCAIAgCYPg+D4PggCAIAgCYPg+D4fBBwIAgCYPh/GAgCAY/6f9P////wfD7uXB8HwfjAQOKSgALZSkcjiCgkEYTQAprX6q0zShK//M4xBUaUWbSX5hYACzEMVGhEmHq0V9T/RFLrKSPZ4fD2QtQ5esvKA0c+9vsuqYbmjI7f/fL30hNm6+v/XmkMlt66hYC4PcRy5qKBAyXu7NAfegmsLg4eb63/PqZqEjQouqwAAEABQQCBDAA//M4xAoX2na6V41oABAgAFyGClj+J94jQwVeEmAF4OL8J8McC5LyLV+HJGBRJpc/8do5SYXRJhKv/0iRHqkskf/+XTQxLrLJElUf//1GRiXSRMjY6ktkf///y6dLHRb//8S1TEFNRTMuMTAw//M4xAkAAANIAcAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>oʊ
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAABAAAAmQAeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4paWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpdLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL/////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQEQAAAAAAAAAJk6KKSvgAAAAAAAAAAAAAA//M4xAARuJ6wBUYYAhsu7u7uyYQQcmAwGAwGFgAAAAAABDLJgAAAAAAiYcAABAYlwQBAEJeIAxBAEAwsHAQBAMf5z/wfP/4Pg+n/o/E5//lAQBA4owHPQIxb/0jDTyNnmClMIDBDNKCTjIUF//M4xBgaovLQy49oAAh4UO0BQRYkR0oD4KA90HExRMSkaruLEoT7MEZ3GHTrKB0lSGzKTUJkfpLrN9ST0X0ei9Pp6kL/V/+dVoPqtWSKGcQau2dTepafW//1d//OlB66sAAACAoFAQFAwABt//M4xAwYUpa5/41oAAH1aOSgJ74FBIPmRWDp18IsPMFNC3L/hziTEmBaiH/44ieCmmT//1DiLSSNjAkf/8wHskdPF0nG5Jf//rakVkkPY2pF5H///9AcUyTSOmqI0id//4dqTEFNRTMuMTAw//M4xAkAAANIAcAAAKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">6</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>t
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAABAAAAmQAeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4paWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpdLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tL/////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQEQAAAAAAAAAJk07YsqwAAAAAAAAAAAAAA//M4xAARsNqwF0hIAAnBtCIiIiECguLn3BAoiaECgoKUWCsAAAAQFBIgQEAoA2CYbJ25+5whDJo0aNsEAQBBxR3xOH/n/BAEDnLg/9//zn/R//B9nH/CEF7/+wsfMHtgL/Y5KgqcVBaysoA2//M4xBga4vLEq4+IAJJGINeOSkWAyAIOdghAsBq4kREi8Yh7I30GSH8fAeu9YpFkTEvvPsgYY3mlhttTvV7tdWj/V/rv+ilnFJInk6k09R7pPWc1Fg9spa7qv/97f/mR5YAQCQoGxQIBBAAJ//M4xAsX0n7GHY1oAujCemDe8ABIJevHEM4LatlcOSMkvAdv8FeIaSIxv/ADSJYMGEWHUlUnR/4RUdCTHsJKHNMP/8cRTJI6XVJGQkv//5qpReKy8YkwkTyS////yRLviJVMQU1FMy4xMDBV//M4xAoAAANIAcAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">7</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>ʌ
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAfgAkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJ////////////////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQDQAAAAAAAAAH4y4HsugAAAAAAAAAAAAAA//M4xAAS0Q68pUEQAAysHwAAoAYxzGAHAAAAMDAwMDAwMDOQhPzvzn/nOcWAAAggIAgCYPg+D4PggCDpd//0ggCAIAh/lAGD4Pg+HwQBAEJcHwfB9///B9WyfJMEAHyzzzBIUmjd4WEUpJMY//M4xBMZOh7VlYtYAOggyb8j+8ZpKmXpFQ0DqD2aAnFBNiYg6mbPJy4eUTAf/+SgNU+bIpGIGYttf8GXfEuOu5r//5qnbds8+7ayP//zyNOr5+96mz/oLALVcpzv/xyquQQVJJaAVDUGlA1B//M4xA0MgAYln8AYAlO2xEWeJXHkrDSgVclZ0Swa+z8l//pLB3gr/+p5X5b4ld+5Z2pMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">play_segment</span><span class="p">(</span><span class="n">phoneme_offsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">8</span><span class="p">)</span>
+</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>p
+</code></pre></div>
+<p><audio controls>
+    <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU5LjI3LjEwMAAAAAAAAAAAAAAA//NYwAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAfgAkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJ////////////////////////////////////////////AAAAAExhdmM1OS4zNwAAAAAAAAAAAAAAACQDQAAAAAAAAAH4oFBr1wAAAAAAAAAAAAAA//M4xAARYHI8ABPSAAggO3iviZmnEYBBIIwNk6N6ZOgQYkFAwgFAoeGBA7AgIAgCYPyZA5BAoCYPgc+D4IAgGBBLn4fcCHWH8MZxP//++p3/+TUGmnA0UzwvhSHQfRKlQInp68erirRtYGHI//M4xBkOSKJUFmGGqNc8BO32deHByKfFXvPfJf1+tn9an872f/yNeK7P7j3KqgGkUscoDVGhEThJZgWFhYXdAoVEh+aFKun/3s/vZ/Aop/s/rFP/1+zireritUxBTUUzLjEwMFVVVVVVVVVV//M4xD4LGC4YXhhMAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.bd41221c.min.js"></script>
+      
+    
+  </body>
+</html>
