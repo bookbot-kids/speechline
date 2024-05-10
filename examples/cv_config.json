@@ -7,7 +7,7 @@
     },
     "transcriber": {
         "type": "wav2vec2",
-        "model": "bookbot/wav2vec2-conformer-rel-pos-large-libriphone-timit-cv",
+        "model": "bookbot/w2v-bert-2.0-libriphone",
         "return_timestamps": "char",
         "chunk_length_s": 30
     },
