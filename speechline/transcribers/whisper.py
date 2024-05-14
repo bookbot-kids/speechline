@@ -14,6 +14,7 @@
 
 from typing import Dict, List, Union
 
+import torch
 from datasets import Dataset
 
 from ..modules import AudioTranscriber
@@ -28,8 +29,8 @@ class WhisperTranscriber(AudioTranscriber):
             HuggingFace model hub checkpoint.
     """
 
-    def __init__(self, model_checkpoint: str) -> None:
-        super().__init__(model_checkpoint)
+    def __init__(self, model_checkpoint: str, torch_dtype: str = None) -> None:
+        super().__init__(model_checkpoint, getattr(torch, torch_dtype) if torch_dtype else None)
 
     def predict(
         self,
