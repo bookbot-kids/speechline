@@ -17,3 +17,5 @@ g2p_id_py
 lexikos
 gruut
 pydantic<2
+optimum
+onnx
