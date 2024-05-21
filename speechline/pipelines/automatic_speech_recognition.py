@@ -14,21 +14,20 @@
 
 import numpy as np
 import requests
+import torch
 from transformers import AutomaticSpeechRecognitionPipeline
 from transformers.pipelines.audio_utils import ffmpeg_read
 from transformers.pipelines.automatic_speech_recognition import chunk_iter
-from transformers.utils import logging
+from transformers.utils import logging, is_torchaudio_available
 
 logger = logging.get_logger(__name__)
 
 
 class AutomaticSpeechRecognitionFilteredPipeline(AutomaticSpeechRecognitionPipeline):
-    def preprocess(
-        self, inputs, chunk_length_s=0, stride_length_s=None, ignore_warning=False
-    ):
+    def preprocess(self, inputs, chunk_length_s=0, stride_length_s=None, ignore_warning=False):
         if isinstance(inputs, str):
             if inputs.startswith("http://") or inputs.startswith("https://"):
-                # We need to actually check for a real protocol, otherwise it's impossible to use a local file # noqa: E501
+                # We need to actually check for a real protocol, otherwise it's impossible to use a local file
                 # like http_huggingface_co.png
                 inputs = requests.get(inputs).content
             else:
@@ -44,13 +43,10 @@ class AutomaticSpeechRecognitionFilteredPipeline(AutomaticSpeechRecognitionPipel
             stride = inputs.pop("stride", None)
             # Accepting `"array"` which is the key defined in `datasets` for
             # better integration
-            if not (
-                "sampling_rate" in inputs and ("raw" in inputs or "array" in inputs)
-            ):
+            if not ("sampling_rate" in inputs and ("raw" in inputs or "array" in inputs)):
                 raise ValueError(
-                    "When passing a dictionary to AutomaticSpeechRecognitionPipeline, "
-                    'the dict needs to contain a "raw" key containing the numpy array '
-                    'representing the audio and a "sampling_rate" key, '
+                    "When passing a dictionary to AutomaticSpeechRecognitionPipeline, the dict needs to contain a "
+                    '"raw" key containing the numpy array representing the audio and a "sampling_rate" key, '
                     "containing the sampling_rate associated with that array"
                 )
 
@@ -63,18 +59,20 @@ class AutomaticSpeechRecognitionFilteredPipeline(AutomaticSpeechRecognitionPipel
             extra = inputs
             inputs = _inputs
             if in_sampling_rate != self.feature_extractor.sampling_rate:
-                import torch
-                from torchaudio import functional as F
+                if is_torchaudio_available():
+                    from torchaudio import functional as F
+                else:
+                    raise ImportError(
+                        "torchaudio is required to resample audio samples in AutomaticSpeechRecognitionPipeline. "
+                        "The torchaudio package can be installed through: `pip install torchaudio`."
+                    )
 
                 inputs = F.resample(
-                    torch.from_numpy(inputs),
-                    in_sampling_rate,
-                    self.feature_extractor.sampling_rate,
+                    torch.from_numpy(inputs), in_sampling_rate, self.feature_extractor.sampling_rate
                 ).numpy()
                 ratio = self.feature_extractor.sampling_rate / in_sampling_rate
             else:
                 ratio = 1
-
             if stride is not None:
                 if stride[0] + stride[1] > inputs.shape[0]:
                     raise ValueError("Stride is too large for input")
@@ -83,36 +81,17 @@ class AutomaticSpeechRecognitionFilteredPipeline(AutomaticSpeechRecognitionPipel
                 # swallowed by the `feature_extractor` later, and then batching
                 # can add extra data in the inputs, so we need to keep track
                 # of the original length in the stride so we can cut properly.
-                stride = (
-                    inputs.shape[0],
-                    int(round(stride[0] * ratio)),
-                    int(round(stride[1] * ratio)),
-                )
+                stride = (inputs.shape[0], int(round(stride[0] * ratio)), int(round(stride[1] * ratio)))
 
         if len(inputs) / self.feature_extractor.sampling_rate < 0.1:
             return None
 
         if not isinstance(inputs, np.ndarray):
-            raise ValueError(
-                f"We expect a numpy ndarray as input, got `{type(inputs)}`"
-            )
+            raise ValueError(f"We expect a numpy ndarray as input, got `{type(inputs)}`")
         if len(inputs.shape) != 1:
-            raise ValueError(
-                "We expect a single channel audio input for"
-                "AutomaticSpeechRecognitionPipeline"
-            )
+            raise ValueError("We expect a single channel audio input for AutomaticSpeechRecognitionPipeline")
 
         if chunk_length_s:
-            if self.type == "seq2seq" and not ignore_warning:
-                logger.warning(
-                    "Using `chunk_length_s` is very experimental with seq2seq models. "
-                    "The results will not necessarily be entirely accurate and will "
-                    "have caveats. More information:"
-                    " https://github.com/huggingface/transformers/pull/20104."
-                    "Ignore this warning with pipeline(...,"
-                    " ignore_warning=True)"
-                )
-                self._preprocess_params["ignore_warning"] = True
             if stride_length_s is None:
                 stride_length_s = chunk_length_s / 6
 
@@ -123,51 +102,38 @@ class AutomaticSpeechRecognitionFilteredPipeline(AutomaticSpeechRecognitionPipel
             # Currently chunking is not possible at this level for `seq2seq` so
             # it's ok.
             align_to = getattr(self.model.config, "inputs_to_logits_ratio", 1)
-            chunk_len = int(
-                round(chunk_length_s * self.feature_extractor.sampling_rate / align_to)
-                * align_to
-            )
-            stride_left = int(
-                round(
-                    stride_length_s[0] * self.feature_extractor.sampling_rate / align_to
-                )
-                * align_to
-            )
-            stride_right = int(
-                round(
-                    stride_length_s[1] * self.feature_extractor.sampling_rate / align_to
-                )
-                * align_to
-            )
+            chunk_len = int(round(chunk_length_s * self.feature_extractor.sampling_rate / align_to) * align_to)
+            stride_left = int(round(stride_length_s[0] * self.feature_extractor.sampling_rate / align_to) * align_to)
+            stride_right = int(round(stride_length_s[1] * self.feature_extractor.sampling_rate / align_to) * align_to)
 
             if chunk_len < stride_left + stride_right:
                 raise ValueError("Chunk length must be superior to stride length")
 
-            rescale = self.type != "seq2seq_whisper"
-            # make sure that
             for item in chunk_iter(
-                inputs,
-                self.feature_extractor,
-                chunk_len,
-                stride_left,
-                stride_right,
-                rescale,
-                self.torch_dtype,
+                inputs, self.feature_extractor, chunk_len, stride_left, stride_right, self.torch_dtype
             ):
                 yield item
         else:
-            processed = self.feature_extractor(
-                inputs,
-                sampling_rate=self.feature_extractor.sampling_rate,
-                return_tensors="pt",
-            )
+            if self.type == "seq2seq_whisper" and inputs.shape[0] > self.feature_extractor.n_samples:
+                processed = self.feature_extractor(
+                    inputs,
+                    sampling_rate=self.feature_extractor.sampling_rate,
+                    truncation=False,
+                    padding="longest",
+                    return_tensors="pt",
+                )
+            else:
+                processed = self.feature_extractor(
+                    inputs, sampling_rate=self.feature_extractor.sampling_rate, return_tensors="pt"
+                )
+                if stride is None:
+                    extra["segment_size"] = len(inputs)
+
             if self.torch_dtype is not None:
                 processed = processed.to(dtype=self.torch_dtype)
             if stride is not None:
                 if self.type == "seq2seq":
-                    raise ValueError(
-                        "Stride is only usable with CTC models, try removing it !"
-                    )
+                    raise ValueError("Stride is only usable with CTC models, try removing it !")
 
                 processed["stride"] = stride
             yield {"is_last": True, **processed, **extra}

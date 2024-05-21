@@ -33,12 +33,13 @@ class AudioTranscriber(AudioModule):
             HuggingFace Hub model hub checkpoint.
     """
 
-    def __init__(self, model_checkpoint: str) -> None:
+    def __init__(self, model_checkpoint: str, torch_dtype: torch.dtype = None) -> None:
         asr = pipeline(
             "automatic-speech-recognition",
             model=model_checkpoint,
             device=0 if torch.cuda.is_available() else -1,
             pipeline_class=AutomaticSpeechRecognitionFilteredPipeline,
+            torch_dtype=torch_dtype,
         )
         super().__init__(pipeline=asr)
 
