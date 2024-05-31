@@ -134,6 +134,22 @@ class Runner:
             keep_whitespace=config.segmenter.keep_whitespace,
         )
 
+        def export_offsets(
+            audio_path: str,
+            offsets: List[Dict[str, Union[str, float]]],
+        ):
+            json_path = Path(audio_path).with_suffix(".json")
+            # export JSON transcripts
+            export_transcripts_json(str(json_path), offsets)
+
+        thread_map(
+            export_offsets,
+            df["audio"],
+            output_offsets,
+            desc="Exporting offsets to JSON",
+            total=len(df),
+        )
+
         # segment audios based on offsets
         if config.segmenter.type == "silence":
             segmenter = SilenceSegmenter()
@@ -160,14 +176,11 @@ class Runner:
             minimum_empty_duration = None
             noise_classifier_threshold = None
 
-        def export_and_chunk(
+        def segment_audio(
             audio_path: str,
             ground_truth: str,
             offsets: List[Dict[str, Union[str, float]]],
         ):
-            json_path = Path(audio_path).with_suffix(".json")
-            # export JSON transcripts
-            export_transcripts_json(str(json_path), offsets)
             # chunk audio into segments
             segmenter.chunk_audio_segments(
                 audio_path,
@@ -183,7 +196,7 @@ class Runner:
             )
 
         thread_map(
-            export_and_chunk,
+            segment_audio,
             df["audio"],
             df["ground_truth"],
             output_offsets,

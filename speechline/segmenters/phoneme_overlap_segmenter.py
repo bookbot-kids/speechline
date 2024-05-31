@@ -118,7 +118,7 @@ class PhonemeOverlapSegmenter(Segmenter):
                 for word in words:
                     if word.is_major_break or word.is_minor_break:
                         phonemes.append(word.text)
-                    else:
+                    elif word.phonemes:
                         phonemes.append(" ".join(word.phonemes))
             return phonemes
 

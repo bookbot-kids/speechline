@@ -137,7 +137,7 @@ class Runner:
                 HuggingFace dataset text column name. Defaults to "text".
         """
         num_proc = os.cpu_count()
-        dataset = load_dataset(dataset_name, dataset_config, split=dataset_split, trust_remote_code=True)
+        dataset = load_dataset(dataset_name, dataset_config, split=dataset_split, trust_remote_code=True, num_proc=num_proc)
         # dataset = dataset.select(range(100))
 
         # load transcriber model

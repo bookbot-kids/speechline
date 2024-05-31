@@ -145,30 +145,50 @@ class AudioTranscriber(AudioModule):
         def _get_audio_array(
             dataset: Dataset,
         ) -> Generator[Dict[str, Union[np.ndarray, int, str]], None, None]:
-            for item in dataset:
-                yield {**item["audio"]}
+                for item in dataset:
+                    yield {**item["audio"]}
 
         results = []
-
-        for out in tqdm(
-            self.pipeline(
-                _get_audio_array(dataset),
-                chunk_length_s=chunk_length_s,
-                return_timestamps=return_timestamps,
-                **kwargs,
-            ),
-            total=len(dataset),
-            desc="Transcribing Audios",
-        ):
-            prediction = (
-                _format_timestamps_to_offsets(
-                    out,
-                    offset_key=offset_key,
-                    keep_whitespace=keep_whitespace,
+        
+        audio_arrays = _get_audio_array(dataset)
+        for audio_array, datum in tqdm(zip(audio_arrays, dataset), total = len(dataset)):
+            try:
+                out = self.pipeline(audio_array,
+                    chunk_length_s=chunk_length_s,
+                    return_timestamps=return_timestamps,
+                    **kwargs) 
+                prediction = (
+                    _format_timestamps_to_offsets(
+                        out,
+                        offset_key=offset_key,
+                        keep_whitespace=keep_whitespace,
+                    )
+                    if output_offsets
+                    else _format_timestamps_to_transcript(out)
                 )
-                if output_offsets
-                else _format_timestamps_to_transcript(out)
-            )
-            results.append(prediction)
+                results.append(prediction)
+            except Exception as e:
+                continue        
+        
+        # for out in tqdm(
+        #     self.pipeline(
+        #         _get_audio_array(dataset),
+        #         chunk_length_s=chunk_length_s,
+        #         return_timestamps=return_timestamps,
+        #         **kwargs,
+        #     ),
+        #     total=len(dataset),
+        #     desc="Transcribing Audios",
+        # ):
+        #     prediction = (
+        #         _format_timestamps_to_offsets(
+        #             out,
+        #             offset_key=offset_key,
+        #             keep_whitespace=keep_whitespace,
+        #         )
+        #         if output_offsets
+        #         else _format_timestamps_to_transcript(out)
+        #     )
+        #     results.append(prediction)
 
         return results

@@ -35,6 +35,13 @@ parser.add_argument(
     default="train",
     help="HuggingFace dataset split name.",
 )
+parser.add_argument(
+    "--text_column",
+    type=str,
+    default="sentence",
+    help="Target Column",
+)
+
 parser.add_argument("--output_dir", default="./tmp", help="Path to the output directory")
 parser.add_argument("--chunk_size_s", type=int, default=15, help="Chunk size in seconds")
 parser.add_argument(
@@ -58,8 +65,8 @@ DICTIONARY = bundle.get_dict()
 MMS_SUBSAMPLING_RATIO = 400
 
 
-def get_word_alignment(datum, output_dir, chunk_size_s):
-    transcript = datum["sentence"]
+def get_word_alignment(datum, output_dir, chunk_size_s, text_column: str):
+    transcript = datum[args.text_column]
     audio = datum["audio"]
 
     transcript = preprocess_text(transcript)
@@ -68,11 +75,6 @@ def get_word_alignment(datum, output_dir, chunk_size_s):
     sampling_rate = audio["sampling_rate"]
     audio_array = torch.from_numpy(audio["array"])
     audio_id = Path(audio["path"]).stem
-
-    # Check if output_dir/audio_id* exists
-    if audio_id in audio_ids:
-        # print(f"Skipping {audio_id} because it already exists in the output directory.")
-        return
 
     resampler = T.Resample(sampling_rate, bundle.sample_rate, dtype=audio_array.dtype)
     resampled_waveform = resampler(audio_array)
@@ -99,7 +101,12 @@ def get_word_alignment(datum, output_dir, chunk_size_s):
     num_frames = emission.size(1)
 
     # perform forced-alignment
-    word_spans = compute_alignments(emission, words, DICTIONARY, device)
+    try:
+        word_spans = compute_alignments(emission, words, DICTIONARY, device)
+    except:
+        print(f"Failed on audio: {audio_id}")
+        return
+        
     assert len(word_spans) == len(words)
 
     # collect verse-level segments
@@ -134,4 +141,4 @@ if __name__ == "__main__":
         dataset = dataset.select(range(args.limit))
 
     for datum in tqdm(dataset):
-        get_word_alignment(datum, output_dir, args.chunk_size_s)
+        get_word_alignment(datum, output_dir, args.chunk_size_s, args.text_column)
