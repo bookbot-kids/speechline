@@ -1,0 +1,62 @@
+[
+  {
+    "text": "it",
+    "start_time": 1.28,
+    "end_time": 1.36
+  },
+  {
+    "text": "is",
+    "start_time": 1.52,
+    "end_time": 1.6
+  },
+  {
+    "text": "a",
+    "start_time": 1.76,
+    "end_time": 1.84
+  },
+  {
+    "text": "big",
+    "start_time": 2.0,
+    "end_time": 2.08
+  },
+  {
+    "text": "job",
+    "start_time": 2.32,
+    "end_time": 2.48
+  },
+  {
+    "text": "to",
+    "start_time": 4.0,
+    "end_time": 4.08
+  },
+  {
+    "text": "get",
+    "start_time": 4.32,
+    "end_time": 4.4
+  },
+  {
+    "text": "all",
+    "start_time": 4.64,
+    "end_time": 4.72
+  },
+  {
+    "text": "of",
+    "start_time": 4.96,
+    "end_time": 5.04
+  },
+  {
+    "text": "the",
+    "start_time": 5.12,
+    "end_time": 5.2
+  },
+  {
+    "text": "cold",
+    "start_time": 5.52,
+    "end_time": 5.68
+  },
+  {
+    "text": "heat",
+    "start_time": 6.16,
+    "end_time": 6.32
+  }
+]

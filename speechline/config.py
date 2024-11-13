@@ -14,7 +14,7 @@
 
 import json
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, Optional
 
 
 @dataclass
@@ -83,19 +83,27 @@ class TranscriberConfig:
     type: str
     model: str
     return_timestamps: Union[str, bool]
-    chunk_length_s: int
+    chunk_length_s: Optional[int] = None 
+    transcriber_device: str = "cuda"
 
     def __post_init__(self):
-        SUPPORTED_MODELS = {"wav2vec2", "whisper"}
+        SUPPORTED_MODELS = {"wav2vec2", "whisper", "parakeet"}
         WAV2VEC_TIMESTAMPS = {"word", "char"}
-
+        PARAKEET_TIMESTAMPS = {"word"}
+        
         if self.type not in SUPPORTED_MODELS:
             raise ValueError(f"Transcriber of type {self.type} is not yet supported!")
 
         if self.type == "wav2vec2" and self.return_timestamps not in WAV2VEC_TIMESTAMPS:
             raise ValueError("wav2vec2 only supports `'word'` or `'char'` timestamps!")
+        elif self.type == "parakeet" and self.return_timestamps not in PARAKEET_TIMESTAMPS:
+            raise ValueError("parakeet only supports `word` timestamps!")
         elif self.type == "whisper" and self.return_timestamps is not True:
             raise ValueError("Whisper only supports `True` timestamps!")
+        
+        # Add validation for chunk_length_s requirement
+        if self.type in {"wav2vec2", "whisper"} and self.chunk_length_s is None:
+            raise ValueError(f"chunk_length_s is required for {self.type} models")
 
 
 @dataclass

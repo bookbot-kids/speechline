@@ -1,7 +1,8 @@
 commonvoice/
 tmp/
 dropbox/
-training/
+training*/
+*_audio_data*
 
 .DS_Store
 */.DS_Store

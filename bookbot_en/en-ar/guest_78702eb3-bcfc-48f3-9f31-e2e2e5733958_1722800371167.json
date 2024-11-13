@@ -1,0 +1,77 @@
+[
+  {
+    "text": "they",
+    "start_time": 1.52,
+    "end_time": 1.6
+  },
+  {
+    "text": "do",
+    "start_time": 2.08,
+    "end_time": 2.16
+  },
+  {
+    "text": "not",
+    "start_time": 2.4,
+    "end_time": 2.48
+  },
+  {
+    "text": "think",
+    "start_time": 2.8,
+    "end_time": 2.88
+  },
+  {
+    "text": "of",
+    "start_time": 3.2,
+    "end_time": 3.2800000000000002
+  },
+  {
+    "text": "good",
+    "start_time": 3.6,
+    "end_time": 3.68
+  },
+  {
+    "text": "way",
+    "start_time": 4.08,
+    "end_time": 4.16
+  },
+  {
+    "text": "to",
+    "start_time": 4.4,
+    "end_time": 4.48
+  },
+  {
+    "text": "store",
+    "start_time": 4.72,
+    "end_time": 4.96
+  },
+  {
+    "text": "it",
+    "start_time": 5.12,
+    "end_time": 5.2
+  },
+  {
+    "text": "good",
+    "start_time": 8.24,
+    "end_time": 8.32
+  },
+  {
+    "text": "way",
+    "start_time": 8.64,
+    "end_time": 8.72
+  },
+  {
+    "text": "to",
+    "start_time": 10.0,
+    "end_time": 10.08
+  },
+  {
+    "text": "store",
+    "start_time": 10.32,
+    "end_time": 10.48
+  },
+  {
+    "text": "it",
+    "start_time": 10.64,
+    "end_time": 10.72
+  }
+]

@@ -6,10 +6,10 @@
         "max_duration_s": 3.0
     },
     "transcriber": {
-        "type": "wav2vec2",
-        "model": "bookbot/w2v-bert-2.0-libriphone",
-        "return_timestamps": "char",
-        "chunk_length_s": 30
+        "type": "parakeet",
+        "model": "nvidia/parakeet-ctc-1.1b",
+        "return_timestamps": "word",
+        "transcriber_device": "cuda"
     },
     "do_noise_classify": false,
     "noise_classifier": {
@@ -19,8 +19,8 @@
     },
     "segmenter": {
         "type": "silence",
-        "silence_duration": 3.0,
-        "minimum_chunk_duration": 1.0,
+        "silence_duration": 0.3,
+        "minimum_chunk_duration": 0.5,
         "keep_whitespace": true
     }
 }

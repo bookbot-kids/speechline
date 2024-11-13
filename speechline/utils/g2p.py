@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Callable
+from typing import Callable, List
+import re
 
 from g2p_id import G2p
 from gruut import sentences
 
 
-def g2p_en(text: str) -> str:
+def g2p_en(text: str) -> List[str]:
     """
     Convert English text to string of phonemes via gruut.
 
@@ -34,13 +35,49 @@ def g2p_en(text: str) -> str:
     for words in sentences(text):
         for word in words:
             if word.is_major_break or word.is_minor_break:
-                phonemes += word.text
+                phonemes.append(word.text)
             elif word.phonemes:
-                phonemes += word.phonemes
-    return " ".join(phonemes)
+                phonemes.append(" ".join(word.phonemes))
+    return phonemes
 
 
-def g2p_id(text: str) -> str:
+def g2p_sw(text: str) -> List[str]:
+    """
+    Convert Swahili text to string of phonemes via gruut.
+
+    Args:
+        text (str):
+            Swahili text to convert.
+
+    Returns:
+        str:
+            Phoneme string.
+    """
+    phonemes = []
+    for words in sentences(text, lang="sw"):
+        for word in words:
+            if word.is_major_break or word.is_minor_break:
+                phonemes.append(word.text)
+            elif word.phonemes:
+                _phonemes = word.phonemes[:]
+
+                # NOTE: gruut doesn't handle "ng'" /ŋ/
+                # we need to fix e.g. ng'ombe -> /ŋombe/ instead of /ᵑgombe/
+                NG_GRAPHEME = "ng'"
+                NG_PRENASALIZED_PHONEME = "ᵑg"
+                NG_PHONEME = "ŋ"
+                if NG_GRAPHEME in word.text:
+                    ng_graphemes = re.findall(f"{NG_GRAPHEME}?", word.text)
+                    ng_phonemes_idx = [i for i, p in enumerate(_phonemes) if p == NG_PRENASALIZED_PHONEME]
+                    assert len(ng_graphemes) == len(ng_phonemes_idx)
+                    for i, g in zip(ng_phonemes_idx, ng_graphemes):
+                        _phonemes[i] = NG_PHONEME if g == NG_GRAPHEME else _phonemes[i]
+
+                phonemes.append(" ".join(_phonemes))
+    return phonemes
+
+
+def g2p_id(text: str) -> List[str]:
     """
     Convert Indonesian text to string of phonemes via g2p_id.
 
@@ -54,7 +91,7 @@ def g2p_id(text: str) -> str:
     """
     g2p = G2p()
     phonemes = g2p(text)
-    return " ".join(p for phoneme in phonemes for p in phoneme)
+    return [" ".join(phoneme) for phoneme in phonemes]
 
 
 def get_g2p(language: str) -> Callable:
@@ -76,6 +113,7 @@ def get_g2p(language: str) -> Callable:
     LANG2G2P = {
         "en": g2p_en,
         "id": g2p_id,
+        "sw": g2p_sw,
     }
 
     if language.lower() not in LANG2G2P:

@@ -57,9 +57,7 @@ def parse_args(args: List[str]) -> argparse.Namespace:
         help="HuggingFace dataset repository name.",
     )
     parser.add_argument("--phonemize", type=bool, default=False, help="Phonemize text.")
-    parser.add_argument(
-        "--private", type=bool, default=True, help="Set HuggingFace dataset to private."
-    )
+    parser.add_argument("--private", type=bool, default=True, help="Set HuggingFace dataset to private.")
     return parser.parse_args(args)
 
 
@@ -80,9 +78,7 @@ def parse_tsv(path: str) -> str:
         return " ".join(row[2] for row in rows)
 
 
-def create_dataset(
-    input_dir: str, dataset_name: str, private: bool = True, phonemize: bool = False
-) -> DatasetDict:
+def create_dataset(input_dir: str, dataset_name: str, private: bool = True, phonemize: bool = False) -> DatasetDict:
     """
     Creates HuggingFace dataset from SpeechLine outputs.
     Ensures unique utterance and speaker IDs in each subset.
@@ -104,6 +100,7 @@ def create_dataset(
     audios = glob(f"{input_dir}/**/*.wav")
     df = pd.DataFrame({"audio": audios})
     # `audio` =  `"{dir}/{language}/{speaker}_{utt_id}.wav"`
+    df["id"] = df["audio"].apply(lambda x: x.split("/")[-1].replace(".wav", ""))
     df["language"] = df["audio"].apply(lambda x: x.split("/")[-2])
     df["speaker"] = df["audio"].apply(lambda x: x.split("/")[-1].split("_")[0])
     df["text"] = df["audio"].apply(lambda x: parse_tsv(Path(x).with_suffix(".tsv")))
@@ -111,9 +108,7 @@ def create_dataset(
     tqdm.pandas(desc="Phonemization")
 
     if phonemize:
-        df["phonemes"] = df.progress_apply(
-            lambda row: get_g2p(row["language"].split("-")[0])(row["text"]), axis=1
-        )
+        df["phonemes"] = df.progress_apply(lambda row: get_g2p(row["language"].split("-")[0])(row["text"]), axis=1)
 
     speaker, counts = np.unique(df["speaker"], return_counts=True)
     speaker2count = {s: c for s, c in zip(speaker, counts)}
@@ -124,9 +119,7 @@ def create_dataset(
     train_speakers, test_speakers, valid_speakers = [], [], []
     total = 0
 
-    for speaker, count in sorted(
-        speaker2count.items(), key=lambda item: item[1], reverse=True
-    ):
+    for speaker, count in sorted(speaker2count.items(), key=lambda item: item[1], reverse=True):
         if total < train_num and total < test_num:
             train_speakers.append(speaker)
         elif total < test_num:
@@ -150,6 +143,4 @@ def create_dataset(
 
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
-    dataset = create_dataset(
-        args.input_dir, args.dataset_name, args.private, args.phonemize
-    )
+    dataset = create_dataset(args.input_dir, args.dataset_name, args.private, args.phonemize)

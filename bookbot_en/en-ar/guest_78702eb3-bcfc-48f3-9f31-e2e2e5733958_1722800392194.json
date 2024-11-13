@@ -1,0 +1,52 @@
+[
+  {
+    "text": "they",
+    "start_time": 1.12,
+    "end_time": 1.2000000000000002
+  },
+  {
+    "text": "put",
+    "start_time": 3.36,
+    "end_time": 3.44
+  },
+  {
+    "text": "the",
+    "start_time": 3.76,
+    "end_time": 3.84
+  },
+  {
+    "text": "rest",
+    "start_time": 4.08,
+    "end_time": 4.16
+  },
+  {
+    "text": "in",
+    "start_time": 4.8,
+    "end_time": 4.88
+  },
+  {
+    "text": "the",
+    "start_time": 4.96,
+    "end_time": 5.04
+  },
+  {
+    "text": "house",
+    "start_time": 5.28,
+    "end_time": 5.36
+  },
+  {
+    "text": "it",
+    "start_time": 6.4,
+    "end_time": 6.48
+  },
+  {
+    "text": "gets",
+    "start_time": 6.72,
+    "end_time": 7.04
+  },
+  {
+    "text": "old",
+    "start_time": 7.28,
+    "end_time": 7.36
+  }
+]

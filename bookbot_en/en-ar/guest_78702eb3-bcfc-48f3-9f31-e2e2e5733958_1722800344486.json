@@ -1,0 +1,67 @@
+[
+  {
+    "text": "steve",
+    "start_time": 1.36,
+    "end_time": 1.7600000000000002
+  },
+  {
+    "text": "and",
+    "start_time": 3.36,
+    "end_time": 3.44
+  },
+  {
+    "text": "alex",
+    "start_time": 3.68,
+    "end_time": 4.32
+  },
+  {
+    "text": "go",
+    "start_time": 5.68,
+    "end_time": 5.76
+  },
+  {
+    "text": "out",
+    "start_time": 6.0,
+    "end_time": 6.08
+  },
+  {
+    "text": "to",
+    "start_time": 6.32,
+    "end_time": 6.4
+  },
+  {
+    "text": "fish",
+    "start_time": 6.56,
+    "end_time": 6.72
+  },
+  {
+    "text": "they",
+    "start_time": 8.64,
+    "end_time": 8.72
+  },
+  {
+    "text": "get",
+    "start_time": 8.96,
+    "end_time": 9.040000000000001
+  },
+  {
+    "text": "a",
+    "start_time": 9.2,
+    "end_time": 9.28
+  },
+  {
+    "text": "lot",
+    "start_time": 9.36,
+    "end_time": 9.44
+  },
+  {
+    "text": "of",
+    "start_time": 9.6,
+    "end_time": 9.68
+  },
+  {
+    "text": "cod",
+    "start_time": 9.76,
+    "end_time": 9.92
+  }
+]

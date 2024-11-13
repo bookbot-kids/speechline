@@ -77,8 +77,12 @@ class Segmenter:
             audio = np_f32_to_pydub(audio_path)
             audio_path = audio_path["path"]
 
+        # add extra 50ms to end time to prevent clipping
+        extra_time_ms = 50
+
         audio_segments: List[AudioSegment] = [
-            audio[s[0]["start_time"] * 1000 : s[-1]["end_time"] * 1000] for s in segments
+            audio[s[0]["start_time"] * 1000 : min(s[-1]["end_time"] * 1000 + extra_time_ms, len(audio))]
+            for s in segments
         ]
 
         # shift segments based on their respective index start times

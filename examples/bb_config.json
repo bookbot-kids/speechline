@@ -7,7 +7,7 @@
     },
     "transcriber": {
         "type": "wav2vec2",
-        "model": "bookbot/w2v-bert-2.0-libriphone",
+        "model": "bookbot/w2v-bert-2.0-bb-libri-cv-giga-dean2zak",
         "return_timestamps": "char",
         "chunk_length_s": 30
     },
@@ -18,7 +18,7 @@
         "threshold": 0.2
     },
     "segmenter": {
-        "type": "silence",
+        "type": "phoneme_overlap",
         "silence_duration": 3.0,
         "minimum_chunk_duration": 1.0,
         "keep_whitespace": true

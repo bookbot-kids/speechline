@@ -1,0 +1,52 @@
+[
+  {
+    "text": "the",
+    "start_time": 0.4,
+    "end_time": 0.48000000000000004
+  },
+  {
+    "text": "same",
+    "start_time": 0.64,
+    "end_time": 0.72
+  },
+  {
+    "text": "was",
+    "start_time": 0.88,
+    "end_time": 0.96
+  },
+  {
+    "text": "fine",
+    "start_time": 1.2,
+    "end_time": 1.44
+  },
+  {
+    "text": "okay",
+    "start_time": 3.52,
+    "end_time": 3.6
+  },
+  {
+    "text": "i",
+    "start_time": 4.16,
+    "end_time": 4.24
+  },
+  {
+    "text": "see",
+    "start_time": 4.48,
+    "end_time": 4.5600000000000005
+  },
+  {
+    "text": "okay",
+    "start_time": 4.88,
+    "end_time": 4.96
+  },
+  {
+    "text": "this",
+    "start_time": 5.2,
+    "end_time": 5.28
+  },
+  {
+    "text": "is",
+    "start_time": 5.44,
+    "end_time": 5.5200000000000005
+  }
+]

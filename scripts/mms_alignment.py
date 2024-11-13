@@ -5,11 +5,12 @@ from pathlib import Path
 import torch
 import torchaudio
 import torchaudio.transforms as T
+import numpy as np
 
 
 from scipy.io.wavfile import write
 from tqdm.auto import tqdm
-from utils import preprocess_text, compute_alignments
+from utils import preprocess_text, compute_alignments, compute_alignment_scores
 
 import torch
 import argparse
@@ -100,45 +101,67 @@ def get_word_alignment(datum, output_dir, chunk_size_s, text_column: str):
     emission = torch.cat(emissions, dim=1)
     num_frames = emission.size(1)
 
-    # perform forced-alignment
-    try:
-        word_spans = compute_alignments(emission, words, DICTIONARY, device)
-    except:
-        print(f"Failed on audio: {audio_id}")
-        return
-        
-    assert len(word_spans) == len(words)
+    # compute greedy search score
+    probs = torch.softmax(emission, dim=-1)  # (1, frame_length, num_labels)
+    greedy_probs = torch.max(probs, dim=-1).values.squeeze()  # (1, frame_length)
+    greedy_log_probs = torch.sum(torch.log(greedy_probs)).cpu().numpy().item()  # (1)
 
-    # collect verse-level segments
-    segments, labels, start = [], [], 0
-    for word, span in zip(words, word_spans):
-        ratio = resampled_waveform.size(1) / num_frames
-        x0 = int(ratio * span[0].start)
-        x1 = int(ratio * span[-1].end)
-        segment = resampled_waveform[:, x0:x1]
-        segments.append(segment)
-        labels.append(word)
+    aligned_probs = compute_alignment_scores(emission, words, DICTIONARY, device)  # (1, frame_length)
+    aligned_log_probs = torch.sum(torch.log(aligned_probs)).cpu().numpy().item()  # (1)
 
-    for segment, label in zip(segments, labels):
-        audio_name = audio_id + "-" + label
-        # write audio
-        audio_path = (output_dir / audio_name).with_suffix(".wav")
-        write(audio_path, bundle.sample_rate, segment.squeeze().numpy())
+    if aligned_log_probs == -np.inf:
+        return False
 
-        # write transcript
-        transcript_path = (output_dir / audio_name).with_suffix(".txt")
-        with open(transcript_path, "w") as f:
-            f.write(label)
+    probability_diff = (aligned_log_probs - greedy_log_probs) / num_frames
+
+    return probability_diff > -0.2
+
+    # # perform forced-alignment
+    # try:
+    #     word_spans = compute_alignments(emission, words, DICTIONARY, device)
+    # except:
+    #     print(f"Failed on audio: {audio_id}")
+    #     return
+
+    # assert len(word_spans) == len(words)
+
+    # # collect verse-level segments
+    # segments, labels, start = [], [], 0
+    # for word, span in zip(words, word_spans):
+    #     ratio = resampled_waveform.size(1) / num_frames
+    #     x0 = int(ratio * span[0].start)
+    #     x1 = int(ratio * span[-1].end)
+    #     segment = resampled_waveform[:, x0:x1]
+    #     segments.append(segment)
+    #     labels.append(word)
+
+    # for segment, label in zip(segments, labels):
+    #     audio_name = audio_id + "-" + label
+    #     # write audio
+    #     audio_path = (output_dir / audio_name).with_suffix(".wav")
+    #     write(audio_path, bundle.sample_rate, segment.squeeze().numpy())
+
+    #     # write transcript
+    #     transcript_path = (output_dir / audio_name).with_suffix(".txt")
+    #     with open(transcript_path, "w") as f:
+    #         f.write(label)
 
 
 if __name__ == "__main__":
     args = parser.parse_args()
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    dataset = load_dataset(args.dataset_name, args.dataset_config, split=args.dataset_split, num_proc=os.cpu_count())
+    dataset = load_dataset(args.dataset_name, args.dataset_config, num_proc=os.cpu_count())
+    print(dataset)
 
     if args.limit:
         dataset = dataset.select(range(args.limit))
 
-    for datum in tqdm(dataset):
-        get_word_alignment(datum, output_dir, args.chunk_size_s, args.text_column)
+    # for datum in tqdm(dataset):
+    dataset = dataset.filter(
+        lambda text: not text.startswith("k") and not text.startswith("m"), input_columns="text", num_proc=os.cpu_count()
+    )
+    dataset = dataset.filter(lambda datum: get_word_alignment(datum, output_dir, args.chunk_size_s, args.text_column))
+    print(dataset)
+    print(dataset["train"][0])
+    dataset.push_to_hub(f"{args.dataset_name}-filtered", private=True)

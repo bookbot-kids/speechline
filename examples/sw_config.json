@@ -7,8 +7,8 @@
     },
     "transcriber": {
         "type": "wav2vec2",
-        "model": "bookbot/w2v-bert-2.0-libriphone",
-        "return_timestamps": "char",
+        "model": "bookbot/wav2vec2-xls-r-300m-swahili-cv-fleurs-alffa-word-lm",
+        "return_timestamps": "word",
         "chunk_length_s": 30
     },
     "do_noise_classify": false,
@@ -18,8 +18,7 @@
         "threshold": 0.2
     },
     "segmenter": {
-        "type": "silence",
-        "silence_duration": 3.0,
+        "type": "word_overlap",
         "minimum_chunk_duration": 1.0,
         "keep_whitespace": true
     }

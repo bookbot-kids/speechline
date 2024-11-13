@@ -29,7 +29,7 @@ from speechline.segmenters import (
     SilenceSegmenter,
     WordOverlapSegmenter,
 )
-from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
+from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber, ParakeetTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.logger import logger
@@ -122,6 +122,8 @@ class Runner:
             transcriber = Wav2Vec2Transcriber(config.transcriber.model)
         elif config.transcriber.type == "whisper":
             transcriber = WhisperTranscriber(config.transcriber.model)
+        elif config.transcriber.type == "parakeet":
+            transcriber = ParakeetTranscriber(config.transcriber.model, config.transcriber.transcriber_device)
 
         # perform audio transcription
         dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
