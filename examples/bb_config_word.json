@@ -9,7 +9,7 @@
         "type": "parakeet",
         "model": "nvidia/parakeet-ctc-1.1b",
         "return_timestamps": "word",
-        "transcriber_device": "cpu"
+        "transcriber_device": "cuda"
     },
     "do_noise_classify": false,
     "noise_classifier": {

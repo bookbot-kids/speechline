@@ -90,7 +90,8 @@ class Segmenter:
 
         # create output directory folder and subfolders
         os.makedirs(get_outdir_path(audio_path, outdir), exist_ok=True)
-
+        
+        segmented_manifest = []
         for idx, (segment, audio_segment) in enumerate(zip(shifted_segments, audio_segments)):
             # skip export if audio segment does not meet minimum chunk duration
             if len(audio_segment) < minimum_chunk_duration * 1000:
@@ -102,8 +103,12 @@ class Segmenter:
 
             output_audio_path = get_chunk_path(audio_path, outdir, idx, "wav")
             export_segment_audio_wav(output_audio_path, audio_segment)
+            segmented_manifest.append({
+                "wav_path": output_audio_path,
+                "tsv_path": output_tsv_path
+            })
 
-        return shifted_segments
+        return segmented_manifest
 
     def classify_noise(
         self,

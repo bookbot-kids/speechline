@@ -129,6 +129,7 @@ class SegmenterConfig:
     minimum_chunk_duration: float = 0.2
     lexicon_path: str = None
     keep_whitespace: bool = False
+    segment_with_ground_truth: bool = False
 
     def __post_init__(self):
         SUPPORTED_TYPES = {"silence", "word_overlap", "phoneme_overlap"}

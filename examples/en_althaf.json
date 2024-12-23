@@ -21,6 +21,7 @@
         "type": "silence",
         "silence_duration": 0.3,
         "minimum_chunk_duration": 0.5,
-        "keep_whitespace": true
+        "keep_whitespace": true,
+        "segment_with_ground_truth": true
     }
 }

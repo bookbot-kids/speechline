@@ -23,19 +23,7 @@ from datasets import Audio, Dataset, config, load_from_disk
 def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.DataFrame:
     """
     Prepares audio and ground truth files as Pandas `DataFrame`.
-    Assumes files are of the following structure:
-
-    ```
-    path_to_files
-    ├── langX
-    │   ├── a.{audio_extension}
-    │   ├── a.txt
-    │   └── b.{audio_extension}
-    │   └── b.txt
-    └── langY
-        └── c.{audio_extension}
-        └── c.txt
-    ```
+    Recursively searches for audio files in all subdirectories.
 
     Args:
         path_to_files (str):
@@ -56,7 +44,7 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         - `language_code`
         - `ground_truth`
     """
-    audios = sorted(glob(f"{path_to_files}/*/*.{audio_extension}"))
+    audios = sorted(glob(f"{path_to_files}/**/*.{audio_extension}", recursive=True))
     audios = [a for a in audios if Path(a).stat().st_size > 0]
     if len(audios) == 0:
         raise ValueError("No audio files found!")
@@ -70,6 +58,9 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     # ground truth is same filename, except with .txt extension
     df["ground_truth"] = df["audio"].apply(lambda p: Path(p).with_suffix(".txt"))
     df["ground_truth"] = df["ground_truth"].apply(lambda p: open(p).read() if p.exists() else "")
+    
+    df = df[df["ground_truth"] != ""]
+    
     return df
 
 

@@ -13,12 +13,14 @@
 # limitations under the License.
 
 import argparse
+import pandas as pd
 import json
+import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Union
-
+from datasets import Dataset, Audio
 from lexikos import Lexicon
 from tqdm.contrib.concurrent import thread_map
 
@@ -32,7 +34,7 @@ from speechline.segmenters import (
 from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber, ParakeetTranscriber
 from speechline.utils.dataset import format_audio_dataset, prepare_dataframe
 from speechline.utils.io import export_transcripts_json
-from speechline.utils.logger import logger
+from speechline.utils.logger import Logger
 from speechline.utils.tokenizer import WordTokenizer
 
 
@@ -77,6 +79,16 @@ class Runner:
             default="examples/config.json",
             help="SpeechLine configuration file.",
         )
+        parser.add_argument(
+            "--script_name",
+            type=str,
+            help="Name of the shell script being executed",
+        )
+        parser.add_argument(
+            "--resume_from_manifest",
+            type=str,
+            help="Path to manifest file to resume from.",
+        )
         return parser.parse_args(args)
 
     @staticmethod
@@ -97,12 +109,40 @@ class Runner:
             output_dir (str):
                 Path to output directory.
         """
-        logger.info("Preparing DataFrame..")
-        df = prepare_dataframe(input_dir, audio_extension="wav")
+        Logger.setup(script_name=args.script_name)
+        logger = Logger.get_logger()
+        
+        
+        # load transcriber model
+        if config.transcriber.type == "wav2vec2":
+            transcriber = Wav2Vec2Transcriber(config.transcriber.model)
+        elif config.transcriber.type == "whisper":
+            transcriber = WhisperTranscriber(config.transcriber.model)
+        elif config.transcriber.type == "parakeet":
+            transcriber = ParakeetTranscriber(config.transcriber.model, config.transcriber.transcriber_device)
+        
+        if not args.resume_from_manifest:
+            logger.info("Preparing DataFrame..")
+            df = prepare_dataframe(input_dir, audio_extension="wav")
 
-        if config.filter_empty_transcript:
-            df = df[df["ground_truth"] != ""]
+            if config.filter_empty_transcript:
+                df = df[df["ground_truth"] != ""]
+                
+        else:
+            all_new_rows = json.load(open(args.resume_from_manifest, "r"))
+            
+            # Create DataFrame directly from the list of dictionaries
+            df = pd.DataFrame(all_new_rows)
+            
+            df.rename(columns={"text": "ground_truth"}, inplace=True)
+            df["audio"] = df["audio"].apply(lambda f: os.path.abspath(f))
+            df["language_code"] = df["language"]
+            df["language"] = df["language"].apply(lambda x: x.split("-")[0])
+            df["id"] = df["audio"].apply(lambda f: Path(f).stem)
 
+            # Ensure the DataFrame has the same columns
+            df = df[["audio", "id", "language", "language_code", "ground_truth"]]
+            
         if config.do_classify:
             # load classifier model
             classifier = Wav2Vec2Classifier(
@@ -115,25 +155,19 @@ class Runner:
             df["category"] = classifier.predict(dataset)
 
             # filter audio by category
-            df = df[df["category"] == "child"]
+            df = df[df["category"] == "child"]            
 
-        # load transcriber model
-        if config.transcriber.type == "wav2vec2":
-            transcriber = Wav2Vec2Transcriber(config.transcriber.model)
-        elif config.transcriber.type == "whisper":
-            transcriber = WhisperTranscriber(config.transcriber.model)
-        elif config.transcriber.type == "parakeet":
-            transcriber = ParakeetTranscriber(config.transcriber.model, config.transcriber.transcriber_device)
-
-        # perform audio transcription
         dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
-
+        
+        os.makedirs(output_dir, exist_ok=True)
         output_offsets = transcriber.predict(
             dataset,
             chunk_length_s=config.transcriber.chunk_length_s,
             output_offsets=True,
             return_timestamps=config.transcriber.return_timestamps,
             keep_whitespace=config.segmenter.keep_whitespace,
+            segment_with_ground_truth=config.segmenter.segment_with_ground_truth,
+            output_dir=output_dir,
         )
 
         def export_offsets(
@@ -184,7 +218,7 @@ class Runner:
             offsets: List[Dict[str, Union[str, float]]],
         ):
             # chunk audio into segments
-            segmenter.chunk_audio_segments(
+            segmented_manifest = segmenter.chunk_audio_segments(
                 audio_path,
                 output_dir,
                 offsets,
@@ -196,7 +230,7 @@ class Runner:
                 silence_duration=config.segmenter.silence_duration,
                 ground_truth=tokenizer(ground_truth),
             )
-
+                 
         thread_map(
             segment_audio,
             df["audio"],
@@ -207,7 +241,10 @@ class Runner:
         )
 
 
+
 if __name__ == "__main__":
     args = Runner.parse_args(sys.argv[1:])
     config = Config(args.config)
+    Runner.run(config, args.input_dir, args.output_dir)
+
     Runner.run(config, args.input_dir, args.output_dir)
