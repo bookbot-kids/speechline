@@ -62,6 +62,11 @@ class Segmenter:
             List[List[Dict[str, Union[str, float]]]]:
                 List of offsets for every segment.
         """
+        # Extract full transcript from offsets
+        full_transcript = " ".join(
+            [offset["text"] for offset in offsets if offset.get("text")]
+        )
+
         segments = self.chunk_offsets(offsets, **kwargs)
         # skip empty segments (undetected transcripts)
         if len(segments) == 0:
@@ -81,7 +86,10 @@ class Segmenter:
         extra_time_ms = 50
 
         audio_segments: List[AudioSegment] = [
-            audio[s[0]["start_time"] * 1000 : min(s[-1]["end_time"] * 1000 + extra_time_ms, len(audio))]
+            audio[
+                s[0]["start_time"]
+                * 1000 : min(s[-1]["end_time"] * 1000 + extra_time_ms, len(audio))
+            ]
             for s in segments
         ]
 
@@ -90,9 +98,11 @@ class Segmenter:
 
         # create output directory folder and subfolders
         os.makedirs(get_outdir_path(audio_path, outdir), exist_ok=True)
-        
+
         segmented_manifest = []
-        for idx, (segment, audio_segment) in enumerate(zip(shifted_segments, audio_segments)):
+        for idx, (segment, audio_segment) in enumerate(
+            zip(shifted_segments, audio_segments)
+        ):
             # skip export if audio segment does not meet minimum chunk duration
             if len(audio_segment) < minimum_chunk_duration * 1000:
                 continue
@@ -103,10 +113,15 @@ class Segmenter:
 
             output_audio_path = get_chunk_path(audio_path, outdir, idx, "wav")
             export_segment_audio_wav(output_audio_path, audio_segment)
-            segmented_manifest.append({
-                "wav_path": output_audio_path,
-                "tsv_path": output_tsv_path
-            })
+
+            # Include text and text_file fields in each manifest entry
+            segmented_manifest.append(
+                {
+                    "wav_path": output_audio_path,
+                    "tsv_path": output_tsv_path,
+                    "text": full_transcript,
+                }
+            )
 
         return segmented_manifest
 
@@ -154,7 +169,9 @@ class Segmenter:
         audio_arrays = [
             {
                 "path": None,
-                "array": pydub_to_np(audio[offset["start_time"] * 1000 : offset["end_time"] * 1000]),
+                "array": pydub_to_np(
+                    audio[offset["start_time"] * 1000 : offset["end_time"] * 1000]
+                ),
                 "sampling_rate": audio.frame_rate,
             }
             for segment in segments
@@ -163,9 +180,13 @@ class Segmenter:
         ]
 
         dataset = Dataset.from_dict({"audio": audio_arrays})
-        dataset = dataset.cast_column("audio", Audio(sampling_rate=noise_classifier.sampling_rate))
+        dataset = dataset.cast_column(
+            "audio", Audio(sampling_rate=noise_classifier.sampling_rate)
+        )
 
-        outputs = noise_classifier.predict(dataset, threshold=noise_classifier_threshold)
+        outputs = noise_classifier.predict(
+            dataset, threshold=noise_classifier_threshold
+        )
 
         for idx, predictions in enumerate(outputs):
             if len(predictions) > 0:
@@ -202,7 +223,10 @@ class Segmenter:
                 Updated segments where empty tags have been inserted.
         """
         for segment in segments:
-            gaps = [round(next["start_time"] - curr["end_time"], 3) for curr, next in zip(segment, segment[1:])]
+            gaps = [
+                round(next["start_time"] - curr["end_time"], 3)
+                for curr, next in zip(segment, segment[1:])
+            ]
 
             for idx, gap in reversed(list(enumerate(gaps))):
                 if gap >= minimum_empty_duration:
@@ -216,7 +240,9 @@ class Segmenter:
                     segment.insert(idx + 1, empty_offset)
         return segments
 
-    def _shift_offsets(self, offset: List[Dict[str, Union[str, float]]]) -> List[Dict[str, Union[str, float]]]:
+    def _shift_offsets(
+        self, offset: List[Dict[str, Union[str, float]]]
+    ) -> List[Dict[str, Union[str, float]]]:
         """
         Shift start and end time of offsets by index start time.
         Subtracts all start and end times by index start time.

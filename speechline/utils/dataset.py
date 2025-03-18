@@ -15,6 +15,7 @@
 import re
 from glob import glob
 from pathlib import Path
+import json
 
 import pandas as pd
 from datasets import Audio, Dataset, config, load_from_disk
@@ -57,10 +58,12 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
     df["language"] = df["language_code"].apply(lambda f: f.split("-")[0])
     # ground truth is same filename, except with .txt extension
     df["ground_truth"] = df["audio"].apply(lambda p: Path(p).with_suffix(".txt"))
-    df["ground_truth"] = df["ground_truth"].apply(lambda p: open(p).read() if p.exists() else "")
-    
+    df["ground_truth"] = df["ground_truth"].apply(
+        lambda p: open(p).read() if p.exists() else ""
+    )
+
     df = df[df["ground_truth"] != ""]
-    
+
     return df
 
 
@@ -80,7 +83,9 @@ def format_audio_dataset(df: pd.DataFrame, sampling_rate: int = 16000) -> Datase
     dataset = Dataset.from_pandas(df)
     dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
     saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
-    saved_dataset = saved_dataset.cast_column("audio", Audio(sampling_rate=sampling_rate))
+    saved_dataset = saved_dataset.cast_column(
+        "audio", Audio(sampling_rate=sampling_rate)
+    )
     return saved_dataset
 
 
@@ -101,9 +106,69 @@ def preprocess_audio_transcript(text: str) -> str:
         "<NOISE>",
         "<OTHER>",
     ]
-    chars_to_remove_regex = "[\,\?\.\!\-\;\:\"\“\%\‘\”\�'\’]"
+    chars_to_remove_regex = '[\,\?\.\!\-\;\:""'
     text = re.sub(chars_to_remove_regex, " ", text).lower().strip()
     text = re.sub(r"\s+", " ", text).strip()
     for tag in tags:
         text = text.replace(tag.lower(), "").strip()
     return text
+
+
+def prepare_dataframe_from_manifest(manifest_path: str) -> pd.DataFrame:
+    """
+    Prepares audio and ground truth files as Pandas `DataFrame` from a manifest file.
+
+    Args:
+        manifest_path (str):
+            Path to the manifest JSON file.
+
+    Raises:
+        ValueError: No valid entries found in manifest file.
+
+    Returns:
+        pd.DataFrame:
+            DataFrame consisting of:
+
+        - `audio` (audio path)
+        - `id`
+        - `language_code`
+        - `language`
+        - `ground_truth`
+    """
+    entries = []
+    try:
+        # Load the JSON file as a complete array
+        with open(manifest_path, "r") as f:
+            json_data = json.load(f)
+
+        # Process each entry in the array
+        for entry in json_data:
+            if "audio" in entry and "text" in entry:
+                audio_path = entry["audio"]
+                # Check if the audio file exists
+                if Path(audio_path).exists() and Path(audio_path).stat().st_size > 0:
+                    # Use the provided fields directly when available
+                    entries.append(
+                        {
+                            "audio": audio_path,
+                            "id": entry.get("id", Path(audio_path).stem),
+                            "language_code": entry.get(
+                                "accent",
+                                entry.get("language", Path(audio_path).parent.name),
+                            ),
+                            "language": entry.get(
+                                "language", Path(audio_path).parent.name.split("-")[0]
+                            ),
+                            "ground_truth": entry.get("text", ""),
+                        }
+                    )
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Failed to parse manifest file: {e}")
+
+    if not entries:
+        raise ValueError("No valid entries found in manifest file!")
+
+    df = pd.DataFrame(entries)
+    df = df[df["ground_truth"] != ""]
+
+    return df
