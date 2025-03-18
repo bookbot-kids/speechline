@@ -1,25 +1,25 @@
 {
-    "do_classify": false,
-    "filter_empty_transcript": true,
-    "classifier": {
-        "model": "bookbot/distil-wav2vec2-adult-child-cls-52m",
-        "max_duration_s": 3.0
-    },
-    "transcriber": {
-        "type": "parakeet",
-        "model": "nvidia/parakeet-ctc-1.1b",
-        "return_timestamps": "word",
-        "transcriber_device": "cuda"
-    },
-    "do_noise_classify": false,
-    "noise_classifier": {
-        "model": "bookbot/distil-ast-audioset",
-        "minimum_empty_duration": 0.3,
-        "threshold": 0.2
-    },
-    "segmenter": {
-        "type": "word_overlap",
-        "minimum_chunk_duration": 1.0,
-        "keep_whitespace": true
-    }
+  "do_classify": false,
+  "filter_empty_transcript": true,
+  "classifier": {
+    "model": "bookbot/distil-wav2vec2-adult-child-cls-52m",
+    "max_duration_s": 3.0
+  },
+  "transcriber": {
+    "type": "parakeet",
+    "model": "nvidia/parakeet-ctc-1.1b",
+    "return_timestamps": "word",
+    "transcriber_device": "cuda"
+  },
+  "do_noise_classify": false,
+  "noise_classifier": {
+    "model": "bookbot/distil-ast-audioset",
+    "minimum_empty_duration": 0.3,
+    "threshold": 0.2
+  },
+  "segmenter": {
+    "type": "word_overlap",
+    "minimum_chunk_duration": 1.0,
+    "keep_whitespace": true
+  }
 }
