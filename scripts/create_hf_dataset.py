@@ -57,7 +57,21 @@ def parse_args(args: List[str]) -> argparse.Namespace:
         help="HuggingFace dataset repository name.",
     )
     parser.add_argument("--phonemize", type=bool, default=False, help="Phonemize text.")
-    parser.add_argument("--private", type=bool, default=True, help="Set HuggingFace dataset to private.")
+    parser.add_argument(
+        "--private", type=bool, default=True, help="Set HuggingFace dataset to private."
+    )
+    parser.add_argument(
+        "--test_size",
+        type=float,
+        default=0.0,
+        help="Proportion of data for test set (0.0 to 1.0)",
+    )
+    parser.add_argument(
+        "--valid_size",
+        type=float,
+        default=0.0,
+        help="Proportion of data for validation set (0.0 to 1.0)",
+    )
     return parser.parse_args(args)
 
 
@@ -78,7 +92,14 @@ def parse_tsv(path: str) -> str:
         return " ".join(row[2] for row in rows)
 
 
-def create_dataset(input_dir: str, dataset_name: str, private: bool = True, phonemize: bool = False) -> DatasetDict:
+def create_dataset(
+    input_dir: str,
+    dataset_name: str,
+    private: bool = True,
+    phonemize: bool = False,
+    test_size: float = 0.0,
+    valid_size: float = 0.0,
+) -> DatasetDict:
     """
     Creates HuggingFace dataset from SpeechLine outputs.
     Ensures unique utterance and speaker IDs in each subset.
@@ -92,6 +113,10 @@ def create_dataset(input_dir: str, dataset_name: str, private: bool = True, phon
             Set HuggingFace dataset as private. Defaults to `True`.
         phonemize (bool, optional):
             Phonemize text to phoneme strings. Defaults to `False`.
+        test_size (float, optional):
+            Proportion of data for test set. Defaults to 0.0.
+        valid_size (float, optional):
+            Proportion of data for validation set. Defaults to 0.0.
 
     Returns:
         DatasetDict:
@@ -108,19 +133,24 @@ def create_dataset(input_dir: str, dataset_name: str, private: bool = True, phon
     tqdm.pandas(desc="Phonemization")
 
     if phonemize:
-        df["phonemes"] = df.progress_apply(lambda row: get_g2p(row["language"].split("-")[0])(row["text"]), axis=1)
+        df["phonemes"] = df.progress_apply(
+            lambda row: get_g2p(row["language"].split("-")[0])(row["text"]), axis=1
+        )
 
     speaker, counts = np.unique(df["speaker"], return_counts=True)
     speaker2count = {s: c for s, c in zip(speaker, counts)}
 
-    train_num = int(0.7 * len(df))
-    test_num = int(0.9 * len(df))
+    total_samples = len(df)
+    train_num = int((1 - test_size - valid_size) * total_samples)
+    test_num = int((1 - valid_size) * total_samples)
 
     train_speakers, test_speakers, valid_speakers = [], [], []
     total = 0
 
-    for speaker, count in sorted(speaker2count.items(), key=lambda item: item[1], reverse=True):
-        if total < train_num and total < test_num:
+    for speaker, count in sorted(
+        speaker2count.items(), key=lambda item: item[1], reverse=True
+    ):
+        if total < train_num:
             train_speakers.append(speaker)
         elif total < test_num:
             test_speakers.append(speaker)
@@ -132,15 +162,31 @@ def create_dataset(input_dir: str, dataset_name: str, private: bool = True, phon
     test_df = df[df["speaker"].isin(test_speakers)].reset_index(drop=True)
     valid_df = df[df["speaker"].isin(valid_speakers)].reset_index(drop=True)
 
-    train_ds = Dataset.from_pandas(train_df).cast_column("audio", Audio())
-    test_ds = Dataset.from_pandas(test_df).cast_column("audio", Audio())
-    valid_ds = Dataset.from_pandas(valid_df).cast_column("audio", Audio())
+    dataset_dict = {
+        "train": Dataset.from_pandas(train_df).cast_column("audio", Audio())
+    }
 
-    dataset = DatasetDict({"train": train_ds, "test": test_ds, "validation": valid_ds})
+    if test_size > 0:
+        dataset_dict["test"] = Dataset.from_pandas(test_df).cast_column(
+            "audio", Audio()
+        )
+    if valid_size > 0:
+        dataset_dict["validation"] = Dataset.from_pandas(valid_df).cast_column(
+            "audio", Audio()
+        )
+
+    dataset = DatasetDict(dataset_dict)
     dataset.push_to_hub(dataset_name, private=private)
     return dataset
 
 
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
-    dataset = create_dataset(args.input_dir, args.dataset_name, args.private, args.phonemize)
+    dataset = create_dataset(
+        args.input_dir,
+        args.dataset_name,
+        args.private,
+        args.phonemize,
+        args.test_size,
+        args.valid_size,
+    )

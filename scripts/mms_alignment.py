@@ -27,8 +27,9 @@ parser.add_argument(
 parser.add_argument(
     "--dataset_config",
     type=str,
-    required=True,
-    help="Huggingface dataset name",
+    required=False,
+    default=None,
+    help="Huggingface dataset config",
 )
 parser.add_argument(
     "--dataset_split",
@@ -43,8 +44,9 @@ parser.add_argument(
     help="Target Column",
 )
 
-parser.add_argument("--output_dir", default="./tmp", help="Path to the output directory")
-parser.add_argument("--chunk_size_s", type=int, default=15, help="Chunk size in seconds")
+parser.add_argument(
+    "--chunk_size_s", type=int, default=15, help="Chunk size in seconds"
+)
 parser.add_argument(
     "--limit",
     type=int,
@@ -66,7 +68,7 @@ DICTIONARY = bundle.get_dict()
 MMS_SUBSAMPLING_RATIO = 400
 
 
-def get_word_alignment(datum, output_dir, chunk_size_s, text_column: str):
+def get_word_alignment(datum, chunk_size_s, text_column: str):
     transcript = datum[args.text_column]
     audio = datum["audio"]
 
@@ -106,7 +108,9 @@ def get_word_alignment(datum, output_dir, chunk_size_s, text_column: str):
     greedy_probs = torch.max(probs, dim=-1).values.squeeze()  # (1, frame_length)
     greedy_log_probs = torch.sum(torch.log(greedy_probs)).cpu().numpy().item()  # (1)
 
-    aligned_probs = compute_alignment_scores(emission, words, DICTIONARY, device)  # (1, frame_length)
+    aligned_probs = compute_alignment_scores(
+        emission, words, DICTIONARY, device
+    )  # (1, frame_length)
     aligned_log_probs = torch.sum(torch.log(aligned_probs)).cpu().numpy().item()  # (1)
 
     if aligned_log_probs == -np.inf:
@@ -116,52 +120,58 @@ def get_word_alignment(datum, output_dir, chunk_size_s, text_column: str):
 
     return probability_diff > -0.2
 
-    # # perform forced-alignment
-    # try:
-    #     word_spans = compute_alignments(emission, words, DICTIONARY, device)
-    # except:
-    #     print(f"Failed on audio: {audio_id}")
-    #     return
-
-    # assert len(word_spans) == len(words)
-
-    # # collect verse-level segments
-    # segments, labels, start = [], [], 0
-    # for word, span in zip(words, word_spans):
-    #     ratio = resampled_waveform.size(1) / num_frames
-    #     x0 = int(ratio * span[0].start)
-    #     x1 = int(ratio * span[-1].end)
-    #     segment = resampled_waveform[:, x0:x1]
-    #     segments.append(segment)
-    #     labels.append(word)
-
-    # for segment, label in zip(segments, labels):
-    #     audio_name = audio_id + "-" + label
-    #     # write audio
-    #     audio_path = (output_dir / audio_name).with_suffix(".wav")
-    #     write(audio_path, bundle.sample_rate, segment.squeeze().numpy())
-
-    #     # write transcript
-    #     transcript_path = (output_dir / audio_name).with_suffix(".txt")
-    #     with open(transcript_path, "w") as f:
-    #         f.write(label)
-
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    dataset = load_dataset(args.dataset_name, args.dataset_config, num_proc=os.cpu_count())
-    print(dataset)
+
+    if args.dataset_config:
+        dataset = load_dataset(
+            args.dataset_name, args.dataset_config, num_proc=os.cpu_count()
+        )
+    else:
+        dataset = load_dataset(args.dataset_name, num_proc=os.cpu_count())
 
     if args.limit:
         dataset = dataset.select(range(args.limit))
 
-    # for datum in tqdm(dataset):
-    dataset = dataset.filter(
-        lambda text: not text.startswith("k") and not text.startswith("m"), input_columns="text", num_proc=os.cpu_count()
+    # Calculate initial statistics
+    initial_size = len(dataset[args.dataset_split])
+    initial_hours = (
+        sum(
+            x["audio"]["array"].shape[0] / x["audio"]["sampling_rate"]
+            for x in dataset[args.dataset_split]
+        )
+        / 3600
     )
-    dataset = dataset.filter(lambda datum: get_word_alignment(datum, output_dir, args.chunk_size_s, args.text_column))
+
+    # Apply filters
+    dataset = dataset.filter(
+        lambda text: not text.startswith("k") and not text.startswith("m"),
+        input_columns="text",
+        num_proc=os.cpu_count(),
+    )
+    dataset = dataset.filter(
+        lambda datum: get_word_alignment(datum, args.chunk_size_s, args.text_column)
+    )
+
+    # Calculate final statistics
+    final_size = len(dataset[args.dataset_split])
+    final_hours = (
+        sum(
+            x["audio"]["array"].shape[0] / x["audio"]["sampling_rate"]
+            for x in dataset[args.dataset_split]
+        )
+        / 3600
+    )
+
+    print(f"\nDataset Statistics:")
+    print(f"Initial number of rows: {initial_size:,}")
+    print(f"Final number of rows: {final_size:,}")
+    print(f"Rows removed: {initial_size - final_size:,}")
+    print(f"Initial hours of audio: {initial_hours:.2f}")
+    print(f"Final hours of audio: {final_hours:.2f}")
+    print(f"Hours removed: {initial_hours - final_hours:.2f}")
+
     print(dataset)
     print(dataset["train"][0])
     dataset.push_to_hub(f"{args.dataset_name}-filtered", private=True)
