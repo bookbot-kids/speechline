@@ -1,6 +1,7 @@
 commonvoice/
 tmp/
 dropbox/
+examples/
 training*/
 *_audio_data*
 
