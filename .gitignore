@@ -3,6 +3,19 @@ tmp/
 dropbox/
 training*/
 *_audio_data*
+# Raw wiktextract data
+data/raw-wiktextract-data.jsonl
+
+# Archive folder for one-off/debugging scripts
+scripts/archive/
+# Sample audio files and storage data
+sample/
+storage/
+# Kilocode project rules
+.kilocode/
+
+
+
 
 .DS_Store
 */.DS_Store

@@ -34,10 +34,18 @@ class AudioTranscriber(AudioModule):
     """
 
     def __init__(self, model_checkpoint: str, torch_dtype: torch.dtype = None) -> None:
+        # Determine device: MPS (Apple Silicon) > CUDA (NVIDIA GPU) > CPU
+        if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            device = "mps"
+        elif torch.cuda.is_available():
+            device = 0
+        else:
+            device = -1
+        
         asr = pipeline(
             "automatic-speech-recognition",
             model=model_checkpoint,
-            device=0 if torch.cuda.is_available() else -1,
+            device=device,
             pipeline_class=AutomaticSpeechRecognitionFilteredPipeline,
             torch_dtype=torch_dtype,
         )

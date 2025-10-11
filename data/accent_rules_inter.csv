@@ -1,0 +1,26 @@
+name,country_codes,examples,scope,match_regex,op,out_phone
+t_glottalling_before_consonant_or_pause,"GB, AU, NZ",what time→[wɒʔ taɪm]; cat bowl→[kæʔ boʊl],inter,t(?= (C|#)),S,ʔ
+alveolar_stop_deletion_in_clusters,"GB, US, AU, NZ",las(t) time→[læs taɪm]; ol(d) man→[oʊl mæn],both,(?<= C ) (t|d) (?= C),D,
+linking_r_between_vowels,"GB, AU, NZ",law(r) and→[lɔː ɹ ən]; far(r) away→[fɑː ɹ əˈweɪ],inter,(?<= V ) # (?= V),A,ɹ
+intrusive_r_between_vowels,"GB, AU, NZ",idea(r) of→[aɪˈdɪə ɹ ɒv]; Asia(r) and→[ˈeɪʒə ɹ ænd],inter,(?<= V ) # (?= V),A,ɹ
+yod_coalescence_tj_to_tʃ,"GB, AU, NZ",Tuesday→[tʃuːzdeɪ]; got you→[ɡɒtʃu],both,t j,S,tʃ
+yod_coalescence_dj_to_dʒ,"GB, AU, NZ",did you→[dɪdʒu]; would you→[wʊdʒu],inter,d j,S,dʒ
+sj_coalescence_to_ʃ,"GB, AU",assume→[əˈʃuːm]; this year→[ðɪʃ jɪə],inter,s j,S,ʃ
+zj_coalescence_to_ʒ,"GB, AU",as you→[æʒu]; these years→[ðiːʒ jɪəz],inter,z j,S,ʒ
+and_clitic_reduction,ALL,fish and chips→[fɪʃ n tʃɪps]; rock and roll→[rɒk n roʊl],inter,æ n d,S,n
+th_fronting_voiceless,GB,thin→[fɪn]; tooth→[tuːf],both,θ,S,f
+th_fronting_voiced,GB,this→[vɪs]; mother→[mʌvə],both,ð,S,v
+th_stopping_voiceless,"IE, US",thin→[tɪn]; nothing→[nʌtɪŋ],both,θ,S,t
+th_stopping_voiced,"IE, US",this→[dɪs]; weather→[wɛdə],both,ð,S,d
+h_deletion_intervocalic,"GB, US",vehicle→[viːɪkl̩]; rehash→[riːæʃ],both,(?<= V ) h (?= V),D,
+hiatus_glottal_insertion,ALL,re-enter→[riː ʔ ɛntə]; co-owner→[koʊ ʔ oʊnəɹ],inter,(?<= V ) # (?= V),A,ʔ
+of_reduction_v_deletion,ALL,cup of→[kʌp ə]; lot of→[lɒt ə],inter,(ɒ|ə) v(?= #),S,$1
+weak_form_to_reduction,ALL,to→[tə]; going to→[ɡəʊɪŋ tə],inter,(?<= # ) t uː (?= #),S,tə
+weak_form_for_reduction,ALL,for→[fə]; what for→[wɒt fə],inter,(?<= # ) f ɔː (?= #),S,fə
+weak_form_at_reduction,ALL,at→[ət]; look at→[lʊk ət],inter,(?<= # ) æ t (?= #),S,ət
+weak_form_can_reduction,ALL,can→[kən]; I can go→[aɪ kən ɡəʊ],inter,(?<= # ) k æ n (?= #),S,kən
+weak_form_have_reduction,ALL,have→[həv]; I have→[aɪ əv],inter,(?<= # ) h æ v (?= #),S,əv
+weak_form_has_reduction,ALL,has→[həz]; he has→[hiː əz],inter,(?<= # ) h æ z (?= #),S,əz
+weak_form_had_reduction,ALL,had→[həd]; I had→[aɪ əd],inter,(?<= # ) h æ d (?= #),S,əd
+weak_form_and_full_reduction,ALL,bread and butter→[brɛd ən bʌtə],inter,(?<= # ) æ n d (?= #),S,ən
+weak_form_of_full_reduction,ALL,kind of→[kaɪnd əv]; sort of→[sɔːt əv],inter,(?<= # ) ɒ v (?= #),S,əv

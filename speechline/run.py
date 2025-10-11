@@ -35,6 +35,7 @@ from speechline.transcribers import (
     Wav2Vec2Transcriber,
     WhisperTranscriber,
     ParakeetTranscriber,
+    CanaryTranscriber,
 )
 from speechline.utils.dataset import (
     format_audio_dataset,
@@ -135,6 +136,13 @@ class Runner:
         elif config.transcriber.type == "parakeet":
             transcriber = ParakeetTranscriber(
                 config.transcriber.model, config.transcriber.transcriber_device
+            )
+        elif config.transcriber.type == "canary":
+            # Get torch_dtype from config if available, default to "float16"
+            torch_dtype = getattr(config.transcriber, 'torch_dtype', 'float16')
+            transcriber = CanaryTranscriber(
+                model_checkpoint=config.transcriber.model,
+                torch_dtype=torch_dtype
             )
 
         logger.info("Preparing DataFrame..")

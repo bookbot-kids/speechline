@@ -78,16 +78,19 @@ class TranscriberConfig:
             `True` for Whisper-based models.
         chunk_length_s (int):
             Audio chunk length in seconds.
+        torch_dtype (str, optional):
+            Torch dtype for model weights (e.g., 'float16'). Used by Canary transcriber.
     """
 
     type: str
     model: str
     return_timestamps: Union[str, bool]
-    chunk_length_s: Optional[int] = None 
+    chunk_length_s: Optional[int] = None
     transcriber_device: str = "cuda"
+    torch_dtype: Optional[str] = None
 
     def __post_init__(self):
-        SUPPORTED_MODELS = {"wav2vec2", "whisper", "parakeet"}
+        SUPPORTED_MODELS = {"wav2vec2", "whisper", "parakeet", "canary"}
         WAV2VEC_TIMESTAMPS = {"word", "char"}
         PARAKEET_TIMESTAMPS = {"word"}
         
@@ -98,11 +101,11 @@ class TranscriberConfig:
             raise ValueError("wav2vec2 only supports `'word'` or `'char'` timestamps!")
         elif self.type == "parakeet" and self.return_timestamps not in PARAKEET_TIMESTAMPS:
             raise ValueError("parakeet only supports `word` timestamps!")
-        elif self.type == "whisper" and self.return_timestamps is not True:
-            raise ValueError("Whisper only supports `True` timestamps!")
+        elif self.type in {"whisper", "canary"} and self.return_timestamps is not True:
+            raise ValueError(f"{self.type} only supports `True` timestamps!")
         
         # Add validation for chunk_length_s requirement
-        if self.type in {"wav2vec2", "whisper"} and self.chunk_length_s is None:
+        if self.type in {"wav2vec2", "whisper", "canary"} and self.chunk_length_s is None:
             raise ValueError(f"chunk_length_s is required for {self.type} models")
 
 

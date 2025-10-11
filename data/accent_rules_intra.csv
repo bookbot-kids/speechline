@@ -1,0 +1,28 @@
+name,country_codes,examples,scope,match_regex,op,out_phone
+t_glottalling_before_syllabic,"GB, AU, NZ, US",button→[bʌʔn̩]; little→[lɪʔl̩],intra,t(?= (n̩|l̩)),S,ʔ
+alveolar_stop_deletion_in_clusters,"GB, US, AU, NZ",las(t) time→[læs taɪm]; ol(d) man→[oʊl mæn],both,(?<= C ) (t|d) (?= C),D,
+flapping_intervocalic,"US, CA, AU",water→[wɔːɾəɹ]; ladder→[læɾəɹ],intra,(?<= V ) (t|d) (?= V),S,ɾ
+h_dropping_word_initial,GB,house→[aʊs]; have→[æv],intra,(?<= # ) h (?= V),D,
+r_dropping_postvocalic,"GB, AU, NZ",car→[kɑː]; hard→[hɑːd],both,(?<= V ) ɹ (?= (C|#)),D,
+yod_dropping_after_alveolars,"US, CA, AU",tune→[tuːn]; duty→[duːti],intra,(?<= (t|d|n|s|z|l) ) j (?= (u|ʊ|ʉ) ),D,
+yod_coalescence_tj_to_tʃ,"GB, AU, NZ",Tuesday→[tʃuːzdeɪ]; got you→[ɡɒtʃu],both,t j,S,tʃ
+g_dropping_ing,"US, GB, AU",running→[rʌnɪn]; walking→[wɔːkɪn],intra,ɪ ŋ(?= (C|#)),S,n
+l_vocalisation_coda,GB,people→[piːpo]; milk→[mɪʊk],intra,(?<= V ) l (?= (C|#)),S,w
+schwa_syncope_between_consonants,ALL,camera→[kæmrə]; family→[fæmli],intra,(?<= C ) ə (?= C),D,
+th_fronting_voiceless,GB,thin→[fɪn]; tooth→[tuːf],both,θ,S,f
+th_fronting_voiced,GB,this→[vɪs]; mother→[mʌvə],both,ð,S,v
+th_stopping_voiceless,"IE, US",thin→[tɪn]; nothing→[nʌtɪŋ],both,θ,S,t
+th_stopping_voiced,"IE, US",this→[dɪs]; weather→[wɛdə],both,ð,S,d
+h_deletion_intervocalic,"GB, US",vehicle→[viːɪkl̩]; rehash→[riːæʃ],both,(?<= V ) h (?= V),D,
+tr_affrication,"US, CA, AU",train→[tʃɹeɪn]; true→[tʃruː],intra,t ɹ,S,tʃ
+dr_affrication,"US, CA, AU",drive→[dʒɹaɪv]; dream→[dʒɹiːm],intra,d ɹ,S,dʒ
+nt_cluster_reduction,"US, AU",winter→[wɪnəɹ]; international→[ɪnəˈnæʃnəl],intra,n t(?= (ə|C|#)),D,
+kt_cluster_simplification,ALL,asked→[æs(t)]; masked→[mæst],intra,(?<= s ) k (?= t),D,
+syllabic_n_after_schwa,ALL,button→[bʌtn̩]; cotton→[kɒtn̩],intra,ə n(?= (C|#)),S,n̩
+syllabic_l_after_schwa,ALL,bottle→[bɒtl̩]; little→[lɪtl̩],intra,ə l(?= (C|#)),S,l̩
+syllabic_m_after_schwa,ALL,rhythm→[rɪðm̩]; prism→[prɪzm̩],intra,ə m(?= (C|#)),S,m̩
+glottal_reinforcement_stops,"GB, US",stop→[stɒʔp]; act→[æʔkt],intra,(?<= V ) (p|t|k) (?= (C|#)),A,ʔ
+canadian_raising_before_voiceless,CA,write→[rʌɪt]; house→[hʌʊs],intra,(aɪ|aʊ) (?= (p|t|k|f|s|θ|ʃ|tʃ) ),S,ʌ$1
+happy_tensing_final,"GB, AU, NZ",happy→[hæpi]; coffee→[kɒfi],intra,(?<= C ) ɪ (?= #),S,i
+ng_simplification_in_something,ALL,something→[sʌmθɪŋ]; nothing→[nʌθɪŋ],intra,ŋ g (?= #),S,ŋ
+diphthong_smoothing_before_schwa,GB,fire→[faə]; tower→[taə],intra,(aɪ|aʊ) (?= ə ),S,aə

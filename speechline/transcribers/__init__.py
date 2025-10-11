@@ -15,5 +15,6 @@
 from .wav2vec2 import Wav2Vec2Transcriber
 from .whisper import WhisperTranscriber
 from .parakeet import ParakeetTranscriber
+from .canary import CanaryTranscriber
 
-__all__ = ["Wav2Vec2Transcriber", "WhisperTranscriber", "ParakeetTranscriber"]
+__all__ = ["Wav2Vec2Transcriber", "WhisperTranscriber", "ParakeetTranscriber", "CanaryTranscriber"]

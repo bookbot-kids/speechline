@@ -1,5 +1,5 @@
 Robust class,Class symbol,Included base classes,Representative phonemes,Example words,Rationale
-V,ə,['V'],"i, e, a, o, u, ə, aɪ, eɪ, oʊ, aʊ, ɔɪ",seat | bed | go | about,All vowels/diphthongs collapsed
+V,ə,['V'],"i, e, a, o, u, ə, aɪ, eɪ, oʊ, aʊ, ɔɪ",seat | bed | go | about,All vowels/diphthongs/glides collapsed
 SIB-ALV,s,['SIB-ALV'],"s, z",see | zoo | easy,Keep alveolar sibilants distinct from postalveolars
 SIB-POST*,ʃ,"['SIB-POST', 'AFF-SIB']","ʃ, ʒ, tʃ, dʒ",she (ʃ) | vision (ʒ) | chair (tʃ) | judge (dʒ),Affricates merged into postalveolar sibilant family
 FR-LAB,f,['FR-LAB'],"f, v",fine | voice | very | safe,Labiodental fricatives kept separate
@@ -11,4 +11,3 @@ ST-DOR,k,['ST-DOR'],"k, g",cat | go,Velar stops
 NAS,n,"['NAS-LAB', 'NAS-COR', 'NAS-DOR']","m, n, ŋ",map | button | sing,All nasals collapsed to one class
 LAT,l,['LAT'],"l, l̩",light | bottle,Keep laterals distinct
 RHO,ɹ,['RHO'],"ɹ, r, ɻ",red | arrive,Tracks linking/intrusive r
-GLD,j,['GLD'],"j, w",yes | we,Keep glides for V#V insertions

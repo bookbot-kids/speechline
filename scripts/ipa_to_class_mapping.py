@@ -1,9 +1,17 @@
 """IPA Phoneme to Phonetic Class Mapping and Parser
 
-This module provides mapping from IPA symbols to robust phonetic classes
-and a parser function to convert IPA sequences to class sequences.
+This module provides:
+1. Canonical IPA normalization to standardize different transcription styles
+2. Mapping from IPA symbols to robust phonetic classes
+3. Parser function to convert IPA sequences to class sequences
 
 Based on the robust phonetic classification system from manner_of_articulation.csv
+
+Key Features:
+- Normalizes variant IPA representations to canonical forms
+- Handles space-separated vs continuous phoneme sequences
+- Converts IPA to 12-class phonetic system
+- Supports multi-character sequences (affricates, diphthongs)
 
 Statistics (corrected mapping):
   Total base symbols: ~50+
@@ -12,6 +20,7 @@ Statistics (corrected mapping):
 """
 
 import unicodedata
+from typing import Tuple, Dict, List
 
 # =============================================================================
 # EXCLUSION TABLES
@@ -58,7 +67,41 @@ EXCLUDE_SYMBOLS = {
     ' ', '-', '~', '',
 }
 
-# No longer using FUTURE_REMAP - all symbols now mapped to nearest English equivalents
+# =============================================================================
+# CANONICAL IPA NORMALIZATION MAP
+# =============================================================================
+
+# Map alternative IPA representations to canonical forms
+# This ensures compatibility between different IPA sources (lexicons, datasets, etc.)
+IPA_NORMALIZATION_MAP = {
+    # Vowel normalizations
+    'ɨ': 'ɪ',      # Close central → close front (near-equivalent)
+    'ɘ': 'ə',      # Close-mid central → mid central
+    'ɐ': 'ə',      # Near-open central → mid central
+    'ʉ': 'u',      # Close central rounded → close back rounded
+    
+    # Consonant normalizations
+    'ɡ': 'g',      # G with tail → standard g
+    'r': 'ɹ',      # Trill/tap → approximant (English uses approximant)
+    'ɾ': 'ɹ',      # Tap/flap → approximant (American English)
+    'ʔ': '',       # Glottal stop → remove (not phonemic in English)
+    
+    # Common transcription variants
+    'y': 'j',      # Latin y → IPA j for palatal approximant
+}
+
+# Affricate normalization: all tie-bar forms to simple sequences
+AFFRICATE_NORMALIZATION = {
+    # With tie bars
+    't͡ʃ': 'tʃ',
+    'd͡ʒ': 'dʒ',
+    't͜ʃ': 'tʃ',
+    'd͜ʒ': 'dʒ',
+    't͡s': 'ts',
+    'd͡z': 'dz',
+    't͜s': 'ts',
+    'd͜z': 'dz',
+}
 
 # =============================================================================
 # MULTI-CHARACTER SEQUENCES
@@ -103,10 +146,10 @@ IPA_TO_CLASS = {
     'ɔ': 'ə',
     'ɘ': 'ə',
     'ə': 'ə',
-    'ɚ': 'ə',
+    'ɚ': 'əɹ',  # Rhotic schwa (American English) = schwa + rhotic
     'ɛ': 'ə',
     'ɜ': 'ə',
-    'ɝ': 'ə',
+    'ɝ': 'əɹ',  # R-colored schwa = schwa + rhotic (must map to 2 classes like ər)
     'ɞ': 'ə',
     'ɤ': 'ə',
     'ɨ': 'ə',
@@ -162,12 +205,13 @@ IPA_TO_CLASS = {
     
     # -------------------------------------------------------------------------
     # FR-LAB - Labiodental Fricatives → f
-    # Examples: (f)ine, (v)oice, (ph)one
+    # Examples: (f)ine, (v)oice, (ph)one, de(v)elop [labiodental approximant]
     # -------------------------------------------------------------------------
     'f': 'f',
     'v': 'f',
     'ɸ': 'f',  # bilabial fricative
     'β': 'f',  # bilabial fricative
+    'ʋ': 'f',  # labiodental approximant (treated as fricative)
     
     # -------------------------------------------------------------------------
     # FR-DENT - Dental Fricatives → θ
@@ -291,23 +335,128 @@ IPA_TO_CLASS = {
     'ɹ̩': 'ɹ',
     
     # -------------------------------------------------------------------------
-    # GLD - Glides → j
+    # GLD - Glides → ə (mapped to vowels)
     # Includes palatal and labial-velar approximants
     # Examples: (y)es, (w)e, h(u)ge, (wh)ich
+    # Note: Glides treated as vowel-like for phonetic class purposes
     # -------------------------------------------------------------------------
-    'j': 'j',
-    'y': 'j',  # Latin y used for palatal approximant (alternate notation)
-    'w': 'j',
-    'ɥ': 'j',  # labial-palatal
-    'ʋ': 'j',  # labiodental
-    'ʍ': 'j',  # voiceless labial-velar
+    'j': 'ə',
+    'y': 'ə',  # Latin y used for palatal approximant (alternate notation)
+    'w': 'ə',
+    'ɥ': 'ə',  # labial-palatal
+    'ʍ': 'ə',  # voiceless labial-velar
 }
+
+# =============================================================================
+# CANONICAL NORMALIZATION FUNCTION
+# =============================================================================
+
+def normalize_ipa(ipa_string: str,
+                  remove_stress: bool = True,
+                  merge_spaces: bool = True) -> str:
+    """
+    Normalize IPA string to canonical form before parsing.
+    
+    This function standardizes different IPA transcription styles to ensure
+    compatibility between lexicons and datasets.
+    
+    Normalization steps:
+    1. Unicode NFD decomposition
+    2. Normalize affricates (tie-bar forms to simple)
+    3. Remove stress markers and non-phonemic annotations
+    4. Merge space-separated phonemes (e.g., "ð ə" → "ðə")
+    5. Apply character-level normalization map
+    6. Remove remaining combining marks
+    
+    Args:
+        ipa_string: Input IPA transcription
+        remove_stress: If True, remove stress markers (ˈˌ)
+        merge_spaces: If True, convert space-separated phonemes to continuous
+        
+    Returns:
+        Normalized IPA string ready for class sequence conversion
+        
+    Examples:
+        >>> normalize_ipa("ˈhɛˌloʊ")
+        'hɛloʊ'
+        
+        >>> normalize_ipa("ð ə")
+        'ðə'
+        
+        >>> normalize_ipa("t͡ʃ")
+        'tʃ'
+        
+        >>> normalize_ipa("kʰæt")
+        'kæt'
+    """
+    if not ipa_string:
+        return ""
+    
+    # Step 1: Handle special cases before NFD (ç would decompose incorrectly)
+    result = ipa_string.replace('ç', '\x00PALATAL_FRIC\x00')
+    
+    # Step 2: Unicode normalization (NFD decomposition)
+    result = unicodedata.normalize('NFD', result)
+    
+    # Step 3: Restore special cases
+    result = result.replace('\x00PALATAL_FRIC\x00', 'ç')
+    
+    # Step 4: Normalize affricates (longest first for greedy matching)
+    for affricate, canonical in sorted(AFFRICATE_NORMALIZATION.items(),
+                                       key=lambda x: len(x[0]),
+                                       reverse=True):
+        result = result.replace(affricate, canonical)
+    
+    # Step 5: Remove excluded symbols
+    if remove_stress:
+        for symbol in EXCLUDE_SYMBOLS:
+            result = result.replace(symbol, '')
+    
+    # Step 6: Merge spaces if requested (some datasets use space-separated phonemes)
+    if merge_spaces:
+        result = result.replace(' ', '')
+    
+    # Step 7: Apply normalization map
+    normalized_chars = []
+    i = 0
+    while i < len(result):
+        # Try multi-character sequences first (affricates, diphthongs)
+        matched = False
+        for length in [3, 2]:
+            if i + length <= len(result):
+                seq = result[i:i+length]
+                # Check if it's a valid multi-char sequence we want to keep
+                if seq in MULTI_CHAR_SEQUENCES or seq in IPA_TO_CLASS:
+                    normalized_chars.append(seq)
+                    i += length
+                    matched = True
+                    break
+        
+        if not matched:
+            # Single character - apply normalization
+            char = result[i]
+            if char in IPA_NORMALIZATION_MAP:
+                replacement = IPA_NORMALIZATION_MAP[char]
+                if replacement:  # Empty string means remove
+                    normalized_chars.append(replacement)
+            else:
+                normalized_chars.append(char)
+            i += 1
+    
+    result = ''.join(normalized_chars)
+    
+    # Step 8: Final cleanup - remove any remaining combining marks
+    result = ''.join(char for char in result
+                     if unicodedata.category(char) != 'Mn')
+    
+    return result
+
 
 # =============================================================================
 # PARSER FUNCTION
 # =============================================================================
 
-def parse_ipa_sequence(ipa_string, strict=True, remove_excluded=True):
+def parse_ipa_sequence(ipa_string, strict=True, remove_excluded=True, normalize=True):
     """
     Parse IPA sequence and convert to phonetic class sequence.
     
@@ -318,6 +467,7 @@ def parse_ipa_sequence(ipa_string, strict=True, remove_excluded=True):
         ipa_string (str): IPA transcription to parse
         strict (bool): If True, raise error on unknown symbols. If False, skip them.
         remove_excluded (bool): If True, remove symbols in EXCLUDE_SYMBOLS first
+        normalize (bool): If True, apply canonical normalization before parsing (default: True)
         
     Returns:
         str: Sequence of phonetic class symbols (e.g., "ənsə" for "ansa")
@@ -330,30 +480,37 @@ def parse_ipa_sequence(ipa_string, strict=True, remove_excluded=True):
         'hələ'
         
         >>> parse_ipa_sequence("tʃɛɹ")
-        'ʃɛɹ'
+        'ʃəɹ'
         
-        >>> parse_ipa_sequence("ˈkæt")  # stress mark removed
-        'kæt' -> 'kət'
+        >>> parse_ipa_sequence("ˈkæt")
+        'kət'
+        
+        >>> parse_ipa_sequence("ð ə")  # space-separated
+        'θə'
     """
     if not ipa_string:
         return ""
     
-    # Step 0a: Handle special cases that would be broken by NFD normalization
-    # ç (U+00E7) would decompose to c+̧, but c→k (stop) not h (fricative)
-    # So we need to replace it before NFD normalization
-    ipa_string = ipa_string.replace('ç', '\x00PALATAL_FRIC\x00')  # temporary placeholder
-    
-    # Step 0b: Normalize Unicode to decomposed form (NFD)
-    # This handles precomposed characters like ĩ (U+0129) → i + combining tilde
-    ipa_string = unicodedata.normalize('NFD', ipa_string)
-    
-    # Step 0c: Restore special cases and map them
-    ipa_string = ipa_string.replace('\x00PALATAL_FRIC\x00', 'ç')
-    
-    # Step 1: Remove excluded symbols if requested
-    if remove_excluded:
-        for symbol in EXCLUDE_SYMBOLS:
-            ipa_string = ipa_string.replace(symbol, '')
+    # Step 0: Apply canonical normalization if requested
+    if normalize:
+        ipa_string = normalize_ipa(ipa_string,
+                                   remove_stress=remove_excluded,
+                                   merge_spaces=True)
+    else:
+        # Legacy path: manual normalization
+        # Step 0a: Handle special cases that would be broken by NFD normalization
+        ipa_string = ipa_string.replace('ç', '\x00PALATAL_FRIC\x00')
+        
+        # Step 0b: Normalize Unicode to decomposed form (NFD)
+        ipa_string = unicodedata.normalize('NFD', ipa_string)
+        
+        # Step 0c: Restore special cases
+        ipa_string = ipa_string.replace('\x00PALATAL_FRIC\x00', 'ç')
+        
+        # Step 1: Remove excluded symbols if requested
+        if remove_excluded:
+            for symbol in EXCLUDE_SYMBOLS:
+                ipa_string = ipa_string.replace(symbol, '')
     
     # Step 2: Parse sequence with greedy multi-char matching
     result = []
@@ -403,7 +560,7 @@ def parse_ipa_sequence(ipa_string, strict=True, remove_excluded=True):
 def get_class_name(class_symbol):
     """Get human-readable name for class symbol."""
     class_names = {
-        'ə': 'V (Vowels/Diphthongs)',
+        'ə': 'V (Vowels/Diphthongs/Glides)',
         's': 'SIB-ALV (Alveolar Sibilants)',
         'ʃ': 'SIB-POST (Postalveolar Sibilants)',
         'f': 'FR-LAB (Labiodental Fricatives)',
@@ -415,7 +572,6 @@ def get_class_name(class_symbol):
         'n': 'NAS (Nasals)',
         'l': 'LAT (Laterals)',
         'ɹ': 'RHO (Rhotics)',
-        'j': 'GLD (Glides)',
     }
     return class_names.get(class_symbol, f'Unknown ({class_symbol})')
 
@@ -463,15 +619,65 @@ def validate_ipa_string(ipa_string):
 
 
 # =============================================================================
+# UTILITY FUNCTIONS FOR NORMALIZATION
+# =============================================================================
+
+def get_normalization_stats(original: str, normalized: str) -> Dict[str, any]:
+    """
+    Get statistics about what changed during normalization.
+    
+    Returns dict with:
+        - changed: bool
+        - original_length: int
+        - normalized_length: int
+        - diff: str
+    """
+    return {
+        'changed': original != normalized,
+        'original_length': len(original),
+        'normalized_length': len(normalized),
+        'diff': f"{original} → {normalized}" if original != normalized else "unchanged"
+    }
+
+
+def normalize_ipa_word_list(word_ipa_pairs: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+    """
+    Normalize a list of (word, ipa) tuples.
+    
+    Args:
+        word_ipa_pairs: List of (word, ipa) tuples
+        
+    Returns:
+        List of (word, normalized_ipa) tuples with duplicates removed
+    """
+    normalized = []
+    seen = set()
+    
+    for word, ipa in word_ipa_pairs:
+        norm_ipa = normalize_ipa(ipa)
+        pair = (word, norm_ipa)
+        if pair not in seen:
+            normalized.append(pair)
+            seen.add(pair)
+    
+    return normalized
+
+
+# =============================================================================
 # MODULE METADATA
 # =============================================================================
 
-__version__ = "2.1.0"
+__version__ = "3.0.0"
 __all__ = [
     'IPA_TO_CLASS',
     'EXCLUDE_SYMBOLS',
     'MULTI_CHAR_SEQUENCES',
+    'IPA_NORMALIZATION_MAP',
+    'AFFRICATE_NORMALIZATION',
+    'normalize_ipa',
     'parse_ipa_sequence',
     'get_class_name',
     'validate_ipa_string',
+    'get_normalization_stats',
+    'normalize_ipa_word_list',
 ]

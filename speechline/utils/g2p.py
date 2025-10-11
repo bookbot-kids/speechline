@@ -15,7 +15,12 @@
 from typing import Callable, List
 import re
 
-from g2p_id import G2p
+try:
+    from g2p_id import G2p
+    HAS_G2P_ID = True
+except ImportError:
+    HAS_G2P_ID = False
+    
 from gruut import sentences
 
 
@@ -89,6 +94,9 @@ def g2p_id(text: str) -> List[str]:
         str:
             Phoneme string.
     """
+    if not HAS_G2P_ID:
+        raise ImportError("g2p_id package not installed. Install with: pip install g2p-id")
+    
     g2p = G2p()
     phonemes = g2p(text)
     return [" ".join(phoneme) for phoneme in phonemes]
