@@ -90,9 +90,10 @@ class TranscriberConfig:
     torch_dtype: Optional[str] = None
 
     def __post_init__(self):
-        SUPPORTED_MODELS = {"wav2vec2", "whisper", "parakeet", "canary"}
+        SUPPORTED_MODELS = {"wav2vec2", "whisper", "parakeet", "parakeet_tdt", "canary"}
         WAV2VEC_TIMESTAMPS = {"word", "char"}
         PARAKEET_TIMESTAMPS = {"word"}
+        PARAKEET_TDT_TIMESTAMPS = {"word", "char"}
         
         if self.type not in SUPPORTED_MODELS:
             raise ValueError(f"Transcriber of type {self.type} is not yet supported!")
@@ -101,11 +102,13 @@ class TranscriberConfig:
             raise ValueError("wav2vec2 only supports `'word'` or `'char'` timestamps!")
         elif self.type == "parakeet" and self.return_timestamps not in PARAKEET_TIMESTAMPS:
             raise ValueError("parakeet only supports `word` timestamps!")
+        elif self.type == "parakeet_tdt" and self.return_timestamps not in PARAKEET_TDT_TIMESTAMPS:
+            raise ValueError("parakeet_tdt only supports `'word'` or `'char'` timestamps!")
         elif self.type in {"whisper", "canary"} and self.return_timestamps is not True:
             raise ValueError(f"{self.type} only supports `True` timestamps!")
         
         # Add validation for chunk_length_s requirement
-        if self.type in {"wav2vec2", "whisper", "canary"} and self.chunk_length_s is None:
+        if self.type in {"wav2vec2", "whisper", "canary", "parakeet_tdt"} and self.chunk_length_s is None:
             raise ValueError(f"chunk_length_s is required for {self.type} models")
 
 

@@ -126,8 +126,8 @@ class AudioTranscriber(AudioModule):
             return [
                 {
                     offset_key: o["text"] if keep_whitespace else o["text"].strip(),
-                    "start_time": round(o["timestamp"][0], 3),
-                    "end_time": round(o["timestamp"][1], 3),
+                    "start_time": round(o["timestamp"][0], 3) if o["timestamp"][0] is not None else 0.0,
+                    "end_time": round(o["timestamp"][1], 3) if o["timestamp"][1] is not None else 0.0,
                 }
                 for o in timestamps["chunks"]
                 if o["text"] != " " or keep_whitespace

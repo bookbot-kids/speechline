@@ -24,7 +24,7 @@
     </a>
 </p>
 
-SpeechLine is a speech labeling pipeline that handles end-to-end, offline, batch audio categorization, transcription, segmentation, and logging.
+SpeechLine is a speech labeling pipeline that handles end-to-end, offline, batch audio categorization, transcription, segmentation, and logging. It supports multiple state-of-the-art speech recognition models including Wav2Vec2, Whisper, Parakeet, Parakeet TDT, and Canary.
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/bookbot-kids/speechline/main/docs/assets/logo-medium.png" alt="logo" width="300"/>

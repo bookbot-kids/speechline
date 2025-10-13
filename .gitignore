@@ -6,11 +6,13 @@ training*/
 # Raw wiktextract data
 data/raw-wiktextract-data.jsonl
 
-# Archive folder for one-off/debugging scripts
+# Archive folder for experimentation/debugging scripts
+archive/
 scripts/archive/
 # Sample audio files and storage data
 sample/
 storage/
+labels/
 # Kilocode project rules
 .kilocode/
 
@@ -150,4 +152,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-.vscode/
+.vscode/.qdrant_storage/
