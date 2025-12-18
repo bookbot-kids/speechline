@@ -18,7 +18,7 @@ from typing import List, Tuple, Dict
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from scripts.ipa_to_class_mapping import parse_ipa_sequence, normalize_ipa, validate_ipa_string
+from speechline.phonetics import normalize_ipa, ipa_to_artemes, validate_ipa
 
 def analyze_entry(word: str, ipa: str) -> Dict[str, any]:
     """Analyze a lexicon entry for quality issues."""
@@ -46,7 +46,7 @@ def analyze_entry(word: str, ipa: str) -> Dict[str, any]:
     # 3. Try to parse and get classes
     try:
         normalized = normalize_ipa(ipa_clean)
-        classes = parse_ipa_sequence(ipa_clean, strict=False, normalize=True)
+        classes = ipa_to_artemes(normalized)
     except Exception as e:
         issues.append(f'parse_error: {e}')
         severity = 'critical'
@@ -74,10 +74,10 @@ def analyze_entry(word: str, ipa: str) -> Dict[str, any]:
         severity = 'critical'
     
     # 6. Validate IPA string
-    validation = validate_ipa_string(normalized)
-    if not validation['valid']:
-        if validation['unknown_symbols']:
-            issues.append(f"unknown_symbols: {validation['unknown_symbols']}")
+    is_valid, unknown_symbols, excluded_symbols = validate_ipa(normalized)
+    if not is_valid:
+        if unknown_symbols:
+            issues.append(f"unknown_symbols: {unknown_symbols}")
             severity = 'warning'
     
     # Determine if we should keep this entry

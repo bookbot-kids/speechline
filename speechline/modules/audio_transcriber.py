@@ -33,21 +33,33 @@ class AudioTranscriber(AudioModule):
             HuggingFace Hub model hub checkpoint.
     """
 
-    def __init__(self, model_checkpoint: str, torch_dtype: torch.dtype = None) -> None:
-        # Determine device: MPS (Apple Silicon) > CUDA (NVIDIA GPU) > CPU
-        if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
-            device = "mps"
+    def __init__(self, model_checkpoint: str, torch_dtype: torch.dtype = None, device: int = None) -> None:
+        # Determine device: explicit > MPS (Apple Silicon) > CUDA (NVIDIA GPU) > CPU
+        if device is not None:
+            # Explicit device specified (for multi-GPU)
+            selected_device = device
+            print(f"Device set to use cuda:{device} (explicitly specified)")
+        elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            selected_device = "mps"
+            print(f"Device set to use MPS (Apple Silicon)")
         elif torch.cuda.is_available():
-            device = 0
+            selected_device = 0  # Use first GPU
+            gpu_count = torch.cuda.device_count()
+            print(f"Device set to use cuda:0")
+            if gpu_count > 1:
+                print(f"Note: Found {gpu_count} GPUs available: {[f'cuda:{i}' for i in range(gpu_count)]}")
+                print(f"Using cuda:0 for processing. Monitor GPU usage with 'watch -n 1 nvidia-smi'")
         else:
-            device = -1
+            selected_device = -1
+            print(f"Device set to use CPU")
         
         asr = pipeline(
             "automatic-speech-recognition",
             model=model_checkpoint,
-            device=device,
+            device=selected_device,
             pipeline_class=AutomaticSpeechRecognitionFilteredPipeline,
             torch_dtype=torch_dtype,
+            batch_size=8,  # Process multiple audio files in parallel for better GPU utilization
         )
         super().__init__(pipeline=asr)
 

@@ -27,7 +27,7 @@ from typing import List, Dict
 from tqdm import tqdm
 
 from speechline.utils.lexicon_manager import LexiconManager
-from scripts.ipa_to_class_mapping import normalize_ipa, parse_ipa_sequence
+from speechline.phonetics import normalize_ipa, ipa_to_artemes
 
 # Configure logging for debug output
 logging.basicConfig(
@@ -246,7 +246,7 @@ def compare_words(
         # Normalize IPA
         normalized_ipa = normalize_ipa(ipa, remove_stress=True, merge_spaces=True)
         # Convert to class sequence
-        class_seq = parse_ipa_sequence(normalized_ipa, strict=False, normalize=False)
+        class_seq = ipa_to_artemes(normalized_ipa)
         actual_classes.append(class_seq)
     
     # Compare word by word - check ALL lexicon variations with vowel collapsing
@@ -277,7 +277,7 @@ def compare_words(
             # Normalize IPA
             normalized_ipa = normalize_ipa(variation_clean, remove_stress=True, merge_spaces=True)
             # Convert to class sequence
-            expected_class = parse_ipa_sequence(normalized_ipa, strict=False, normalize=False)
+            expected_class = ipa_to_artemes(normalized_ipa)
             
             # Try exact match
             if expected_class == actual_class:
@@ -312,7 +312,7 @@ def compare_words(
             # No match found - use first variation
             first_var = variations[0].replace(' ', '')
             first_norm = normalize_ipa(first_var, remove_stress=True, merge_spaces=True)
-            first_class = parse_ipa_sequence(first_norm, strict=False, normalize=False)
+            first_class = ipa_to_artemes(first_norm)
             expected_classes_display.append(first_class)
         
         # Track if no match found

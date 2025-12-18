@@ -148,8 +148,12 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+assets/
 
 # Pyre type checker
 .pyre/
 
 .vscode/.qdrant_storage/
+experiments/
+sampler/
+errors/

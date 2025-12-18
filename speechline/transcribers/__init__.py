@@ -18,5 +18,6 @@ from .parakeet import ParakeetTranscriber
 from .parakeet_tdt import ParakeetTDTTranscriber
 from .canary import CanaryTranscriber
 from .granite import GraniteTranscriber
+from .gentle import GentleTranscriber
 
-__all__ = ["Wav2Vec2Transcriber", "WhisperTranscriber", "ParakeetTranscriber", "ParakeetTDTTranscriber", "CanaryTranscriber", "GraniteTranscriber"]
+__all__ = ["Wav2Vec2Transcriber", "WhisperTranscriber", "ParakeetTranscriber", "ParakeetTDTTranscriber", "CanaryTranscriber", "GraniteTranscriber", "GentleTranscriber"]

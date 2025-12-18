@@ -37,13 +37,14 @@ from speechline.transcribers import (
     ParakeetTranscriber,
     ParakeetTDTTranscriber,
     CanaryTranscriber,
+    GentleTranscriber,
 )
 from speechline.utils.dataset import (
     format_audio_dataset,
     prepare_dataframe,
     prepare_dataframe_from_manifest,
 )
-from speechline.utils.io import export_transcripts_json
+from speechline.utils.io import export_transcripts_json, export_transcripts_txt
 from speechline.utils.logger import Logger
 from speechline.utils.tokenizer import WordTokenizer
 from speechline.utils.manifest import write_manifest
@@ -80,8 +81,9 @@ class Runner:
             "-o",
             "--output_dir",
             type=str,
-            required=True,
-            help="Directory to save pipeline results.",
+            required=False,
+            default=None,
+            help="Directory to save pipeline results. Defaults to input_dir.",
         )
         parser.add_argument(
             "-c",
@@ -89,6 +91,18 @@ class Runner:
             type=str,
             default="examples/config.json",
             help="SpeechLine configuration file.",
+        )
+        parser.add_argument(
+            "--batch_size",
+            type=int,
+            default=None,
+            help="Number of files to process in each batch (for memory efficiency with large directories).",
+        )
+        parser.add_argument(
+            "--max_files",
+            type=int,
+            default=None,
+            help="Maximum number of files to process (useful for testing on large directories).",
         )
         parser.add_argument(
             "--script_name",
@@ -109,7 +123,7 @@ class Runner:
         return parser.parse_args(args)
 
     @staticmethod
-    def run(config: Config, input_dir: str, output_dir: str) -> None:
+    def run(config: Config, input_dir: str, output_dir: str = None) -> None:
         """
         Runs end-to-end SpeechLine pipeline.
 
@@ -126,7 +140,14 @@ class Runner:
             output_dir (str):
                 Path to output directory.
         """
-        Logger.setup(script_name=args.script_name, log_dir=args.log_dir)
+        # Default output_dir to input_dir if not specified
+        if output_dir is None:
+            output_dir = input_dir
+            
+        # Access args from module-level variable
+        args = Runner._args
+        Logger.setup(script_name=args.script_name if hasattr(args, 'script_name') else None,
+                     log_dir=args.log_dir if hasattr(args, 'log_dir') else 'logs')
         logger = Logger.get_logger()
 
         # load transcriber model
@@ -154,23 +175,65 @@ class Runner:
                 model_checkpoint=config.transcriber.model,
                 torch_dtype=torch_dtype
             )
+        elif config.transcriber.type == "gentle":
+            # Get Gentle-specific parameters from config
+            gentle_path = getattr(config.transcriber, 'gentle_path', '/mnt/Projects/Projects/AudioProcessing/gentle')
+            output_phonemes = getattr(config.transcriber, 'output_phonemes', True)
+            output_word_boundaries = getattr(config.transcriber, 'output_word_boundaries', True)
+            transcriber = GentleTranscriber(
+                gentle_path=gentle_path,
+                output_phonemes=output_phonemes,
+                output_word_boundaries=output_word_boundaries
+            )
 
         logger.info("Preparing DataFrame..")
+        
+        # Check if validation mode is enabled - if so, don't filter empty ground truth
+        # We'll transcribe first and use that as ground truth for validation
+        is_validation_mode = (
+            config.transcriber.type == "parakeet_tdt" and
+            hasattr(config.transcriber, 'validate_alignment') and
+            config.transcriber.validate_alignment
+        )
+        
         # Auto-detect input type based on path
         if os.path.isfile(input_dir) and input_dir.endswith(".json"):
             # Input is a JSON manifest file
             df = prepare_dataframe_from_manifest(input_dir)
         elif os.path.isdir(input_dir):
             # Input is a directory of audio files
-            df = prepare_dataframe(input_dir, audio_extension="wav")
+            # In validation mode, don't filter empty transcripts - we'll generate them
+            # For Gentle transcriber, always require ground truth (.txt files)
+            if config.transcriber.type == "gentle":
+                filter_empty = True  # Gentle requires existing .txt files
+            else:
+                filter_empty = False if is_validation_mode else config.filter_empty_transcript
+            
+            df = prepare_dataframe(
+                input_dir,
+                audio_extension=config.audio_extension,
+                filter_empty=filter_empty,
+                max_files=args.max_files,
+                folder_filter=getattr(config, 'folder_filter', None)
+            )
         else:
             logger.error(
                 f"Input path {input_dir} is neither a directory nor a JSON file."
             )
             return
-
-        if config.filter_empty_transcript:
-            df = df[df["ground_truth"] != ""]
+        
+        logger.info(f"📊 DataFrame prepared: {len(df)} files to process")
+        
+        # Apply batch_size if specified
+        if args.batch_size and len(df) > args.batch_size:
+            logger.warning(
+                f"⚠️  Large dataset detected: {len(df)} files. "
+                f"Processing in batches of {args.batch_size} for memory efficiency."
+            )
+            logger.warning(
+                f"⚠️  Note: Batch processing only works with validation mode disabled. "
+                f"For validation mode, use --max_files to limit dataset size."
+            )
 
         if config.do_classify:
             # load classifier model
@@ -186,32 +249,169 @@ class Runner:
             # filter audio by category
             df = df[df["category"] == "child"]
 
-        dataset = format_audio_dataset(df, sampling_rate=transcriber.sampling_rate)
+        logger.info(f"🔄 Creating dataset (this may take time for large directories)...")
+        # Gentle uses fixed 8kHz sampling rate
+        sampling_rate = transcriber.sampling_rate if hasattr(transcriber, 'sampling_rate') else 16000
+        dataset = format_audio_dataset(df, sampling_rate=sampling_rate)
+        logger.info(f"✅ Dataset created successfully")
 
         os.makedirs(output_dir, exist_ok=True)
 
-        # Common parameters for all transcribers
-        predict_params = {
-            "dataset": dataset,
-            "chunk_length_s": config.transcriber.chunk_length_s,
-            "output_offsets": True,
-            "return_timestamps": config.transcriber.return_timestamps,
-            "keep_whitespace": config.segmenter.keep_whitespace,
-        }
+        # Check if validation mode is enabled for Parakeet TDT
+        if (config.transcriber.type == "parakeet_tdt" and
+            hasattr(config.transcriber, 'validate_alignment') and
+            config.transcriber.validate_alignment):
+            
+            # Validation mode: use ground truth for alignment validation
+            logger.info("Running in alignment validation mode...")
+            
+            # MEMORY OPTIMIZATION: Process in batches to avoid OOM
+            validation_batch_size = getattr(args, 'batch_size', 100) if args.batch_size else 100
+            logger.info(f"Processing validation in batches of {validation_batch_size} files to manage memory")
+            
+            # Extract ground truth texts from dataframe
+            ground_truth_texts = df["ground_truth"].tolist()
+            
+            # Process in batches
+            all_validation_results = []
+            total_files = len(df)
+            
+            for batch_start in range(0, total_files, validation_batch_size):
+                batch_end = min(batch_start + validation_batch_size, total_files)
+                batch_indices = list(range(batch_start, batch_end))
+                
+                logger.info(f"Processing batch {batch_start//validation_batch_size + 1}/{(total_files + validation_batch_size - 1)//validation_batch_size} (files {batch_start}-{batch_end-1})")
+                
+                # Get batch data
+                batch_df = df.iloc[batch_indices]
+                batch_dataset = dataset.select(batch_indices)
+                batch_ground_truth = ground_truth_texts[batch_start:batch_end]
+                
+                # Identify files without ground truth in this batch
+                files_without_gt = [i for i, gt in enumerate(batch_ground_truth) if not gt.strip()]
+                
+                if files_without_gt:
+                    logger.info(f"  Found {len(files_without_gt)} files without ground truth in this batch. Transcribing first...")
+                    
+                    # Transcribe files without ground truth
+                    predict_params = {
+                        "dataset": batch_dataset.select(files_without_gt),
+                        "chunk_length_s": config.transcriber.chunk_length_s,
+                        "output_offsets": True,
+                        "return_timestamps": config.transcriber.return_timestamps,
+                        "keep_whitespace": config.segmenter.keep_whitespace,
+                    }
+                    
+                    transcribed_offsets = transcriber.predict(**predict_params)
+                    
+                    # Extract transcribed text and update batch_ground_truth
+                    for idx, offsets in zip(files_without_gt, transcribed_offsets):
+                        if offsets:
+                            # Concatenate all tokens to form the transcription
+                            transcription = " ".join(token["text"] for token in offsets)
+                            batch_ground_truth[idx] = transcription
+                            
+                            # Also save the transcription as .txt file
+                            audio_path = batch_df["audio"].iloc[idx]
+                            txt_path = Path(audio_path).with_suffix(".txt")
+                            with open(txt_path, 'w') as f:
+                                f.write(transcription)
+                            logger.info(f"  Generated ground truth for {Path(audio_path).name}: {transcription}")
+                        else:
+                            logger.warning(f"  Failed to transcribe {batch_df['audio'].iloc[idx]}")
+                            batch_ground_truth[idx] = ""
+                
+                # Run validation on this batch
+                logger.info(f"  Running validation on batch...")
+                batch_validation_results = transcriber.predict_with_validation(
+                    dataset=batch_dataset,
+                    ground_truth_texts=batch_ground_truth,
+                    nfa_model=getattr(config.transcriber, 'nfa_model', 'nvidia/parakeet-ctc-1.1b'),
+                    token_confidence_threshold=getattr(config.transcriber, 'token_confidence_threshold', 0.7),
+                    min_alignment_ratio=getattr(config.transcriber, 'min_alignment_ratio', 0.8),
+                    output_dir=input_dir,  # Use input_dir for temporary files
+                    chunk_length_s=config.transcriber.chunk_length_s
+                )
+                
+                all_validation_results.extend(batch_validation_results)
+                
+                logger.info(f"  Batch complete. {len([r for r in batch_validation_results if r['is_valid']])} accepted, {len([r for r in batch_validation_results if not r['is_valid']])} rejected")
+                
+                # Export validation results for this batch immediately
+                logger.info(f"  Saving validation results for batch...")
+                for idx, result in enumerate(batch_validation_results):
+                    # Get the original audio path from batch_df
+                    audio_path = batch_df["audio"].iloc[idx]
+                    
+                    # Create simplified validation JSON (only keep essential fields)
+                    simplified_result = {
+                        "ground_truth": result["ground_truth"],
+                        "transcription": result["transcription"],
+                        "alignment_ratio": result["alignment_ratio"],
+                        "avg_confidence": result["avg_confidence"],
+                        "token_alignment": result["token_alignment"],
+                        "word_confidence": result.get("word_confidence", [])  # Include word-level confidence scores
+                    }
+                    
+                    # Write JSON file next to audio file (same directory, same name)
+                    validation_json_path = Path(audio_path).with_suffix(".json")
+                    
+                    with open(validation_json_path, 'w') as f:
+                        json.dump(simplified_result, f, indent=2)
+                
+                logger.info(f"  ✅ Batch validation results saved ({len(batch_validation_results)} files)")
+                
+                # Force garbage collection after each batch
+                import gc
+                gc.collect()
+            
+            # Use combined results
+            validation_results = all_validation_results
+            
+            # Filter to only valid audio files
+            valid_indices = [i for i, r in enumerate(validation_results) if r["is_valid"]]
+            rejected_indices = [i for i, r in enumerate(validation_results) if not r["is_valid"]]
+            
+            logger.info(f"Validation results: {len(valid_indices)} accepted, {len(rejected_indices)} rejected")
+            logger.info(f"All validation JSON files have been saved next to their respective audio files")
+            
+            logger.info("Validation mode complete. All results saved next to audio files.")
+            
+            # Skip the rest of the pipeline in validation mode
+            return
+        else:
+            # Normal mode: standard transcription without validation
+            
+            # Gentle transcriber has different interface
+            if isinstance(transcriber, GentleTranscriber):
+                # Gentle only needs dataset and output_dir
+                output_offsets = transcriber.predict(
+                    dataset=dataset,
+                    output_dir=output_dir
+                )
+            else:
+                # Common parameters for all other transcribers
+                predict_params = {
+                    "dataset": dataset,
+                    "chunk_length_s": config.transcriber.chunk_length_s,
+                    "output_offsets": True,
+                    "return_timestamps": config.transcriber.return_timestamps,
+                    "keep_whitespace": config.segmenter.keep_whitespace,
+                }
 
-        # Add output_dir only if the transcriber is ParakeetTranscriber
-        if isinstance(transcriber, ParakeetTranscriber):
-            predict_params["output_dir"] = output_dir
+                # Add output_dir only if the transcriber is ParakeetTranscriber
+                if isinstance(transcriber, ParakeetTranscriber):
+                    predict_params["output_dir"] = output_dir
 
-        output_offsets = transcriber.predict(**predict_params)
+                output_offsets = transcriber.predict(**predict_params)
 
         def export_offsets(
             audio_path: str,
             offsets: List[Dict[str, Union[str, float]]],
         ):
-            json_path = Path(audio_path).with_suffix(".json")
-            # export JSON transcripts
-            export_transcripts_json(str(json_path), offsets)
+            # Write TXT file next to the audio file (same directory)
+            txt_path = Path(audio_path).with_suffix(".txt")
+            export_transcripts_txt(str(txt_path), offsets)
 
         # Create a list of (audio_path, offsets) pairs for export
         export_pairs = list(zip(df["audio"], output_offsets))
@@ -258,57 +458,20 @@ class Runner:
         def segment_audio(
             audio_path: str,
             ground_truth: str,
-            # We're removing the in-memory offsets parameter, but we need to keep the function signature compatible with thread_map
-            _: List[Dict[str, Union[str, float]]],  # This parameter will be ignored
+            offsets: List[Dict[str, Union[str, float]]],
         ):
-            # Load offsets from the JSON file instead of using in-memory offsets
-            json_path = Path(audio_path).with_suffix(".json")
-
-            # Check if the JSON file exists
-            if not json_path.exists():
+            # Use in-memory offsets directly instead of loading from file
+            if not offsets:
                 logger.warning(
-                    f"JSON file not found for {audio_path}. Skipping segmentation."
+                    f"Empty offsets for {audio_path}. Skipping segmentation."
                 )
                 return [{}]
 
-            # Load offsets from JSON file
-            try:
-                with open(json_path, "r") as f:
-                    loaded_offsets = json.load(f)
-
-                # Validate loaded offsets
-                if not loaded_offsets:
-                    logger.warning(
-                        f"Empty offsets in JSON file for {audio_path}. Skipping segmentation."
-                    )
-                    return [{}]
-
-                # Ensure loaded_offsets has the expected structure
-                for offset in loaded_offsets:
-                    if not all(
-                        key in offset for key in ["text", "start_time", "end_time"]
-                    ):
-                        logger.warning(
-                            f"Invalid offset format in JSON file for {audio_path}. Skipping segmentation."
-                        )
-                        return [{}]
-
-            except json.JSONDecodeError:
-                logger.error(
-                    f"Error decoding JSON file for {audio_path}. Skipping segmentation."
-                )
-                return [{}]
-            except Exception as e:
-                logger.error(
-                    f"Error loading JSON file for {audio_path}: {str(e)}. Skipping segmentation."
-                )
-                return [{}]
-
-            # chunk audio into segments using loaded offsets
+            # chunk audio into segments using offsets
             segmented_manifest = segmenter.chunk_audio_segments(
                 audio_path,
                 output_dir,
-                loaded_offsets,  # Use loaded offsets instead of in-memory offsets
+                offsets,
                 do_noise_classify=config.do_noise_classify,
                 noise_classifier=noise_classifier,
                 minimum_empty_duration=minimum_empty_duration,
@@ -365,4 +528,8 @@ class Runner:
 if __name__ == "__main__":
     args = Runner.parse_args(sys.argv[1:])
     config = Config(args.config)
+    
+    # Store args in a module-level variable so Runner.run can access them
+    Runner._args = args
+    
     Runner.run(config, args.input_dir, args.output_dir)

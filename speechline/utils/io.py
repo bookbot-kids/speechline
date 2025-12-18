@@ -87,6 +87,25 @@ def export_transcripts_json(
         json.dump(offsets, f, indent=2)
 
 
+def export_transcripts_txt(
+    output_txt_path: str,
+    offsets: List[Dict[str, Union[str, float]]],
+) -> None:
+    """
+    Exports transcript as plain text file (words only, no timestamps).
+
+    Args:
+        output_txt_path (str):
+            Path to output TXT file.
+        offsets (List[Dict[str, Union[str, float]]]):
+            List of offsets containing text.
+    """
+    _ = Path(output_txt_path).parent.mkdir(parents=True, exist_ok=True)
+    transcript_text = " ".join([offset["text"] for offset in offsets])
+    with open(output_txt_path, "w") as f:
+        f.write(transcript_text)
+
+
 def export_segment_transcripts_tsv(output_tsv_path: str, segment: List[Dict[str, Union[str, float]]]) -> None:
     """
     Export segment transcripts to TSV of structure:

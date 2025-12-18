@@ -18,10 +18,11 @@ from pathlib import Path
 import json
 
 import pandas as pd
-from datasets import Audio, Dataset, config, load_from_disk
+import numpy as np
+from datasets import Audio, Dataset, config, load_from_disk, Features, Value, Sequence
 
 
-def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.DataFrame:
+def prepare_dataframe(path_to_files: str, audio_extension: str = "wav", filter_empty: bool = True, max_files: int = None, folder_filter: str = None) -> pd.DataFrame:
     """
     Prepares audio and ground truth files as Pandas `DataFrame`.
     Recursively searches for audio files in all subdirectories.
@@ -30,7 +31,16 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         path_to_files (str):
             Path to files.
         audio_extension (str, optional):
-            Audio extension of files to include. Defaults to "wav".
+            Audio extension of files to include. Supports multiple formats separated by comma.
+            Defaults to "wav". Common formats: wav, aac, mp3, flac, opus, m4a, ogg.
+        filter_empty (bool, optional):
+            Whether to filter out files with empty ground truth. Defaults to True.
+        max_files (int, optional):
+            Maximum number of files to include. Useful for testing or memory-limited processing.
+            Defaults to None (no limit).
+        folder_filter (str, optional):
+            Prefix filter for folder names. Only folders starting with this prefix will be processed.
+            Defaults to None (no filtering).
 
     Raises:
         ValueError: No audio files found.
@@ -45,11 +55,50 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         - `language_code`
         - `ground_truth`
     """
-    audios = sorted(glob(f"{path_to_files}/**/*.{audio_extension}", recursive=True))
+    # Support multiple extensions separated by comma
+    extensions = [ext.strip() for ext in audio_extension.split(',')]
+    
+    print(f"🔍 Searching for audio files in: {path_to_files}")
+    if folder_filter:
+        print(f"   📁 Filtering folders starting with: {folder_filter}")
+    
+    audios = []
+    for ext in extensions:
+        found = sorted(glob(f"{path_to_files}/**/*.{ext}", recursive=True))
+        
+        # Apply folder filter if specified
+        if folder_filter:
+            filtered_found = []
+            for audio_path in found:
+                # Get the immediate subdirectory under path_to_files
+                relative_path = Path(audio_path).relative_to(path_to_files)
+                first_dir = str(relative_path.parts[0]) if relative_path.parts else ""
+                
+                # Check if the first directory starts with the filter prefix
+                if first_dir.startswith(folder_filter):
+                    filtered_found.append(audio_path)
+            
+            print(f"   Found {len(found)} .{ext} files, {len(filtered_found)} after folder filter")
+            found = filtered_found
+        else:
+            print(f"   Found {len(found)} .{ext} files")
+        
+        audios.extend(found)
+    
+    # Remove duplicates and filter empty files
+    audios = sorted(list(set(audios)))
+    print(f"   Total unique files: {len(audios)}")
     audios = [a for a in audios if Path(a).stat().st_size > 0]
+    print(f"   Non-empty files: {len(audios)}")
+    
     if len(audios) == 0:
-        raise ValueError("No audio files found!")
+        raise ValueError(f"No audio files found with extensions: {', '.join(extensions)}")
 
+    # Limit files if max_files is specified
+    if max_files is not None and len(audios) > max_files:
+        print(f"   ⚠️  Limiting to first {max_files} files (out of {len(audios)} total)")
+        audios = audios[:max_files]
+    
     df = pd.DataFrame({"audio": audios})
     # ID is filename stem (before extension)
     df["id"] = df["audio"].apply(lambda f: Path(f).stem)
@@ -62,31 +111,59 @@ def prepare_dataframe(path_to_files: str, audio_extension: str = "wav") -> pd.Da
         lambda p: open(p).read() if p.exists() else ""
     )
 
-    df = df[df["ground_truth"] != ""]
+    if filter_empty:
+        df = df[df["ground_truth"] != ""]
 
     return df
 
 
-def format_audio_dataset(df: pd.DataFrame, sampling_rate: int = 16000) -> Dataset:
+def format_audio_dataset(df: pd.DataFrame, sampling_rate: int = 16000, lazy_loading: bool = True) -> Dataset:
     """
     Formats Pandas `DataFrame` as a datasets `Dataset`.
     Converts `audio` path column to audio arrays and resamples accordingly.
+    Supports WAV, AAC, MP3, FLAC, OPUS, M4A, OGG formats using librosa.
 
     Args:
         df (pd.DataFrame):
             Pandas DataFrame to convert to `Dataset`.
+        sampling_rate (int):
+            Target sampling rate for audio.
+        lazy_loading (bool):
+            If True, audio files are loaded on-demand rather than all at once.
+            This significantly reduces memory usage for large datasets.
+            Defaults to True.
 
     Returns:
         Dataset:
             `datasets`' `Dataset` object usable for batch inference.
     """
-    dataset = Dataset.from_pandas(df)
-    dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
-    saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
-    saved_dataset = saved_dataset.cast_column(
-        "audio", Audio(sampling_rate=sampling_rate)
-    )
-    return saved_dataset
+    # Non-WAV formats that need librosa for loading
+    NON_WAV_FORMATS = ('.aac', '.mp3', '.flac', '.opus', '.m4a', '.ogg')
+    
+    first_audio = df['audio'].iloc[0] if len(df) > 0 else ""
+    needs_librosa = first_audio.lower().endswith(NON_WAV_FORMATS)
+    
+    print(f"📊 Creating dataset with {len(df)} audio files (sampling_rate={sampling_rate}Hz)")
+    
+    if needs_librosa:
+        # For AAC and other non-WAV formats, just store paths
+        # Audio will be loaded on-demand by the transcriber
+        print(f"   ✅ Using lazy loading (paths only, audio loaded on-demand)")
+        print(f"   ℹ️  Audio arrays will be loaded during transcription to minimize memory usage")
+        
+        # Create a simple dataset with just file paths
+        # Don't cast to Audio feature to avoid triggering soundfile
+        dataset = Dataset.from_pandas(df)
+        return dataset
+    else:
+        # For WAV files, use the standard approach with soundfile
+        dataset = Dataset.from_pandas(df)
+        dataset.save_to_disk(str(config.HF_DATASETS_CACHE))
+        saved_dataset = load_from_disk(str(config.HF_DATASETS_CACHE))
+        saved_dataset = saved_dataset.cast_column(
+            "audio", Audio(sampling_rate=sampling_rate)
+        )
+        return saved_dataset
 
 
 def preprocess_audio_transcript(text: str) -> str:
@@ -106,7 +183,7 @@ def preprocess_audio_transcript(text: str) -> str:
         "<NOISE>",
         "<OTHER>",
     ]
-    chars_to_remove_regex = '[\,\?\.\!\-\;\:""'
+    chars_to_remove_regex = r'[\,\?\.\!\-\;\:""'
     text = re.sub(chars_to_remove_regex, " ", text).lower().strip()
     text = re.sub(r"\s+", " ", text).strip()
     for tag in tags:

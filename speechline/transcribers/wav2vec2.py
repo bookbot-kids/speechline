@@ -29,8 +29,12 @@ class Wav2Vec2Transcriber(AudioTranscriber):
             HuggingFace model hub checkpoint.
     """
 
-    def __init__(self, model_checkpoint: str, torch_dtype: str = None) -> None:
-        super().__init__(model_checkpoint, getattr(torch, torch_dtype) if torch_dtype else None)
+    def __init__(self, model_checkpoint: str, torch_dtype: str = None, device: int = None) -> None:
+        super().__init__(
+            model_checkpoint,
+            torch_dtype=getattr(torch, torch_dtype) if torch_dtype else None,
+            device=device
+        )
 
     def predict(
         self,

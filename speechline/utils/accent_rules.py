@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 from dataclasses import dataclass
 
-from scripts.ipa_to_class_mapping import IPA_TO_CLASS
+from speechline.phonetics import IPA_TO_ARTEME
 
 logger = logging.getLogger(__name__)
 
@@ -101,7 +101,7 @@ class AccentRulesManager:
         vowels = set()
         consonants = set()
         
-        for ipa_char, class_char in IPA_TO_CLASS.items():
+        for ipa_char, class_char in IPA_TO_ARTEME.items():
             # Skip multi-character sequences
             if len(ipa_char) > 1:
                 continue

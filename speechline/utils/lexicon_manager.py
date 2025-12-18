@@ -135,12 +135,12 @@ class LexiconManager:
             if self.use_g2p_fallback:
                 # Fall back to G2P and compute class sequence
                 # NOTE: Temporarily disabled accent rule variations for G2P due to performance
-                from scripts.ipa_to_class_mapping import parse_ipa_sequence
+                from speechline.phonetics import ipa_to_artemes
                 
                 logger.debug(f"Word '{word}' not in lexicon, using G2P")
                 phonemes = g2p_en(word)
                 phoneme_str = ''.join(phonemes)
-                class_seq = parse_ipa_sequence(phoneme_str, strict=False)
+                class_seq = ipa_to_artemes(phoneme_str)
                 return [class_seq]
             else:
                 # Return empty list for OOV words

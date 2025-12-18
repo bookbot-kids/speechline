@@ -1,0 +1,1581 @@
+word,format,ipa,arpa,arteme,ratio
+<cutoff>,arpa,spn,S P N,spn,0.375
+<cutoff>,arteme,spn,S P N,spn,0.375
+<cutoff>,ipa,spn,S P N,spn,0.375
+[bracketed],arpa,spn,S P N,spn,0.273
+[bracketed],arteme,spn,S P N,spn,0.273
+[bracketed],ipa,spn,S P N,spn,0.273
+[laughter],arpa,spn,S P N,spn,0.300
+[laughter],arteme,spn,S P N,spn,0.300
+[laughter],ipa,spn,S P N,spn,0.300
+aaa,arpa,oʊ,OW,əə,0.333
+aaa,ipa,oʊ,OW,əə,0.333
+aaaaaaaaaa,arpa,oʊoʊoʊoʊ,OW OW OW OW,əəəəəəəə,0.400
+aaaaaaaaaa,ipa,oʊoʊoʊoʊ,OW OW OW OW,əəəəəəəə,0.400
+aaaaaaaaaaaa,arpa,oʊoʊoʊoʊoʊ,OW OW OW OW OW,əəəəəəəəəə,0.417
+aaaaaaaaaaaa,ipa,oʊoʊoʊoʊoʊ,OW OW OW OW OW,əəəəəəəəəə,0.417
+aaaaaaaaaaaaaa,arpa,oʊoʊoʊoʊoʊoʊ,OW OW OW OW OW OW,əəəəəəəəəəəə,0.429
+aaaaaaaaaaaaaa,ipa,oʊoʊoʊoʊoʊoʊ,OW OW OW OW OW OW,əəəəəəəəəəəə,0.429
+aaaaaaaaaaaaaaaaaaaa,arpa,oʊoʊoʊoʊoʊoʊoʊoʊoʊ,OW OW OW OW OW OW OW OW OW,əəəəəəəəəəəəəəəəəə,0.450
+aaaaaaaaaaaaaaaaaaaa,ipa,oʊoʊoʊoʊoʊoʊoʊoʊoʊ,OW OW OW OW OW OW OW OW OW,əəəəəəəəəəəəəəəəəə,0.450
+aaawesome,arpa,ɔsəm,AO S M,əsən,0.333
+aaawesome,arteme,ɔsəm,AO S M,əsən,0.444
+aaawesome,ipa,ɔsəm,AO S M,əsən,0.444
+aagh,arpa,æ,AE,ə,0.250
+aagh,arteme,æ,AE,ə,0.250
+aagh,ipa,æ,AE,ə,0.250
+aau,arpa,oʊ,OW,əə,0.333
+aau,ipa,oʊ,OW,əə,0.333
+abborough,arpa,æbɚoʊ,AE B OW,əpəɹəə,0.333
+abborough,ipa,æbɚoʊ,AE B OW,əpəɹəə,0.444
+acestes,arteme,æsts,AE S T S,əss,0.429
+acestes,ipa,æsts,AE S T S,əss,0.429
+adj,arpa,ɑ,AA,ə,0.333
+adj,arteme,ɑ,AA,ə,0.333
+adj,ipa,ɑ,AA,ə,0.333
+adjah,arpa,ɑə,AA,əə,0.200
+adjah,arteme,ɑə,AA,əə,0.400
+adjah,ipa,ɑə,AA,əə,0.400
+adjay,arpa,ɑeɪ,AA EY,əəə,0.400
+adjay,ipa,ɑeɪ,AA EY,əəə,0.400
+adjoy,arpa,ɑɔɪ,AA OY,əəə,0.400
+adjoy,ipa,ɑɔɪ,AA OY,əəə,0.400
+aedes,arteme,idz,IY D Z,əs,0.400
+aedes,ipa,idz,IY D Z,əs,0.400
+ahhh,arpa,ɑ,AA,ə,0.250
+ahhh,arteme,ɑ,AA,ə,0.250
+ahhh,ipa,ɑ,AA,ə,0.250
+ahleh,arpa,ɑl,AA L,əl,0.400
+ahleh,arteme,ɑl,AA L,əl,0.400
+ahleh,ipa,ɑl,AA L,əl,0.400
+ailkborough,arpa,eɪkbɚoʊ,EY K B OW,əəkpəɹəə,0.364
+ailkborough,ipa,eɪkbɚoʊ,EY K B OW,əəkpəɹəə,0.455
+ailleurs,arpa,aɪɝz,AY ER Z,əəəɹs,0.375
+ailleurs,ipa,aɪɝz,AY ER Z,əəəɹs,0.375
+aitch,arpa,etʃ,CH,əəʃ,0.200
+aitch,arpa,eɪtʃ,EY CH,əʃ,0.400
+aitch,arteme,eɪtʃ,EY CH,əʃ,0.400
+aitch,ipa,etʃ,CH,əəʃ,0.400
+aitch,ipa,eɪtʃ,EY CH,əʃ,0.400
+aites,ipa,aɪts,AY T S,əəs,0.400
+allej,arpa,əl,L,əl,0.200
+allej,arteme,əl,L,əl,0.400
+allej,ipa,əl,L,əl,0.400
+annette's,arteme,ʌnɛts,AH N EH T S,ənəs,0.444
+annette's,ipa,ʌnɛts,AH N EH T S,ənəs,0.444
+aoe,arpa,eɪ,EY,əə,0.333
+aoe,ipa,eɪ,EY,əə,0.333
+aoo,arpa,eɪ,EY,əə,0.333
+aoo,ipa,eɪ,EY,əə,0.333
+arrau,arpa,ɝaʊ,ER AW,əɹəə,0.400
+arrau,ipa,ɝaʊ,ER AW,əɹəə,0.400
+array'd,arpa,ɝeɪd,ER EY D,əɹəət,0.429
+array'd,ipa,ɝeɪd,ER EY D,əɹəət,0.429
+arre,arpa,ɝ,ER,əɹ,0.250
+arre,ipa,ɝ,ER,əɹ,0.250
+arrer,arpa,ɝɝ,ER ER,əɹəɹ,0.400
+arrer,ipa,ɝɝ,ER ER,əɹəɹ,0.400
+arres,arpa,ɝz,ER Z,əɹs,0.400
+arres,ipa,ɝz,ER Z,əɹs,0.400
+arrgh,arpa,ɛɹ,EH R,əɹ,0.400
+arrgh,arteme,ɛɹ,EH R,əɹ,0.400
+arrgh,ipa,ɛɹ,EH R,əɹ,0.400
+asche,arpa,æʃ,AE SH,əʃ,0.400
+asche,arteme,æʃ,AE SH,əʃ,0.400
+asche,ipa,æʃ,AE SH,əʃ,0.400
+auckthrough,arpa,ɔkθɹɔ,AO K TH R AO,əkθɹə,0.455
+auckthrough,arteme,ɔkθɹɔ,AO K TH R AO,əkθɹə,0.455
+auckthrough,ipa,ɔkθɹɔ,AO K TH R AO,əkθɹə,0.455
+aue,arpa,aʊ,AW,əə,0.333
+aue,ipa,aʊ,AW,əə,0.333
+augee,arpa,ɔdʒ,AO JH,əʃ,0.400
+augee,arteme,ɔdʒ,AO JH,əʃ,0.400
+augee,ipa,ɔdʒ,AO JH,əʃ,0.400
+augh,arpa,ɔ,AO,ə,0.250
+augh,arteme,ɔ,AO,ə,0.250
+augh,ipa,ɔ,AO,ə,0.250
+aughin,arpa,ɔɪn,OY N,əən,0.333
+aughin,ipa,ɔɪn,OY N,əən,0.333
+aught,arpa,ɔt,T,,0.200
+aught,arpa,ɑt,AA T,ət,0.400
+aught,arpa,ɒt,AO T,,0.400
+aught,arteme,ɑt,AA T,ət,0.400
+aught,ipa,ɑt,AA T,ət,0.400
+aught,ipa,ɒt,AO T,,0.400
+aught,ipa,ɔt,T,,0.400
+aurelle,arpa,ɝɛl,ER EH L,əɹəl,0.429
+aurelle,ipa,ɝɛl,ER EH L,əɹəl,0.429
+aurette,arpa,ɝɛt,ER EH T,əɹət,0.429
+aurette,ipa,ɝɛt,ER EH T,əɹət,0.429
+ausch,arpa,ɔʃ,AO SH,əʃ,0.400
+ausch,arteme,ɔʃ,AO SH,əʃ,0.400
+ausch,ipa,ɔʃ,AO SH,əʃ,0.400
+auschw,arpa,ɔʃ,AO SH,əʃ,0.333
+auschw,arteme,ɔʃ,AO SH,əʃ,0.333
+auschw,ipa,ɔʃ,AO SH,əʃ,0.333
+avoch,arteme,ɒx,,əh,0.400
+avoch,ipa,ɒx,,əh,0.400
+aww,arpa,ɑ,AA,ə,0.333
+aww,arpa,ɔ,AO,,0.333
+aww,arteme,ɑ,AA,ə,0.333
+aww,ipa,ɑ,AA,ə,0.333
+aww,ipa,ɔ,AO,,0.333
+ayrault,arpa,eɪɹoʊ,EY R OW,əəɹəə,0.429
+ayrault,ipa,eɪɹoʊ,EY R OW,əəɹəə,0.429
+baaaa,arpa,boʊ,B OW,pəə,0.400
+baaaa,ipa,boʊ,B OW,pəə,0.400
+baaaaaa,arpa,boʊoʊ,B OW OW,pəəəə,0.429
+baaaaaa,ipa,boʊoʊ,B OW OW,pəəəə,0.429
+baaaaaaaa,arpa,boʊoʊoʊ,B OW OW OW,pəəəəəə,0.444
+baaaaaaaa,ipa,boʊoʊoʊ,B OW OW OW,pəəəəəə,0.444
+baaaaaaaaaa,arpa,boʊoʊoʊoʊ,B OW OW OW OW,pəəəəəəəə,0.455
+baaaaaaaaaa,ipa,boʊoʊoʊoʊ,B OW OW OW OW,pəəəəəəəə,0.455
+bareaud,arpa,bɝoʊ,B ER OW,pəɹəə,0.429
+bareaud,ipa,bɝoʊ,B ER OW,pəɹəə,0.429
+barreau,arpa,bɝoʊ,B ER OW,pəɹəə,0.429
+barreau,ipa,bɝoʊ,B ER OW,pəɹəə,0.429
+barreau's,arpa,bɝoʊz,B ER OW Z,pəɹəəs,0.444
+barreau's,ipa,bɝoʊz,B ER OW Z,pəɹəəs,0.444
+barreaux,arpa,bɝoʊ,B ER OW,pəɹəə,0.375
+barreaux,ipa,bɝoʊ,B ER OW,pəɹəə,0.375
+baugh,arpa,bɒ,B,pə,0.200
+baugh,arpa,bɔ,B AO,,0.400
+baugh,arteme,bɒ,B,pə,0.400
+baugh,ipa,bɒ,B,pə,0.400
+baugh,ipa,bɔ,B AO,,0.400
+bayeaux,arpa,beɪoʊ,B EY OW,pəəəə,0.429
+bayeaux,ipa,beɪoʊ,B EY OW,pəəəə,0.429
+bayeh,arpa,beɪ,B EY,pəə,0.400
+bayeh,ipa,beɪ,B EY,pəə,0.400
+bbe,arpa,b,B,p,0.333
+bbe,arteme,b,B,p,0.333
+bbe,ipa,b,B,p,0.333
+beauleigh,arpa,boʊlʌ,B OW L AH,pəələ,0.444
+beauleigh,ipa,boʊlʌ,B OW L AH,pəələ,0.444
+beowawe,arpa,boʊeɪ,B OW EY,pəəəə,0.429
+beowawe,ipa,boʊeɪ,B OW EY,pəəəə,0.429
+berault,arpa,bɝoʊ,B ER OW,pəɹəə,0.429
+berault,ipa,bɝoʊ,B ER OW,pəɹəə,0.429
+berghoff,arpa,bɒf,B F,pəf,0.250
+berghoff,arteme,bɒf,B F,pəf,0.375
+berghoff,ipa,bɒf,B F,pəf,0.375
+berough,arpa,bɚɔ,B AO,pəɹə,0.286
+berough,ipa,bɚɔ,B AO,pəɹə,0.429
+beurre,arpa,bɝ,B ER,pəɹ,0.333
+beurre,ipa,bɝ,B ER,pəɹ,0.333
+bgh,arpa,b,B,p,0.333
+bgh,arteme,b,B,p,0.333
+bgh,ipa,b,B,p,0.333
+bibbeau,arpa,bɪb,B IH B,pəp,0.429
+bibbeau,arteme,bɪb,B IH B,pəp,0.429
+bibbeau,ipa,bɪb,B IH B,pəp,0.429
+booetes,arteme,buts,B UW T S,pəs,0.429
+booetes,ipa,buts,B UW T S,pəs,0.429
+boughed,arpa,baʊd,B AW D,pəət,0.429
+boughed,ipa,baʊd,B AW D,pəət,0.429
+bouille,arpa,bul,B UW L,pəl,0.429
+bouille,arteme,bul,B UW L,pəl,0.429
+bouille,ipa,bul,B UW L,pəl,0.429
+bouisse,arpa,bus,B UW S,pəs,0.429
+bouisse,arteme,bus,B UW S,pəs,0.429
+bouisse,ipa,bus,B UW S,pəs,0.429
+bourreau,arpa,bɝoʊ,B ER OW,pəɹəə,0.375
+bourreau,ipa,bɝoʊ,B ER OW,pəɹəə,0.375
+bourree,arpa,bɝi,B ER IY,pəɹə,0.429
+bourree,ipa,bɝi,B ER IY,pəɹə,0.429
+breault,arpa,bɹoʊ,B R OW,pɹəə,0.429
+breault,ipa,bɹoʊ,B R OW,pɹəə,0.429
+breault's,arpa,bɹoʊz,B R OW Z,pɹəəs,0.444
+breault's,ipa,bɹoʊz,B R OW Z,pɹəəs,0.444
+breaute's,ipa,bɹoʊts,B R OW T S,pɹəəs,0.444
+burritt's,ipa,bɝɪts,B ER IH T S,pəɹəs,0.444
+burrough,arpa,bɝoʊ,B ER OW,pəɹəə,0.375
+burrough,ipa,bɝoʊ,B ER OW,pəɹəə,0.375
+burrough's,arpa,bɝoʊz,B ER OW Z,pəɹəəs,0.400
+burrough's,ipa,bɝoʊz,B ER OW Z,pəɹəəs,0.400
+burroughes,arpa,bɝoʊz,B ER OW Z,pəɹəəs,0.400
+burroughes,ipa,bɝoʊz,B ER OW Z,pəɹəəs,0.400
+bursche,arpa,bɝʃ,B ER SH,pəɹʃ,0.429
+bursche,ipa,bɝʃ,B ER SH,pəɹʃ,0.429
+burtsch,arpa,bɝtʃ,B ER CH,pəɹʃ,0.429
+burtsch,ipa,bɝtʃ,B ER CH,pəɹʃ,0.429
+cailleach,arpa,kaɪitʃ,K AY IY CH,kəəəʃ,0.444
+cailleach,ipa,kaɪitʃ,K AY IY CH,kəəəʃ,0.444
+cdg,arpa,k,K,k,0.333
+cdg,arteme,k,K,k,0.333
+cdg,ipa,k,K,k,0.333
+ch'ao,arpa,ʃaʊ,SH AW,ʃəə,0.400
+ch'ao,ipa,ʃaʊ,SH AW,ʃəə,0.400
+chaigneux,arpa,tʃeɪnu,CH EY N UW,ʃəənə,0.444
+chaigneux,ipa,tʃeɪnu,CH EY N UW,ʃəənə,0.444
+chard's,ipa,tʃɝdz,CH ER D Z,ʃəɹs,0.429
+chasseuse,arpa,tʃæsz,CH AE S Z,ʃəss,0.444
+chasseuse,arteme,tʃæsz,CH AE S Z,ʃəss,0.444
+chasseuse,ipa,tʃæsz,CH AE S Z,ʃəss,0.444
+chaud,arpa,ʃoʊ,SH OW,ʃəə,0.400
+chaud,ipa,ʃoʊ,SH OW,ʃəə,0.400
+chaudes,ipa,ʃoʊdz,SH OW D Z,ʃəəs,0.429
+chauffeur's,arpa,ʃoʊfɝz,SH OW F ER Z,ʃəəfəɹs,0.455
+chauffeur's,ipa,ʃoʊfɝz,SH OW F ER Z,ʃəəfəɹs,0.455
+chauffeured,arpa,ʃoʊfɚd,SH OW F D,ʃəəfəɹt,0.364
+chauffeured,ipa,ʃoʊfɚd,SH OW F D,ʃəəfəɹt,0.455
+chausse,arpa,tʃaʊs,CH AW S,ʃəəs,0.429
+chausse,arpa,ʃoʊs,SH OW S,,0.429
+chausse,ipa,tʃaʊs,CH AW S,ʃəəs,0.429
+chausse,ipa,ʃoʊs,SH OW S,,0.429
+chaux,arpa,ʃoʊ,SH OW,ʃəə,0.400
+chaux,ipa,ʃoʊ,SH OW,ʃəə,0.400
+chawe,arpa,tʃoʊ,CH OW,ʃəə,0.400
+chawe,ipa,tʃoʊ,CH OW,ʃəə,0.400
+chawing,arpa,tʃɔɪŋ,CH OY NG,ʃəən,0.429
+chawing,ipa,tʃɔɪŋ,CH OY NG,ʃəən,0.429
+chebuxare,arpa,tʃbuɚ,CH B UW,ʃpəəɹ,0.333
+chebuxare,ipa,tʃbuɚ,CH B UW,ʃpəəɹ,0.444
+checque,arpa,tʃɛk,CH EH K,ʃək,0.429
+checque,arteme,tʃɛk,CH EH K,ʃək,0.429
+checque,ipa,tʃɛk,CH EH K,ʃək,0.429
+cheoche,arpa,tʃutʃ,CH UW CH,ʃəʃ,0.429
+cheoche,arteme,tʃutʃ,CH UW CH,ʃəʃ,0.429
+cheoche,ipa,tʃutʃ,CH UW CH,ʃəʃ,0.429
+cherborough,arpa,tʃɚbɚoʊ,CH B OW,ʃəɹpəɹəə,0.273
+cherborough,ipa,tʃɚbɚoʊ,CH B OW,ʃəɹpəɹəə,0.455
+cherche,arpa,tʃɝtʃ,CH ER CH,ʃəɹʃ,0.429
+cherche,ipa,tʃɝtʃ,CH ER CH,ʃəɹʃ,0.429
+chiai,arpa,tʃi,CH IY,ʃə,0.400
+chiai,arteme,tʃi,CH IY,ʃə,0.400
+chiai,ipa,tʃi,CH IY,ʃə,0.400
+chiao,arpa,tʃaʊ,CH AW,ʃəə,0.400
+chiao,ipa,tʃaʊ,CH AW,ʃəə,0.400
+chitesh,arpa,tʃaɪtʃ,CH AY CH,ʃəəʃ,0.429
+chitesh,ipa,tʃaɪtʃ,CH AY CH,ʃəəʃ,0.429
+chiteshites,ipa,tʃaɪtʃɪts,CH AY CH IH T S,ʃəəʃəs,0.455
+chiteshte,arpa,tʃaɪtʃt,CH AY CH T,ʃəəʃt,0.444
+chiteshte,ipa,tʃaɪtʃt,CH AY CH T,ʃəəʃt,0.444
+choate's,ipa,tʃoʊts,CH OW T S,ʃəəs,0.375
+chotesque,ipa,tʃoʊtsk,CH OW T S K,ʃəəsk,0.444
+chouffe,arpa,tʃaʊf,CH AW F,ʃəəf,0.429
+chouffe,ipa,tʃaʊf,CH AW F,ʃəəf,0.429
+choughs,arpa,tʃaʊz,CH AW Z,ʃəəs,0.429
+choughs,ipa,tʃaʊz,CH AW Z,ʃəəs,0.429
+choux,arpa,ʃu,SH UW,ʃə,0.400
+choux,arteme,ʃu,SH UW,ʃə,0.400
+choux,ipa,ʃu,SH UW,ʃə,0.400
+churche,arpa,tʃɝtʃ,CH ER CH,ʃəɹʃ,0.429
+churche,ipa,tʃɝtʃ,CH ER CH,ʃəɹʃ,0.429
+chute's,arteme,ʃuts,SH UW T S,ʃəs,0.429
+chute's,ipa,ʃuts,SH UW T S,ʃəs,0.429
+clairette's,ipa,klɝɛts,K L ER EH T S,kləɹəs,0.455
+cleugh,arpa,kl,K L,kl,0.333
+cleugh,arteme,kl,K L,kl,0.333
+cleugh,ipa,kl,K L,kl,0.333
+coeur's,arpa,kɝz,K ER Z,kəɹs,0.429
+coeur's,ipa,kɝz,K ER Z,kəɹs,0.429
+coeurne,arpa,kɝn,K ER N,kəɹn,0.429
+coeurne,ipa,kɝn,K ER N,kəɹn,0.429
+coorgh,arpa,kɚ,K,kəɹ,0.167
+coorgh,ipa,kɚ,K,kəɹ,0.333
+coote's,arteme,kuts,K UW T S,kəs,0.429
+coote's,ipa,kuts,K UW T S,kəs,0.429
+costessey,arpa,kɒsi,K S IY,kəsə,0.333
+costessey,arteme,kɒsi,K S IY,kəsə,0.444
+costessey,ipa,kɒsi,K S IY,kəsə,0.444
+courteaux,arpa,kɚtoʊ,K T OW,kəɹtəə,0.333
+courteaux,ipa,kɚtoʊ,K T OW,kəɹtəə,0.444
+d'air,arpa,dɝ,D ER,təɹ,0.400
+d'air,ipa,dɝ,D ER,təɹ,0.400
+d'homme,arpa,dɑm,D AA M,tən,0.429
+d'homme,arteme,dɑm,D AA M,tən,0.429
+d'homme,ipa,dɑm,D AA M,tən,0.429
+d'honneur,arpa,dʌnɝ,D AH N ER,tənəɹ,0.444
+d'honneur,ipa,dʌnɝ,D AH N ER,tənəɹ,0.444
+d'hooghe,arpa,dug,D UW G,tək,0.375
+d'hooghe,arteme,dug,D UW G,tək,0.375
+d'hooghe,ipa,dug,D UW G,tək,0.375
+d'hotes,ipa,doʊts,D OW T S,təəs,0.429
+d'oeuvre,arpa,dɝv,D ER V,təɹf,0.375
+d'oeuvre,ipa,dɝv,D ER V,təɹf,0.375
+d'oeuvres,arpa,dɝvz,D ER V Z,təɹfs,0.444
+d'oeuvres,ipa,dɝvz,D ER V Z,təɹfs,0.444
+daaaa,arpa,doʊ,D OW,təə,0.400
+daaaa,ipa,doʊ,D OW,təə,0.400
+daugh,arpa,dɔ,D AO,tə,0.400
+daugh,arteme,dɔ,D AO,tə,0.400
+daugh,ipa,dɔ,D AO,tə,0.400
+dde,arpa,d,D,t,0.333
+dde,arteme,d,D,t,0.333
+dde,ipa,d,D,t,0.333
+dear',arpa,dɝ,D ER,təɹ,0.400
+dear',ipa,dɝ,D ER,təɹ,0.400
+deitsch,arpa,daɪtʃ,D AY CH,təəʃ,0.429
+deitsch,ipa,daɪtʃ,D AY CH,təəʃ,0.429
+deutscher,arpa,dɔɪtʃɝ,D OY CH ER,təəʃəɹ,0.444
+deutscher,ipa,dɔɪtʃɝ,D OY CH ER,təəʃəɹ,0.444
+dhe,arpa,d,D,t,0.333
+dhe,arteme,d,D,t,0.333
+dhe,ipa,d,D,t,0.333
+dhought,arpa,dɔt,D AO T,tət,0.429
+dhought,arteme,dɔt,D AO T,tət,0.429
+dhought,ipa,dɔt,D AO T,tət,0.429
+ditte's,arteme,dɪts,D IH T S,təs,0.429
+ditte's,ipa,dɪts,D IH T S,təs,0.429
+djouhou,arpa,dʒaʊu,JH AW UW,ʃəəə,0.429
+djouhou,ipa,dʒaʊu,JH AW UW,ʃəəə,0.429
+doubt's,ipa,daʊts,D AW T S,təəs,0.429
+dsw,arteme,dz,D Z,s,0.333
+dsw,ipa,dz,D Z,s,0.333
+dutilleux,arpa,dutɜ,D UW T,tətə,0.333
+dutilleux,arteme,dutɜ,D UW T,tətə,0.444
+dutilleux,ipa,dutɜ,D UW T,tətə,0.444
+e'e,arpa,i,IY,ə,0.333
+e'e,arteme,i,IY,ə,0.333
+e'e,ipa,i,IY,ə,0.333
+ead's,arteme,idz,IY D Z,əs,0.400
+ead's,ipa,idz,IY D Z,əs,0.400
+eades,arteme,idz,IY D Z,əs,0.400
+eades,ipa,idz,IY D Z,əs,0.400
+eag,arpa,i,IY,ə,0.333
+eag,arteme,i,IY,ə,0.333
+eag,ipa,i,IY,ə,0.333
+ear'd,arpa,ɝd,ER D,əɹt,0.400
+ear'd,ipa,ɝd,ER D,əɹt,0.400
+earle's,arpa,ɝlz,ER L Z,əɹls,0.429
+earle's,ipa,ɝlz,ER L Z,əɹls,0.429
+earnhardt,arpa,ɜnt,N T,ənt,0.222
+earnhardt,arteme,ɜnt,N T,ənt,0.333
+earnhardt,ipa,ɜnt,N T,ənt,0.333
+earth's,arpa,ɝθs,ER TH S,əɹθs,0.429
+earth's,ipa,ɝθs,ER TH S,əɹθs,0.429
+earthed,arpa,ɝθt,ER TH T,əɹθt,0.429
+earthed,ipa,ɝθt,ER TH T,əɹθt,0.429
+earther,arpa,ɝtɚ,F,əɹθəɹ,0.143
+earther,arpa,ɝθɚ,T,əθə,0.143
+earther,arpa,ɝθɝ,TH,,0.143
+earther,arpa,ɜfə,ER F,əfə,0.286
+earther,arpa,ɜtə,ER T,ətə,0.286
+earther,arpa,ɜθə,ER TH,əɹfəɹ,0.286
+earther,arpa,ɝfɚ,ER TH ER,əɹtəɹ,0.429
+earther,arteme,ɜfə,ER F,əfə,0.429
+earther,arteme,ɜtə,ER T,ətə,0.429
+earther,arteme,ɝθɚ,T,əθə,0.429
+earther,ipa,ɜfə,ER F,əfə,0.429
+earther,ipa,ɜtə,ER T,ətə,0.429
+earther,ipa,ɜθə,ER TH,əɹfəɹ,0.429
+earther,ipa,ɝfɚ,ER TH ER,əɹtəɹ,0.429
+earther,ipa,ɝtɚ,F,əɹθəɹ,0.429
+earther,ipa,ɝθɚ,T,əθə,0.429
+earther,ipa,ɝθɝ,TH,,0.429
+earthie,arpa,ɝfi,F IY,əɹtə,0.286
+earthie,arpa,ɝti,T IY,əɹθə,0.286
+earthie,arpa,ɝθi,TH IY,əθə,0.286
+earthie,arpa,ɜfi,ER F IY,əfə,0.429
+earthie,arpa,ɜti,ER T IY,ətə,0.429
+earthie,arpa,ɜθi,ER TH IY,əɹfə,0.429
+earthie,arteme,ɜfi,ER F IY,əfə,0.429
+earthie,arteme,ɜti,ER T IY,ətə,0.429
+earthie,arteme,ɝθi,TH IY,əθə,0.429
+earthie,ipa,ɜfi,ER F IY,əfə,0.429
+earthie,ipa,ɜti,ER T IY,ətə,0.429
+earthie,ipa,ɜθi,ER TH IY,əɹfə,0.429
+earthie,ipa,ɝfi,F IY,əɹtə,0.429
+earthie,ipa,ɝti,T IY,əɹθə,0.429
+earthie,ipa,ɝθi,TH IY,əθə,0.429
+earthque,arpa,ɚθk,TH K,əɹθk,0.250
+earthque,ipa,ɚθk,TH K,əɹθk,0.375
+earthrights,arpa,ɚθɹaɪts,TH R AY T S,əɹθɹəəs,0.455
+earthrights,ipa,ɚθɹaɪts,TH R AY T S,əɹθɹəəs,0.455
+earts,ipa,ɝts,ER T S,əɹs,0.400
+eddes,arteme,ɛdz,EH D Z,əs,0.400
+eddes,ipa,ɛdz,EH D Z,əs,0.400
+ede's,arteme,idz,IY D Z,əs,0.400
+ede's,ipa,idz,IY D Z,əs,0.400
+edj,arpa,t,T,t,0.333
+edj,arteme,t,T,t,0.333
+edj,ipa,t,T,t,0.333
+ee'll,arpa,il,IY L,əl,0.400
+ee'll,arteme,il,IY L,əl,0.400
+ee'll,ipa,il,IY L,əl,0.400
+eeeeeee,arpa,iii,IY IY IY,əəə,0.429
+eeeeeee,arteme,iii,IY IY IY,əəə,0.429
+eeeeeee,ipa,iii,IY IY IY,əəə,0.429
+eeeeeeeeeeeeeeeeeee,arpa,iiiiiiiii,IY IY IY IY IY IY IY IY IY,əəəəəəəəə,0.474
+eeeeeeeeeeeeeeeeeee,arteme,iiiiiiiii,IY IY IY IY IY IY IY IY IY,əəəəəəəəə,0.474
+eeeeeeeeeeeeeeeeeee,ipa,iiiiiiiii,IY IY IY IY IY IY IY IY IY,əəəəəəəəə,0.474
+eeeeeeeeeeeeeeeeeeeee,arpa,iiiiiiiiii,IY IY IY IY IY IY IY IY IY IY,əəəəəəəəəə,0.476
+eeeeeeeeeeeeeeeeeeeee,arteme,iiiiiiiiii,IY IY IY IY IY IY IY IY IY IY,əəəəəəəəəə,0.476
+eeeeeeeeeeeeeeeeeeeee,ipa,iiiiiiiiii,IY IY IY IY IY IY IY IY IY IY,əəəəəəəəəə,0.476
+eeeeeth,arpa,iiθ,IY IY TH,əəθ,0.429
+eeeeeth,arteme,iiθ,IY IY TH,əəθ,0.429
+eeeeeth,ipa,iiθ,IY IY TH,əəθ,0.429
+eeh,arpa,i,IY,ə,0.333
+eeh,arteme,i,IY,ə,0.333
+eeh,ipa,i,IY,ə,0.333
+eetes,arteme,its,IY T S,əs,0.400
+eetes,ipa,its,IY T S,əs,0.400
+eig,arpa,aɪ,AY,əə,0.333
+eig,ipa,aɪ,AY,əə,0.333
+eigh,arpa,eɪ,EY,əə,0.250
+eigh,ipa,eɪ,EY,əə,0.250
+eight's,arpa,eɪts,EY T S,əəs,0.429
+eight's,arteme,eɪts,EY T S,əəs,0.429
+eight's,ipa,eɪts,EY T S,əəs,0.286
+eighth's,arpa,eɪθs,EY TH S,əəθs,0.375
+eighth's,ipa,eɪθs,EY TH S,əəθs,0.375
+eighthers,arpa,aɪðɚz,AY DH Z,əəθəɹs,0.333
+eighthers,ipa,aɪðɚz,AY DH Z,əəθəɹs,0.444
+eightsome,arpa,eɪtsəm,EY T S M,əəsən,0.444
+eightsome,ipa,eɪtsəm,EY T S M,əəsən,0.444
+eigne,arpa,eɪn,EY N,əən,0.400
+eigne,ipa,eɪn,EY N,əən,0.400
+elleigh,arpa,ɛlaɪ,EH L AY,ələə,0.429
+elleigh,ipa,ɛlaɪ,EH L AY,ələə,0.429
+eoh,arpa,oʊ,OW,əə,0.333
+eoh,ipa,oʊ,OW,əə,0.333
+eor,ipa,ɚ,,əɹ,0.333
+eowerth,arpa,oʊɚθ,OW TH,əəəɹθ,0.286
+eowerth,ipa,oʊɚθ,OW TH,əəəɹθ,0.429
+err'd,arpa,ɝd,ER D,əɹt,0.400
+err'd,ipa,ɝd,ER D,əɹt,0.400
+ersch,arpa,ɚʃ,SH,əɹʃ,0.200
+ersch,ipa,ɚʃ,SH,əɹʃ,0.400
+ertes,arpa,ɚts,T S,əɹs,0.400
+ertes,ipa,ɚts,T S,əɹs,0.400
+erthe,arpa,ɝð,ER DH,əɹθ,0.400
+erthe,ipa,ɝð,ER DH,əɹθ,0.400
+esche,arpa,ɛʃ,EH SH,əʃ,0.400
+esche,arteme,ɛʃ,EH SH,əʃ,0.400
+esche,ipa,ɛʃ,EH SH,əʃ,0.400
+euvres,arpa,vz,V Z,fs,0.333
+euvres,arteme,vz,V Z,fs,0.333
+euvres,ipa,vz,V Z,fs,0.333
+eux,arpa,oʊ,OW,əə,0.333
+eux,ipa,oʊ,OW,əə,0.333
+eye',arpa,aɪ,AY,əə,0.250
+eye',ipa,aɪ,AY,əə,0.250
+eye's,arpa,aɪz,AY Z,əəs,0.400
+eye's,ipa,aɪz,AY Z,əəs,0.400
+eyeache,arpa,aɪeɪk,AY EY K,əəəək,0.429
+eyeache,ipa,aɪeɪk,AY EY K,əəəək,0.429
+eyebright's,ipa,aɪbɹaɪts,AY B R AY T S,əəpɹəəs,0.455
+eyesight's,ipa,aɪsaɪts,AY S AY T S,əəsəəs,0.400
+eyeth,arpa,aɪθ,AY TH,əəθ,0.400
+eyeth,ipa,aɪθ,AY TH,əəθ,0.400
+eyew,arpa,aɪ,AY,əə,0.250
+eyew,ipa,aɪ,AY,əə,0.250
+eyscher,arpa,aɪʃɚ,AY SH,əəʃəɹ,0.286
+eyscher,ipa,aɪʃɚ,AY SH,əəʃəɹ,0.429
+eyyy,arpa,eɪ,EY,əə,0.250
+eyyy,ipa,eɪ,EY,əə,0.250
+faaaaaaaa,arpa,foʊoʊoʊ,F OW OW OW,fəəəəəə,0.444
+faaaaaaaa,ipa,foʊoʊoʊ,F OW OW OW,fəəəəəə,0.444
+fateschurch,arpa,feɪtʃɚtʃ,F EY CH CH,fəəʃəɹʃ,0.364
+fateschurch,ipa,feɪtʃɚtʃ,F EY CH CH,fəəʃəɹʃ,0.455
+faugh,arpa,fɑ,F,fə,0.200
+faugh,arpa,fɒ,F AA,,0.400
+faugh,arpa,fɔ,F AO,,0.400
+faugh,arteme,fɑ,F,fə,0.400
+faugh,ipa,fɑ,F,fə,0.400
+faugh,ipa,fɒ,F AA,,0.400
+faugh,ipa,fɔ,F AO,,0.400
+fayette's,ipa,feɪɛts,F EY EH T S,fəəəs,0.444
+fej,arpa,f,F,f,0.333
+fej,arteme,f,F,f,0.333
+fej,ipa,f,F,f,0.333
+feuillemort,arpa,fɔɪmɔɹ,F OY M AO R,fəənəɹ,0.455
+feuillemort,ipa,fɔɪmɔɹ,F OY M AO R,fəənəɹ,0.455
+firkked's,ipa,fɝkdz,F ER K D Z,fəɹks,0.444
+flahault,arpa,floʊ,F L OW,fləə,0.375
+flahault,ipa,floʊ,F L OW,fləə,0.375
+fluette's,arteme,fluts,F L UW T S,fləs,0.444
+fluette's,ipa,fluts,F L UW T S,fləs,0.444
+foote's,arteme,fʊts,F UH T S,fəs,0.429
+foote's,ipa,fʊts,F UH T S,fəs,0.429
+freight's,ipa,fɹeɪts,F R EY T S,fɹəəs,0.444
+gaillarde's,ipa,geɪlʌdz,G EY L AH D Z,kəələs,0.455
+gatesch,arpa,geɪtʃ,G EY CH,kəəʃ,0.429
+gatesch,ipa,geɪtʃ,G EY CH,kəəʃ,0.429
+gaugh,arpa,gɔ,G AO,kə,0.400
+gaugh,arteme,gɔ,G AO,kə,0.400
+gaugh,ipa,gɔ,G AO,kə,0.400
+gayarre's,arpa,geɪɝz,G EY ER Z,kəəəɹs,0.444
+gayarre's,ipa,geɪɝz,G EY ER Z,kəəəɹs,0.444
+geaux,arpa,goʊ,G OW,kəə,0.400
+geaux,ipa,goʊ,G OW,kəə,0.400
+ghe,arpa,g,G,k,0.333
+ghe,arteme,g,G,k,0.333
+ghe,ipa,g,G,k,0.333
+goode's,arteme,gʊdz,G UH D Z,kəs,0.429
+goode's,ipa,gʊdz,G UH D Z,kəs,0.429
+gooee,arpa,gu,G UW,kə,0.400
+gooee,arteme,gu,G UW,kə,0.400
+gooee,ipa,gu,G UW,kə,0.400
+gottsch,arpa,gɑtʃ,G AA CH,kəʃ,0.429
+gottsch,arteme,gɑtʃ,G AA CH,kəʃ,0.429
+gottsch,ipa,gɑtʃ,G AA CH,kəʃ,0.429
+gottsched,arpa,gɑtʃt,G AA CH T,kəʃt,0.444
+gottsched,arteme,gɑtʃt,G AA CH T,kəʃt,0.444
+gottsched,ipa,gɑtʃt,G AA CH T,kəʃt,0.444
+goude's,arteme,gudz,G UW D Z,kəs,0.429
+goude's,ipa,gudz,G UW D Z,kəs,0.429
+gough's,arpa,gaʊz,G AW Z,kəəs,0.429
+gough's,ipa,gaʊz,G AW Z,kəəs,0.429
+groac'h,arpa,gɹoʊ,G R OW,kɹəə,0.429
+groac'h,ipa,gɹoʊ,G R OW,kɹəə,0.429
+guerriere,arpa,gɝɪɹ,G ER IH R,kəɹəɹ,0.444
+guerriere,ipa,gɝɪɹ,G ER IH R,kəɹəɹ,0.444
+gueux,arpa,goʊ,G OW,kəə,0.400
+gueux,ipa,goʊ,G OW,kəə,0.400
+guide's,ipa,gaɪdz,G AY D Z,kəəs,0.429
+ha'sh,arpa,hʃ,HH SH,hʃ,0.400
+ha'sh,arteme,hʃ,HH SH,hʃ,0.400
+ha'sh,ipa,hʃ,HH SH,hʃ,0.400
+haigh,arpa,heɪ,HH EY,həə,0.400
+haigh,ipa,heɪ,HH EY,həə,0.400
+haigh's,arpa,heɪz,HH EY Z,həəs,0.429
+haigh's,ipa,heɪz,HH EY Z,həəs,0.429
+haight's,ipa,heɪts,HH EY T S,həəs,0.375
+haught's,arteme,hɔts,HH AO T S,həs,0.375
+haught's,ipa,hɔts,HH AO T S,həs,0.375
+haughts,arteme,hɔts,HH AO T S,həs,0.429
+haughts,ipa,hɔts,HH AO T S,həs,0.429
+heard's,ipa,hɝdz,HH ER D Z,həɹs,0.429
+herault,arpa,hɝoʊ,HH ER OW,həɹəə,0.429
+herault,ipa,hɝoʊ,HH ER OW,həɹəə,0.429
+herbux,arpa,ɝb,ER B,əɹp,0.333
+herbux,ipa,ɝb,ER B,əɹp,0.333
+hersche,arpa,hɚʃ,HH SH,həɹʃ,0.286
+hersche,ipa,hɚʃ,HH SH,həɹʃ,0.429
+highborough,arpa,haɪbɚoʊ,HH AY B OW,həəpəɹəə,0.364
+highborough,ipa,haɪbɚoʊ,HH AY B OW,həəpəɹəə,0.455
+hiu,arpa,u,UW,ə,0.333
+hiu,arteme,u,UW,ə,0.333
+hiu,ipa,u,UW,ə,0.333
+hnw,arpa,n,N,n,0.333
+hnw,arteme,n,N,n,0.333
+hnw,ipa,n,N,n,0.333
+hoigh,arpa,hɔɪ,HH OY,həə,0.400
+hoigh,ipa,hɔɪ,HH OY,həə,0.400
+houghed,arpa,haʊd,HH AW D,həət,0.429
+houghed,ipa,haʊd,HH AW D,həət,0.429
+houre,arpa,aʊɝ,AW ER,əəəɹ,0.400
+houre,ipa,aʊɝ,AW ER,əəəɹ,0.400
+howe'er,arpa,haʊɝ,HH AW ER,həəəɹ,0.429
+howe'er,ipa,haʊɝ,HH AW ER,həəəɹ,0.429
+hrh,arpa,ɹ,R,ɹ,0.333
+hrh,arteme,ɹ,R,ɹ,0.333
+hrh,ipa,ɹ,R,ɹ,0.333
+hrr,ipa,ɚ,,əɹ,0.333
+hrrrrrrh,ipa,ɚɚɚ,,əɹəɹəɹ,0.375
+hsh,arpa,ʃ,SH,ʃ,0.333
+hsh,arteme,ʃ,SH,ʃ,0.333
+hsh,ipa,ʃ,SH,ʃ,0.333
+hsiao,arpa,ʃaʊ,SH AW,ʃəə,0.400
+hsiao,ipa,ʃaʊ,SH AW,ʃəə,0.400
+htt,arpa,t,T,t,0.333
+htt,arteme,t,T,t,0.333
+htt,ipa,t,T,t,0.333
+i'th',arpa,ɪd,IH D,əf,0.400
+i'th',arpa,ɪv,IH DH,ət,0.400
+i'th',arpa,ɪð,IH V,əθ,0.400
+i'th',arteme,ɪd,IH D,əf,0.400
+i'th',arteme,ɪv,IH DH,ət,0.400
+i'th',arteme,ɪð,IH V,əθ,0.400
+i'th',ipa,ɪd,IH D,əf,0.400
+i'th',ipa,ɪv,IH DH,ət,0.400
+i'th',ipa,ɪð,IH V,əθ,0.400
+i'the,arpa,aɪð,AY DH,əəθ,0.400
+i'the,ipa,aɪð,AY DH,əəθ,0.400
+iae,arpa,i,IY,ə,0.333
+iae,arteme,i,IY,ə,0.333
+iae,ipa,i,IY,ə,0.333
+ide's,ipa,aɪdz,AY D Z,əəs,0.400
+igh,arpa,aɪ,AY,əə,0.333
+igh,ipa,aɪ,AY,əə,0.333
+igher,arpa,aɪɝ,AY ER,əəəɹ,0.400
+igher,ipa,aɪɝ,AY ER,əəəɹ,0.400
+ische,arpa,ɪʃ,IH SH,əʃ,0.400
+ische,arteme,ɪʃ,IH SH,əʃ,0.400
+ische,ipa,ɪʃ,IH SH,əʃ,0.400
+iwe,arpa,aɪ,AY,əə,0.333
+iwe,ipa,aɪ,AY,əə,0.333
+jacques,arpa,dʒæk,JH K,,0.286
+jacques,arpa,dʒak,JH AE K,ʃək,0.429
+jacques,arpa,ʒɑk,ZH AA K,,0.429
+jacques,arteme,dʒak,JH AE K,ʃək,0.429
+jacques,ipa,dʒak,JH AE K,ʃək,0.429
+jacques,ipa,dʒæk,JH K,,0.429
+jacques,ipa,ʒɑk,ZH AA K,,0.429
+jacques's,arpa,dʒækz,JH AE K Z,ʃəks,0.444
+jacques's,arteme,dʒækz,JH AE K Z,ʃəks,0.444
+jacques's,ipa,dʒækz,JH AE K Z,ʃəks,0.444
+jarette's,ipa,jɝɛts,Y ER EH T S,əəɹəs,0.444
+jeannette's,arteme,dʒʌnɛts,JH AH N EH T S,ʃənəs,0.455
+jeannette's,ipa,dʒʌnɛts,JH AH N EH T S,ʃənəs,0.455
+jej,arpa,dʒ,JH,ʃ,0.333
+jej,arteme,dʒ,JH,ʃ,0.333
+jej,ipa,dʒ,JH,ʃ,0.333
+jette's,arteme,dʒɛts,JH EH T S,ʃəs,0.429
+jette's,ipa,dʒɛts,JH EH T S,ʃəs,0.429
+kaehlertsch,arpa,kɛlɝtʃ,K EH L ER CH,kələɹʃ,0.455
+kaehlertsch,ipa,kɛlɝtʃ,K EH L ER CH,kələɹʃ,0.455
+katte's,arteme,kæts,K AE T S,kəs,0.429
+katte's,ipa,kæts,K AE T S,kəs,0.429
+keawe,arpa,ki,K IY,kə,0.400
+keawe,arteme,ki,K IY,kə,0.400
+keawe,ipa,ki,K IY,kə,0.400
+keawe's,arpa,kiz,K IY Z,kəs,0.429
+keawe's,arteme,kiz,K IY Z,kəs,0.429
+keawe's,ipa,kiz,K IY Z,kəs,0.429
+knight's,ipa,naɪts,N AY T S,nəəs,0.375
+knighte,arpa,naɪt,N AY T,nəət,0.429
+knighte,ipa,naɪt,N AY T,nəət,0.429
+knightheugh,arpa,naɪðu,N AY DH UW,nəəθə,0.364
+knightheugh,arteme,naɪðu,N AY DH UW,nəəθə,0.455
+knightheugh,ipa,naɪðu,N AY DH UW,nəəθə,0.364
+knott's,arteme,nɑts,N AA T S,nəs,0.429
+knott's,ipa,nɑts,N AA T S,nəs,0.429
+know',arpa,noʊ,N OW,nəə,0.400
+know',ipa,noʊ,N OW,nəə,0.400
+knowe,arpa,noʊ,N OW,nəə,0.400
+knowe,ipa,noʊ,N OW,nəə,0.400
+kutsche,arpa,kʌtʃ,K AH CH,kəʃ,0.429
+kutsche,arteme,kʌtʃ,K AH CH,kəʃ,0.429
+kutsche,ipa,kʌtʃ,K AH CH,kəʃ,0.429
+l'eau,arpa,loʊ,L OW,ləə,0.400
+l'eau,ipa,loʊ,L OW,ləə,0.400
+l'oeuvre,arpa,lɝv,L ER V,ləɹf,0.375
+l'oeuvre,ipa,lɝv,L ER V,ləɹf,0.375
+laigh,arpa,leɪ,L EY,ləə,0.400
+laigh,ipa,leɪ,L EY,ləə,0.400
+laugharne,arpa,lɑɹn,L AA R N,ləɹn,0.444
+laugharne,arteme,lɑɹn,L AA R N,ləɹn,0.444
+laugharne,ipa,lɑɹn,L AA R N,ləɹn,0.444
+lausche,arpa,lɔʃ,L AO SH,ləʃ,0.429
+lausche,arteme,lɔʃ,L AO SH,ləʃ,0.429
+lausche,ipa,lɔʃ,L AO SH,ləʃ,0.429
+leete's,arteme,lits,L IY T S,ləs,0.429
+leete's,ipa,lits,L IY T S,ləs,0.429
+leigh,arpa,laɪ,IY,lə,0.200
+leigh,arpa,li,L AY,ləə,0.400
+leigh,arpa,ʎi,L IY,,0.400
+leigh,arteme,laɪ,IY,lə,0.400
+leigh,ipa,laɪ,IY,lə,0.400
+leigh,ipa,li,L AY,ləə,0.400
+leigh,ipa,ʎi,L IY,,0.400
+leigh's,arpa,liz,L IY Z,ləs,0.429
+leigh's,arteme,liz,L IY Z,ləs,0.429
+leigh's,ipa,liz,L IY Z,ləs,0.429
+lej,arpa,l,L,l,0.333
+lej,arteme,l,L,l,0.333
+lej,ipa,l,L,l,0.333
+lhe,arpa,l,L,l,0.333
+lhe,arteme,l,L,l,0.333
+lhe,ipa,l,L,l,0.333
+lheureux,arpa,lɝoʊ,L ER OW,ləɹəə,0.375
+lheureux,ipa,lɝoʊ,L ER OW,ləɹəə,0.375
+liehtse,arteme,lits,L IY T S,ləs,0.429
+liehtse,ipa,lits,L IY T S,ləs,0.429
+lieux,arpa,lu,L UW,lə,0.400
+lieux,arteme,lu,L UW,lə,0.400
+lieux,ipa,lu,L UW,lə,0.400
+lighere,arpa,laɪɚ,L AY,ləəəɹ,0.286
+lighere,ipa,laɪɚ,L AY,ləəəɹ,0.429
+light's,ipa,laɪts,L AY T S,ləəs,0.429
+lloyd's,ipa,lɔɪdz,L OY D Z,ləəs,0.429
+loaille,arpa,loʊl,L OW L,ləəl,0.429
+loaille,ipa,loʊl,L OW L,ləəl,0.429
+loide's,ipa,lɔɪdz,L OY D Z,ləəs,0.429
+loough,arpa,lu,L UW,lə,0.333
+loough,arteme,lu,L UW,lə,0.333
+loough,ipa,lu,L UW,lə,0.333
+lougher,arpa,lɔɚ,L AO,ləəɹ,0.286
+lougher,ipa,lɔɚ,L AO,ləəɹ,0.429
+lowthough,arpa,laʊθaʊ,L AW TH AW,ləəθəə,0.444
+lowthough,ipa,laʊθaʊ,L AW TH AW,ləəθəə,0.444
+ma'll,arpa,ml,M L,nl,0.400
+ma'll,arteme,ml,M L,nl,0.400
+ma'll,ipa,ml,M L,nl,0.400
+ma'sh,arpa,mʃ,M SH,nʃ,0.400
+ma'sh,arteme,mʃ,M SH,nʃ,0.400
+ma'sh,ipa,mʃ,M SH,nʃ,0.400
+mahse'f,arpa,meɪf,M EY F,nəəf,0.429
+mahse'f,ipa,meɪf,M EY F,nəəf,0.429
+marette's,ipa,mɝɛts,M ER EH T S,nəɹəs,0.444
+mary'll,arpa,mɝl,M ER L,nəɹl,0.429
+mary'll,ipa,mɝl,M ER L,nəɹl,0.429
+mauaugh,arpa,məɔ,M AO,nəə,0.286
+mauaugh,arteme,məɔ,M AO,nəə,0.429
+mauaugh,ipa,məɔ,M AO,nəə,0.429
+maude's,arteme,mɔdz,M AO D Z,nəs,0.429
+maude's,ipa,mɔdz,M AO D Z,nəs,0.429
+maugh,arpa,mɔ,M AO,nə,0.400
+maugh,arteme,mɔ,M AO,nə,0.400
+maugh,ipa,mɔ,M AO,nə,0.400
+mckeigh,arpa,mkaɪ,M K AY,nkəə,0.429
+mckeigh,ipa,mkaɪ,M K AY,nkəə,0.429
+meade's,arteme,midz,M IY D Z,nəs,0.429
+meade's,ipa,midz,M IY D Z,nəs,0.429
+meagher,arpa,mɑɹ,M AA R,nəɹ,0.429
+meagher,arteme,mɑɹ,M AA R,nəɹ,0.429
+meagher,ipa,mɑɹ,M AA R,nəɹ,0.429
+meagher's,arpa,mɑɝz,M AA ER Z,nəəɹs,0.444
+meagher's,ipa,mɑɝz,M AA ER Z,nəəɹs,0.444
+meaux,arpa,moʊ,M OW,nəə,0.400
+meaux,ipa,moʊ,M OW,nəə,0.400
+meigs's,arpa,miz,M IY Z,nəs,0.429
+meigs's,arteme,miz,M IY Z,nəs,0.429
+meigs's,ipa,miz,M IY Z,nəs,0.429
+meilleraie,arpa,maɪɝaɪ,M AY ER AY,nəəəɹəə,0.400
+meilleraie,ipa,maɪɝaɪ,M AY ER AY,nəəəɹəə,0.400
+meilleraye,arpa,maɪɹeɪ,M AY R EY,nəəɹəə,0.400
+meilleraye,ipa,maɪɹeɪ,M AY R EY,nəəɹəə,0.400
+meilleure,arpa,milɝ,M IY L ER,nələɹ,0.444
+meilleure,ipa,milɝ,M IY L ER,nələɹ,0.444
+meurthe,arpa,mɝθ,M ER TH,nəɹθ,0.429
+meurthe,ipa,mɝθ,M ER TH,nəɹθ,0.429
+mhorr,arpa,mɔ,M AO,nə,0.400
+mhorr,arteme,mɔ,M AO,nə,0.400
+mhorr,ipa,mɔ,M AO,nə,0.400
+miette's,arteme,mits,M IY T S,nəs,0.375
+miette's,ipa,mits,M IY T S,nəs,0.375
+might's,ipa,maɪts,M AY T S,nəəs,0.429
+mme,arpa,m,M,n,0.333
+mme,arteme,m,M,n,0.333
+mme,ipa,m,M,n,0.333
+mmm,arpa,m,M,n,0.333
+mmm,arteme,m,M,n,0.333
+mmm,ipa,m,M,n,0.333
+motte's,arteme,mɑts,M AA T S,nəs,0.429
+motte's,ipa,mɑts,M AA T S,nəs,0.429
+mouille,arpa,mui,M UW IY,nəə,0.429
+mouille,arteme,mui,M UW IY,nəə,0.429
+mouille,ipa,mui,M UW IY,nəə,0.429
+murre,arpa,mɜ,M,nə,0.200
+murre,arpa,mɝ,M ER,nəɹ,0.400
+murre,arteme,mɜ,M,nə,0.400
+murre,ipa,mɜ,M,nə,0.400
+murre,ipa,mɝ,M ER,nəɹ,0.400
+naaaa,arpa,noʊ,N OW,nəə,0.400
+naaaa,ipa,noʊ,N OW,nəə,0.400
+natchereh,arpa,nætʃɚ,N AE CH,nəʃəɹ,0.333
+natchereh,ipa,nætʃɚ,N AE CH,nəʃəɹ,0.444
+naught's,arteme,nɔts,N AO T S,nəs,0.375
+naught's,ipa,nɔts,N AO T S,nəs,0.375
+naughts,arteme,nɔts,N AO T S,nəs,0.429
+naughts,ipa,nɔts,N AO T S,nəs,0.429
+neertshe,arpa,nɚʃ,N SH,nəɹʃ,0.250
+neertshe,ipa,nɚʃ,N SH,nəɹʃ,0.375
+neetesh,arpa,nitʃ,N IY CH,nəʃ,0.429
+neetesh,arteme,nitʃ,N IY CH,nəʃ,0.429
+neetesh,ipa,nitʃ,N IY CH,nəʃ,0.429
+neigh's,arpa,neɪz,N EY Z,nəəs,0.429
+neigh's,ipa,neɪz,N EY Z,nəəs,0.429
+neighboured,arpa,neɪbɝd,N EY B ER D,nəəpəɹt,0.455
+neighboured,ipa,neɪbɝd,N EY B ER D,nəəpəɹt,0.455
+neihmeh,arpa,naɪm,N AY M,nəən,0.429
+neihmeh,ipa,naɪm,N AY M,nəən,0.429
+nietzsche,arpa,nitʃi,IY CH,nəʃə,0.222
+nietzsche,arpa,nitʃə,N IY CH,,0.333
+nietzsche,arpa,ɲitʃə,N IY CH IY,,0.444
+nietzsche,arteme,nitʃi,IY CH,nəʃə,0.444
+nietzsche,ipa,nitʃi,IY CH,nəʃə,0.444
+nietzsche,ipa,nitʃə,N IY CH,,0.444
+nietzsche,ipa,ɲitʃə,N IY CH IY,,0.444
+nietzsche's,arpa,nitʃiz,N IY CH IY Z,nəʃəs,0.455
+nietzsche's,arteme,nitʃiz,N IY CH IY Z,nəʃəs,0.455
+nietzsche's,ipa,nitʃiz,N IY CH IY Z,nəʃəs,0.455
+night's,ipa,naɪts,N AY T S,nəəs,0.429
+nightshar,arpa,naɪʃɚ,N AY SH,nəəʃəɹ,0.333
+nightshar,ipa,naɪʃɚ,N AY SH,nəəʃəɹ,0.444
+nightshirts,ipa,naɪtʃɝts,N AY CH ER T S,nəəʃəɹs,0.455
+nighy,arpa,naɪ,N AY,nəə,0.400
+nighy,ipa,naɪ,N AY,nəə,0.400
+nitzsch,arpa,nɪtʃ,N IH CH,nəʃ,0.429
+nitzsch,arteme,nɪtʃ,N IH CH,nəʃ,0.429
+nitzsch,ipa,nɪtʃ,N IH CH,nəʃ,0.429
+nne,arpa,n,N,n,0.333
+nne,arteme,n,N,n,0.333
+nne,ipa,n,N,n,0.333
+nought's,arteme,nɑts,N AA T S,nəs,0.375
+nought's,ipa,nɑts,N AA T S,nəs,0.375
+nought's,ipa,nɔts,N AO T S,,0.375
+noughts,arpa,nɔts,N T S,,0.429
+noughts,arteme,nɒts,N AO T S,nəs,0.429
+noughts,ipa,nɒts,N AO T S,nəs,0.429
+noughts,ipa,nɔts,N T S,,0.429
+o'erwrought,arpa,oʊɝɹɔt,OW ER R AO T,əəəɹɹət,0.455
+o'erwrought,ipa,oʊɝɹɔt,OW ER R AO T,əəəɹɹət,0.455
+o'meagher,arpa,oʊmɑɹ,OW M AA R,əənəɹ,0.444
+o'meagher,ipa,oʊmɑɹ,OW M AA R,əənəɹ,0.444
+o'th',arpa,əd,D,əf,0.200
+o'th',arpa,əv,DH,ət,0.200
+o'th',arpa,əð,V,əθ,0.200
+o'th',arteme,əd,D,əf,0.400
+o'th',arteme,əv,DH,ət,0.400
+o'th',arteme,əð,V,əθ,0.400
+o'th',ipa,əd,D,əf,0.400
+o'th',ipa,əv,DH,ət,0.400
+o'th',ipa,əð,V,əθ,0.400
+o'the,arpa,oʊð,OW DH,əəθ,0.400
+o'the,ipa,oʊð,OW DH,əəθ,0.400
+oau,arpa,oʊ,OW,əə,0.333
+oau,ipa,oʊ,OW,əə,0.333
+oaude,arpa,oʊd,OW D,əət,0.400
+oaude,ipa,oʊd,OW D,əət,0.400
+odd's,arteme,ɑdz,AA D Z,əs,0.400
+odd's,ipa,ɑdz,AA D Z,əs,0.400
+oee,arpa,oʊ,OW,əə,0.333
+oee,ipa,oʊ,OW,əə,0.333
+oeuvres,arpa,ɝvz,ER V Z,əɹfs,0.429
+oeuvres,ipa,ɝvz,ER V Z,əɹfs,0.429
+ogh,arpa,oʊ,OW,əə,0.333
+ogh,ipa,oʊ,OW,əə,0.333
+ohere,arpa,oʊɚ,OW,əəəɹ,0.200
+ohere,ipa,oʊɚ,OW,əəəɹ,0.400
+oi'll,arpa,ɔɪl,OY L,əəl,0.400
+oi'll,ipa,ɔɪl,OY L,əəl,0.400
+oi've,arpa,ɔɪv,OY V,əəf,0.400
+oi've,ipa,ɔɪv,OY V,əəf,0.400
+oie,arpa,ɔɪ,OY,əə,0.333
+oie,ipa,ɔɪ,OY,əə,0.333
+oigh,arpa,ɔɪ,OY,əə,0.250
+oigh,ipa,ɔɪ,OY,əə,0.250
+oiseaux,arpa,wɑoʊ,W AA OW,əəəə,0.429
+oiseaux,ipa,wɑoʊ,W AA OW,əəəə,0.429
+oo're,arpa,uɝ,UW ER,əəɹ,0.400
+oo're,ipa,uɝ,UW ER,əəɹ,0.400
+oogee,arpa,udʒ,UW JH,əʃ,0.400
+oogee,arteme,udʒ,UW JH,əʃ,0.400
+oogee,ipa,udʒ,UW JH,əʃ,0.400
+ooh,arpa,u,UW,ə,0.333
+ooh,arteme,u,UW,ə,0.333
+ooh,ipa,u,UW,ə,0.333
+oooh,arpa,u,UW,ə,0.250
+oooh,arteme,u,UW,ə,0.250
+oooh,ipa,u,UW,ə,0.250
+ooooooh,arpa,uuu,UW UW UW,əəə,0.429
+ooooooh,arteme,uuu,UW UW UW,əəə,0.429
+ooooooh,ipa,uuu,UW UW UW,əəə,0.429
+ooooooo,arpa,uuu,UW UW UW,əəə,0.429
+ooooooo,arteme,uuu,UW UW UW,əəə,0.429
+ooooooo,ipa,uuu,UW UW UW,əəə,0.429
+ooooooooo,arpa,uuuu,UW UW UW UW,əəəə,0.444
+ooooooooo,arteme,uuuu,UW UW UW UW,əəəə,0.444
+ooooooooo,ipa,uuuu,UW UW UW UW,əəəə,0.444
+ooooooooooo,arpa,uuuuu,UW UW UW UW UW,əəəəə,0.455
+ooooooooooo,arteme,uuuuu,UW UW UW UW UW,əəəəə,0.455
+ooooooooooo,ipa,uuuuu,UW UW UW UW UW,əəəəə,0.455
+ooooooooooooo,arpa,uuuuuu,UW UW UW UW UW UW,əəəəəə,0.462
+ooooooooooooo,arteme,uuuuuu,UW UW UW UW UW UW,əəəəəə,0.462
+ooooooooooooo,ipa,uuuuuu,UW UW UW UW UW UW,əəəəəə,0.462
+ooooooooooooooo,arpa,uuuuuuu,UW UW UW UW UW UW UW,əəəəəəə,0.467
+ooooooooooooooo,arteme,uuuuuuu,UW UW UW UW UW UW UW,əəəəəəə,0.467
+ooooooooooooooo,ipa,uuuuuuu,UW UW UW UW UW UW UW,əəəəəəə,0.467
+oooooooooooooooh,arpa,uuuuuuu,UW UW UW UW UW UW UW,əəəəəəə,0.438
+oooooooooooooooh,arteme,uuuuuuu,UW UW UW UW UW UW UW,əəəəəəə,0.438
+oooooooooooooooh,ipa,uuuuuuu,UW UW UW UW UW UW UW,əəəəəəə,0.438
+ooooooooooooooooooo,arpa,uuuuuuuuu,UW UW UW UW UW UW UW UW UW,əəəəəəəəə,0.474
+ooooooooooooooooooo,arteme,uuuuuuuuu,UW UW UW UW UW UW UW UW UW,əəəəəəəəə,0.474
+ooooooooooooooooooo,ipa,uuuuuuuuu,UW UW UW UW UW UW UW UW UW,əəəəəəəəə,0.474
+ooooooooooooooooooooooooooooooooooooooooooo,arpa,uuuuuuuuuuuuuuuuuuuuu,UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW,əəəəəəəəəəəəəəəəəəəəə,0.488
+ooooooooooooooooooooooooooooooooooooooooooo,arteme,uuuuuuuuuuuuuuuuuuuuu,UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW,əəəəəəəəəəəəəəəəəəəəə,0.488
+ooooooooooooooooooooooooooooooooooooooooooo,ipa,uuuuuuuuuuuuuuuuuuuuu,UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW UW,əəəəəəəəəəəəəəəəəəəəə,0.488
+or',arpa,ɝ,ER,əɹ,0.333
+or',ipa,ɝ,ER,əɹ,0.333
+orh,arpa,ɔ,AO,ə,0.333
+orh,arteme,ɔ,AO,ə,0.333
+orh,ipa,ɔ,AO,ə,0.333
+ormeaux,arpa,ɝmoʊ,ER M OW,əɹnəə,0.429
+ormeaux,ipa,ɝmoʊ,ER M OW,əɹnəə,0.429
+ottes,arteme,ɑts,AA T S,əs,0.400
+ottes,ipa,ɑts,AA T S,əs,0.400
+ouche,arpa,aʊtʃ,AW CH,əəʃ,0.400
+ouche,ipa,aʊtʃ,AW CH,əəʃ,0.400
+ough,arpa,oʊ,OW,əə,0.250
+ough,ipa,oʊ,OW,əə,0.250
+oughtchuck,arpa,ɔtʃʌk,AO CH AH K,əʃək,0.400
+oughtchuck,arteme,ɔtʃʌk,AO CH AH K,əʃək,0.400
+oughtchuck,ipa,ɔtʃʌk,AO CH AH K,əʃək,0.400
+oughter,arpa,ɔtɝ,AO T ER,ətəɹ,0.429
+oughter,ipa,ɔtɝ,AO T ER,ətəɹ,0.429
+oughtta,arpa,ɔtʌ,AO T AH,ətə,0.429
+oughtta,arteme,ɔtʌ,AO T AH,ətə,0.429
+oughtta,ipa,ɔtʌ,AO T AH,ətə,0.429
+ouphe,arpa,aʊf,AW F,əf,0.400
+ouphe,arpa,uf,UW F,əəf,0.400
+ouphe,arteme,aʊf,AW F,əf,0.400
+ouphe,ipa,aʊf,AW F,əf,0.400
+ouphe,ipa,uf,UW F,əəf,0.400
+our's,arpa,ɝz,ER Z,əɹs,0.400
+our's,ipa,ɝz,ER Z,əɹs,0.400
+out's,ipa,aʊts,AW T S,əəs,0.400
+outch,arpa,aʊtʃ,AW CH,əəʃ,0.400
+outch,ipa,aʊtʃ,AW CH,əəʃ,0.400
+outchurch,arpa,aʊtʃɚtʃ,AW CH CH,əəʃəɹʃ,0.333
+outchurch,ipa,aʊtʃɚtʃ,AW CH CH,əəʃəɹʃ,0.444
+outdrew,arpa,aʊtɹ,AW T R,əətɹ,0.429
+outdrew,ipa,aʊtɹ,AW T R,əətɹ,0.429
+owehe,arpa,oʊh,OW HH,əəh,0.400
+owehe,ipa,oʊh,OW HH,əəh,0.400
+oycke,arpa,ɔɪk,OY K,əək,0.400
+oycke,ipa,ɔɪk,OY K,əək,0.400
+oye,arpa,ɔɪ,OY,əə,0.333
+oye,ipa,ɔɪ,OY,əə,0.333
+oysche,arpa,ɔɪʃ,OY SH,əəʃ,0.333
+oysche,ipa,ɔɪʃ,OY SH,əəʃ,0.333
+paugh,arpa,pɔ,P AO,pə,0.400
+paugh,arteme,pɔ,P AO,pə,0.400
+paugh,ipa,pɔ,P AO,pə,0.400
+paugher,arpa,pɔɚ,P AO,pəəɹ,0.286
+paugher,ipa,pɔɚ,P AO,pəəɹ,0.429
+peoah,arpa,poʊ,P OW,pəə,0.400
+peoah,ipa,poʊ,P OW,pəə,0.400
+phe,arpa,f,F,f,0.333
+phe,arteme,f,F,f,0.333
+phe,ipa,f,F,f,0.333
+pierrette's,arteme,pɪɹɛts,P IH R EH T S,pəɹəs,0.455
+pierrette's,ipa,pɪɹɛts,P IH R EH T S,pəɹəs,0.455
+pough,arpa,paʊ,P AW,pəə,0.400
+pough,ipa,paʊ,P AW,pəə,0.400
+poussette's,arteme,pusɛts,P UW S EH T S,pəsəs,0.455
+poussette's,ipa,pusɛts,P UW S EH T S,pəsəs,0.455
+ppe,arpa,p,P,p,0.333
+ppe,arteme,p,P,p,0.333
+ppe,ipa,p,P,p,0.333
+purre,arpa,pɝ,P ER,pəɹ,0.400
+purre,ipa,pɝ,P ER,pəɹ,0.400
+qah,arpa,k,K,k,0.333
+qah,arteme,k,K,k,0.333
+qah,ipa,k,K,k,0.333
+raaaa,arpa,ɹoʊ,R OW,ɹəə,0.400
+raaaa,ipa,ɹoʊ,R OW,ɹəə,0.400
+raaaaaa,arpa,ɹoʊoʊ,R OW OW,ɹəəəə,0.429
+raaaaaa,ipa,ɹoʊoʊ,R OW OW,ɹəəəə,0.429
+raaaaaaaa,arpa,ɹoʊoʊoʊ,R OW OW OW,ɹəəəəəə,0.444
+raaaaaaaa,ipa,ɹoʊoʊoʊ,R OW OW OW,ɹəəəəəə,0.444
+raaaaaaaaaaaaaaaaaaaaaaaaaaaa,arpa,ɹoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊ,R OW OW OW OW OW OW OW OW OW OW OW OW OW,ɹəəəəəəəəəəəəəəəəəəəəəəəəəə,0.483
+raaaaaaaaaaaaaaaaaaaaaaaaaaaa,ipa,ɹoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊoʊ,R OW OW OW OW OW OW OW OW OW OW OW OW OW,ɹəəəəəəəəəəəəəəəəəəəəəəəəəə,0.483
+raugh,arpa,ɹɔ,R AO,ɹə,0.400
+raugh,arteme,ɹɔ,R AO,ɹə,0.400
+raugh,ipa,ɹɔ,R AO,ɹə,0.400
+raughing,arpa,ɹɔɪŋ,R OY NG,ɹəən,0.375
+raughing,ipa,ɹɔɪŋ,R OY NG,ɹəən,0.375
+raughit,arpa,ɹɔɪt,R OY T,ɹəət,0.429
+raughit,ipa,ɹɔɪt,R OY T,ɹəət,0.429
+reade's,arteme,ɹidz,R IY D Z,ɹəs,0.429
+reade's,ipa,ɹidz,R IY D Z,ɹəs,0.429
+reaux,arpa,ɹoʊ,R OW,ɹəə,0.400
+reaux,ipa,ɹoʊ,R OW,ɹəə,0.400
+reische,arpa,ɹiʃ,R IY SH,ɹəʃ,0.429
+reische,arteme,ɹiʃ,R IY SH,ɹəʃ,0.429
+reische,ipa,ɹiʃ,R IY SH,ɹəʃ,0.429
+reusche,arpa,ɹiʃ,R IY SH,ɹəʃ,0.429
+reusche,arteme,ɹiʃ,R IY SH,ɹəʃ,0.429
+reusche,ipa,ɹiʃ,R IY SH,ɹəʃ,0.429
+reweighed,arpa,ɹuaɪt,R UW AY T,ɹəəət,0.444
+reweighed,ipa,ɹuaɪt,R UW AY T,ɹəəət,0.444
+rewrought,arpa,ɹɚɔt,R AO T,ɹəɹət,0.333
+rewrought,ipa,ɹɚɔt,R AO T,ɹəɹət,0.444
+rhe,arpa,ɹ,R,ɹ,0.333
+rhe,arteme,ɹ,R,ɹ,0.333
+rhe,ipa,ɹ,R,ɹ,0.333
+rhett's,arteme,ɹɛts,R EH T S,ɹəs,0.429
+rhett's,ipa,ɹɛts,R EH T S,ɹəs,0.429
+rhioi,arpa,ɹi,R IY,ɹə,0.400
+rhioi,arteme,ɹi,R IY,ɹə,0.400
+rhioi,ipa,ɹi,R IY,ɹə,0.400
+rhoades,ipa,ɹoʊdz,R OW D Z,ɹəəs,0.429
+right's,ipa,ɹaɪts,R AY T S,ɹəəs,0.429
+rouault,arpa,ɹaʊoʊ,R AW OW,ɹəəəə,0.429
+rouault,ipa,ɹaʊoʊ,R AW OW,ɹəəəə,0.429
+roughborough,arpa,ɹubɝoʊ,R UW B ER OW,ɹəpəɹəə,0.417
+roughborough,ipa,ɹubɝoʊ,R UW B ER OW,ɹəpəɹəə,0.417
+rouille,arpa,ɹui,R UW IY,ɹəə,0.429
+rouille,arteme,ɹui,R UW IY,ɹəə,0.429
+rouille,ipa,ɹui,R UW IY,ɹəə,0.429
+s'she,arpa,sʃ,S SH,sʃ,0.400
+s'she,arteme,sʃ,S SH,sʃ,0.400
+s'she,ipa,sʃ,S SH,sʃ,0.400
+saaaa,arpa,soʊ,S OW,səə,0.400
+saaaa,ipa,soʊ,S OW,səə,0.400
+sarratt's,ipa,sɝæts,S ER AE T S,səɹəs,0.444
+saugh,arpa,sɔ,S AO,sə,0.400
+saugh,arteme,sɔ,S AO,sə,0.400
+saugh,ipa,sɔ,S AO,sə,0.400
+saughin,arpa,sɔɪn,S OY N,səən,0.429
+saughin,ipa,sɔɪn,S OY N,səən,0.429
+sayye,arpa,saɪ,S AY,səə,0.400
+sayye,ipa,saɪ,S AY,səə,0.400
+sch,arpa,ʃ,SH,ʃ,0.333
+sch,arteme,ʃ,SH,ʃ,0.333
+sch,ipa,ʃ,SH,ʃ,0.333
+schaack,arpa,ʃɑk,SH AA K,ʃək,0.429
+schaack,arteme,ʃɑk,SH AA K,ʃək,0.429
+schaack,ipa,ʃɑk,SH AA K,ʃək,0.429
+schae,arpa,ʃə,SH,ʃə,0.200
+schae,arteme,ʃə,SH,ʃə,0.400
+schae,ipa,ʃə,SH,ʃə,0.400
+schaeck,arpa,ʃɑk,SH AA K,ʃək,0.429
+schaeck,arteme,ʃɑk,SH AA K,ʃək,0.429
+schaeck,ipa,ʃɑk,SH AA K,ʃək,0.429
+schaeer,arpa,ʃeɪɚ,SH EY,ʃəəəɹ,0.286
+schaeer,ipa,ʃeɪɚ,SH EY,ʃəəəɹ,0.429
+schah,arpa,ʃɑ,SH AA,ʃə,0.400
+schah,arteme,ʃɑ,SH AA,ʃə,0.400
+schah,ipa,ʃɑ,SH AA,ʃə,0.400
+schaick,arpa,ʃaɪk,SH AY K,ʃəək,0.429
+schaick,ipa,ʃaɪk,SH AY K,ʃəək,0.429
+schaife,arpa,ʃeɪf,SH EY F,ʃəəf,0.429
+schaife,ipa,ʃeɪf,SH EY F,ʃəəf,0.429
+schaiffer,arpa,ʃeɪfɚ,SH EY F,ʃəəfəɹ,0.333
+schaiffer,ipa,ʃeɪfɚ,SH EY F,ʃəəfəɹ,0.444
+schaig,arpa,ʃeɪ,SH EY,ʃəə,0.333
+schaig,ipa,ʃeɪ,SH EY,ʃəə,0.333
+schates,ipa,ʃeɪts,SH EY T S,ʃəəs,0.429
+schau,arpa,ʃoʊ,SH OW,ʃəə,0.400
+schau,ipa,ʃoʊ,SH OW,ʃəə,0.400
+schauer,arpa,ʃaʊɚ,SH AW,ʃəəəɹ,0.286
+schauer,ipa,ʃaʊɚ,SH AW,ʃəəəɹ,0.429
+schauffer,arpa,ʃɔfɚ,SH AO F,ʃəfəɹ,0.333
+schauffer,ipa,ʃɔfɚ,SH AO F,ʃəfəɹ,0.444
+schaufour,arpa,ʃɔfɚ,SH AO F,ʃəfəɹ,0.333
+schaufour,ipa,ʃɔfɚ,SH AO F,ʃəfəɹ,0.444
+schaunard's,ipa,ʃaʊnɝdz,SH AW N ER D Z,ʃəənəɹs,0.455
+schausser,arpa,ʃəsɚ,SH S,ʃəsəɹ,0.222
+schausser,ipa,ʃəsɚ,SH S,ʃəsəɹ,0.444
+schaw,arpa,ʃɔ,SH AO,ʃə,0.400
+schaw,arteme,ʃɔ,SH AO,ʃə,0.400
+schaw,ipa,ʃɔ,SH AO,ʃə,0.400
+sche,arpa,ʃ,SH,ʃ,0.250
+sche,arteme,ʃ,SH,ʃ,0.250
+sche,ipa,ʃ,SH,ʃ,0.250
+schee,arpa,ʃi,SH IY,ʃə,0.400
+schee,arteme,ʃi,SH IY,ʃə,0.400
+schee,ipa,ʃi,SH IY,ʃə,0.400
+scheele,arpa,ʃil,SH IY L,ʃəl,0.429
+scheele,arteme,ʃil,SH IY L,ʃəl,0.429
+scheele,ipa,ʃil,SH IY L,ʃəl,0.429
+scheich,arpa,ʃaɪk,SH AY K,ʃəək,0.429
+scheich,ipa,ʃaɪk,SH AY K,ʃəək,0.429
+scheide,arpa,ʃaɪd,SH AY D,ʃəət,0.429
+scheide,ipa,ʃaɪd,SH AY D,ʃəət,0.429
+scheidt,arpa,ʃaɪt,SH AY T,ʃəət,0.429
+scheidt,ipa,ʃaɪt,SH AY T,ʃəət,0.429
+scheih,arpa,ʃaɪ,SH AY,ʃəə,0.333
+scheih,ipa,ʃaɪ,SH AY,ʃəə,0.333
+scheine,arpa,ʃin,SH IY N,ʃən,0.429
+scheine,arteme,ʃin,SH IY N,ʃən,0.429
+scheine,ipa,ʃin,SH IY N,ʃən,0.429
+scheitser,arpa,ʃaɪtsɚ,SH AY T S,ʃəəsəɹ,0.444
+scheitser,ipa,ʃaɪtsɚ,SH AY T S,ʃəəsəɹ,0.444
+scheitz,arteme,ʃits,SH IY T S,ʃəs,0.429
+scheitz,ipa,ʃits,SH IY T S,ʃəs,0.429
+schelle,arpa,ʃɛl,SH EH L,ʃəl,0.429
+schelle,arteme,ʃɛl,SH EH L,ʃəl,0.429
+schelle,ipa,ʃɛl,SH EH L,ʃəl,0.429
+scher,arpa,ʃɚ,SH,ʃəɹ,0.200
+scher,ipa,ʃɚ,SH,ʃəɹ,0.400
+schertz,ipa,ʃɝts,SH ER T S,ʃəɹs,0.429
+scheung,arpa,ʃuŋ,SH UW NG,ʃən,0.429
+scheung,arteme,ʃuŋ,SH UW NG,ʃən,0.429
+scheung,ipa,ʃuŋ,SH UW NG,ʃən,0.429
+scheurer,arpa,ʃɝɝ,SH ER ER,ʃəɹəɹ,0.375
+scheurer,ipa,ʃɝɝ,SH ER ER,ʃəɹəɹ,0.375
+scheyer,arpa,ʃaɪɚ,SH AY,ʃəəəɹ,0.286
+scheyer,ipa,ʃaɪɚ,SH AY,ʃəəəɹ,0.429
+schieff,arpa,ʃɪf,SH IH F,ʃəf,0.429
+schieff,arteme,ʃɪf,SH IH F,ʃəf,0.429
+schieff,ipa,ʃɪf,SH IH F,ʃəf,0.429
+schieffer,arpa,ʃifɚ,SH IY F,ʃəfəɹ,0.333
+schieffer,ipa,ʃifɚ,SH IY F,ʃəfəɹ,0.444
+schipperleigh,arpa,ʃɪpɚlaɪ,SH IH P L AY,ʃəpəɹləə,0.385
+schipperleigh,ipa,ʃɪpɚlaɪ,SH IH P L AY,ʃəpəɹləə,0.462
+schir,arpa,ʃɚ,SH,ʃəɹ,0.200
+schir,ipa,ʃɚ,SH,ʃəɹ,0.400
+schirr,arpa,ʃɝ,SH ER,ʃəɹ,0.333
+schirr,ipa,ʃɝ,SH ER,ʃəɹ,0.333
+schleigh,arpa,ʃlaɪ,SH L AY,ʃləə,0.375
+schleigh,ipa,ʃlaɪ,SH L AY,ʃləə,0.375
+schmeie,arpa,ʃmaɪ,SH M AY,ʃnəə,0.429
+schmeie,ipa,ʃmaɪ,SH M AY,ʃnəə,0.429
+schmidt's,arteme,ʃmɪts,SH M IH T S,ʃnəs,0.444
+schmidt's,ipa,ʃmɪts,SH M IH T S,ʃnəs,0.444
+schmurr,arpa,ʃmɚ,SH M,ʃnəɹ,0.286
+schmurr,ipa,ʃmɚ,SH M,ʃnəɹ,0.429
+schnerr,arpa,ʃnɚ,SH N,ʃnəɹ,0.286
+schnerr,ipa,ʃnɚ,SH N,ʃnəɹ,0.429
+schoeffer,arpa,ʃoʊfɝ,SH OW F ER,ʃəəfəɹ,0.444
+schoeffer,ipa,ʃoʊfɝ,SH OW F ER,ʃəəfəɹ,0.444
+schoepf,arpa,ʃoʊp,SH OW P,ʃəəp,0.429
+schoepf,ipa,ʃoʊp,SH OW P,ʃəəp,0.429
+schoherie,arpa,ʃoʊɚi,SH OW IY,ʃəəəɹə,0.333
+schoherie,ipa,ʃoʊɚi,SH OW IY,ʃəəəɹə,0.444
+schoherry,arpa,ʃoʊɚi,SH OW IY,ʃəəəɹə,0.333
+schoherry,ipa,ʃoʊɚi,SH OW IY,ʃəəəɹə,0.444
+schoo,arpa,ʃu,SH UW,ʃə,0.400
+schoo,arteme,ʃu,SH UW,ʃə,0.400
+schoo,ipa,ʃu,SH UW,ʃə,0.400
+schottische,arpa,ʃɒtiʃ,SH T IY SH,,0.364
+schottische,arpa,ʃɑdɪʃ,SH AA D IH SH,ʃətəʃ,0.455
+schottische,arpa,ʃɑtɪʃ,SH AA T IH SH,,0.455
+schottische,arteme,ʃɑdɪʃ,SH AA D IH SH,ʃətəʃ,0.455
+schottische,ipa,ʃɑdɪʃ,SH AA D IH SH,ʃətəʃ,0.455
+schottische,ipa,ʃɑtɪʃ,SH AA T IH SH,,0.455
+schottische,ipa,ʃɒtiʃ,SH T IY SH,,0.455
+schottische,ipa,ʃətiʃ,,,0.455
+schouff,arpa,ʃaʊf,SH AW F,ʃəəf,0.429
+schouff,ipa,ʃaʊf,SH AW F,ʃəəf,0.429
+schretsch,arpa,ʃɹɛtʃ,SH R EH CH,ʃɹəʃ,0.444
+schretsch,arteme,ʃɹɛtʃ,SH R EH CH,ʃɹəʃ,0.444
+schretsch,ipa,ʃɹɛtʃ,SH R EH CH,ʃɹəʃ,0.444
+schuettea,arpa,ʃuti,SH UW T IY,ʃətə,0.444
+schuettea,arteme,ʃuti,SH UW T IY,ʃətə,0.444
+schuettea,ipa,ʃuti,SH UW T IY,ʃətə,0.444
+schuetz,arteme,ʃuts,SH UW T S,ʃəs,0.429
+schuetz,ipa,ʃuts,SH UW T S,ʃəs,0.429
+schur,arpa,ʃu,SH UW,ʃə,0.400
+schur,arteme,ʃu,SH UW,ʃə,0.400
+schur,ipa,ʃu,SH UW,ʃə,0.400
+schurr,arpa,ʃɚ,SH,ʃəɹ,0.167
+schurr,ipa,ʃɚ,SH,ʃəɹ,0.333
+schuurr,arpa,ʃʊɹ,SH UH R,ʃəɹ,0.429
+schuurr,arteme,ʃʊɹ,SH UH R,ʃəɹ,0.429
+schuurr,ipa,ʃʊɹ,SH UH R,ʃəɹ,0.429
+scioux,arpa,ʃu,SH UW,ʃə,0.333
+scioux,arteme,ʃu,SH UW,ʃə,0.333
+scioux,ipa,ʃu,SH UW,ʃə,0.333
+searchlight's,ipa,sɝtʃlaɪts,S ER CH L AY T S,səɹʃləəs,0.462
+seaux,arpa,soʊ,S OW,səə,0.400
+seaux,ipa,soʊ,S OW,səə,0.400
+seigh,arpa,si,S IY,sə,0.400
+seigh,arteme,si,S IY,sə,0.400
+seigh,ipa,si,S IY,sə,0.400
+sej,arpa,s,S,s,0.333
+sej,arteme,s,S,s,0.333
+sej,ipa,s,S,s,0.333
+seoux,arpa,soʊ,S OW,səə,0.400
+seoux,ipa,soʊ,S OW,səə,0.400
+sha't,arpa,ʃt,SH T,ʃt,0.400
+sha't,arteme,ʃt,SH T,ʃt,0.400
+sha't,ipa,ʃt,SH T,ʃt,0.400
+shadd's,arteme,ʃædz,SH AE D Z,ʃəs,0.429
+shadd's,ipa,ʃædz,SH AE D Z,ʃəs,0.429
+shade's,ipa,ʃeɪdz,SH EY D Z,ʃəəs,0.429
+shaoi,arpa,ʃeɪ,SH EY,ʃəə,0.400
+shaoi,ipa,ʃeɪ,SH EY,ʃəə,0.400
+shaugh,arpa,ʃɔ,SH AO,ʃə,0.333
+shaugh,arteme,ʃɔ,SH AO,ʃə,0.333
+shaugh,ipa,ʃɔ,SH AO,ʃə,0.333
+shaughy,arpa,ʃɔi,SH AO IY,ʃəə,0.429
+shaughy,arteme,ʃɔi,SH AO IY,ʃəə,0.429
+shaughy,ipa,ʃɔi,SH AO IY,ʃəə,0.429
+shausse,arpa,ʃɔs,SH AO S,ʃəs,0.429
+shausse,arteme,ʃɔs,SH AO S,ʃəs,0.429
+shausse,ipa,ʃɔs,SH AO S,ʃəs,0.429
+shawe,arpa,ʃɔ,SH AO,ʃə,0.400
+shawe,arteme,ʃɔ,SH AO,ʃə,0.400
+shawe,ipa,ʃɔ,SH AO,ʃə,0.400
+she'l,arpa,ʃi,SH IY,ʃə,0.400
+she'l,arteme,ʃi,SH IY,ʃə,0.400
+she'l,ipa,ʃi,SH IY,ʃə,0.400
+sheaffe,arpa,ʃif,SH IY F,ʃəf,0.429
+sheaffe,arteme,ʃif,SH IY F,ʃəf,0.429
+sheaffe,ipa,ʃif,SH IY F,ʃəf,0.429
+sheathe,arpa,ʃid,SH IY D,ʃəf,0.429
+sheathe,arpa,ʃiv,SH IY DH,ʃət,0.429
+sheathe,arpa,ʃið,SH IY V,ʃəθ,0.429
+sheathe,arteme,ʃid,SH IY D,ʃəf,0.429
+sheathe,arteme,ʃiv,SH IY DH,ʃət,0.429
+sheathe,arteme,ʃið,SH IY V,ʃəθ,0.429
+sheathe,ipa,ʃid,SH IY D,ʃəf,0.429
+sheathe,ipa,ʃiv,SH IY DH,ʃət,0.429
+sheathe,ipa,ʃið,SH IY V,ʃəθ,0.429
+sheeh,arpa,ʃi,SH IY,ʃə,0.400
+sheeh,arteme,ʃi,SH IY,ʃə,0.400
+sheeh,ipa,ʃi,SH IY,ʃə,0.400
+sheehee,arpa,ʃih,SH IY HH,ʃəh,0.429
+sheehee,arteme,ʃih,SH IY HH,ʃəh,0.429
+sheehee,ipa,ʃih,SH IY HH,ʃəh,0.429
+sheertz,arpa,ʃɚts,SH T S,ʃəɹs,0.429
+sheertz,ipa,ʃɚts,SH T S,ʃəɹs,0.429
+sheogue,arpa,ʃɔg,SH AO G,ʃək,0.429
+sheogue,arteme,ʃɔg,SH AO G,ʃək,0.429
+sheogue,ipa,ʃɔg,SH AO G,ʃək,0.429
+shepheard's,ipa,ʃɛpɝdz,SH EH P ER D Z,ʃəpəɹs,0.455
+sher'ff,arpa,ʃɝf,SH ER F,ʃəɹf,0.429
+sher'ff,ipa,ʃɝf,SH ER F,ʃəɹf,0.429
+sherborough,arpa,ʃɚbɚoʊ,SH B OW,ʃəɹpəɹəə,0.273
+sherborough,ipa,ʃɚbɚoʊ,SH B OW,ʃəɹpəɹəə,0.455
+sherlaugh,arpa,ʃɚlɔ,SH L AO,ʃəɹlə,0.333
+sherlaugh,ipa,ʃɚlɔ,SH L AO,ʃəɹlə,0.444
+shewe,arpa,ʃu,SH UW,ʃə,0.400
+shewe,arteme,ʃu,SH UW,ʃə,0.400
+shewe,ipa,ʃu,SH UW,ʃə,0.400
+shh,arpa,ʃ,SH,ʃ,0.333
+shh,arteme,ʃ,SH,ʃ,0.333
+shh,ipa,ʃ,SH,ʃ,0.333
+shirt's,ipa,ʃɝts,SH ER T S,ʃəɹs,0.429
+shirthe,arpa,ʃɚθ,SH TH,ʃəɹθ,0.286
+shirthe,ipa,ʃɚθ,SH TH,ʃəɹθ,0.429
+shonghe,arpa,ʃɑŋ,SH AA NG,ʃən,0.429
+shonghe,arteme,ʃɑŋ,SH AA NG,ʃən,0.429
+shonghe,ipa,ʃɑŋ,SH AA NG,ʃən,0.429
+showesque,arpa,ʃoʊsk,SH OW S K,ʃəəsk,0.444
+showesque,ipa,ʃoʊsk,SH OW S K,ʃəəsk,0.444
+shurruf,arpa,ʃɝf,SH ER F,ʃəɹf,0.429
+shurruf,ipa,ʃɝf,SH ER F,ʃəɹf,0.429
+shute's,arteme,ʃuts,SH UW T S,ʃəs,0.429
+shute's,ipa,ʃuts,SH UW T S,ʃəs,0.429
+shw,arpa,ʃ,SH,ʃ,0.333
+shw,arteme,ʃ,SH,ʃ,0.333
+shw,ipa,ʃ,SH,ʃ,0.333
+siegh,arpa,si,S IY,sə,0.400
+siegh,arteme,si,S IY,sə,0.400
+siegh,ipa,si,S IY,sə,0.400
+sigheth,arpa,saɪθ,S AY TH,səəθ,0.429
+sigheth,ipa,saɪθ,S AY TH,səəθ,0.429
+sight's,ipa,saɪts,S AY T S,səəs,0.429
+sioux,arpa,su,S UW,sə,0.400
+sioux,arteme,su,S UW,sə,0.400
+sioux,ipa,su,S UW,sə,0.400
+siouxie,arpa,ʃui,SH UW IY,ʃəə,0.429
+siouxie,arteme,ʃui,SH UW IY,ʃəə,0.429
+siouxie,ipa,ʃui,SH UW IY,ʃəə,0.429
+soaaaaaaa,arpa,soʊoʊoʊ,S OW OW OW,səəəəəə,0.444
+soaaaaaaa,ipa,soʊoʊoʊ,S OW OW OW,səəəəəə,0.444
+ssshhh,arpa,sʃ,S SH,sʃ,0.333
+ssshhh,arteme,sʃ,S SH,sʃ,0.333
+ssshhh,ipa,sʃ,S SH,sʃ,0.333
+suawe,arpa,ʃoʊ,SH OW,ʃəə,0.400
+suawe,ipa,ʃoʊ,SH OW,ʃəə,0.400
+suite's,arteme,suts,S UW T S,səs,0.429
+suite's,ipa,suts,S UW T S,səs,0.429
+surreur,arpa,sɚɚ,S,səɹəɹ,0.143
+surreur,ipa,sɚɚ,S,səɹəɹ,0.429
+t'ought,arpa,tɔt,T AO T,tət,0.429
+t'ought,arteme,tɔt,T AO T,tət,0.429
+t'ought,ipa,tɔt,T AO T,tət,0.429
+t'rough,arpa,tɹaʊ,T R AW,tɹəə,0.429
+t'rough,ipa,tɹaʊ,T R AW,tɹəə,0.429
+taoisih,arpa,teɪʃ,T EY SH,təəʃ,0.429
+taoisih,ipa,teɪʃ,T EY SH,təəʃ,0.429
+taugh,arpa,tɔ,T AO,tə,0.400
+taugh,arteme,tɔ,T AO,tə,0.400
+taugh,ipa,tɔ,T AO,tə,0.400
+taughin,arpa,tɔɪn,T OY N,təən,0.429
+taughin,ipa,tɔɪn,T OY N,təən,0.429
+tch,arpa,tʃ,CH,ʃ,0.333
+tch,arteme,tʃ,CH,ʃ,0.333
+tch,ipa,tʃ,CH,ʃ,0.333
+tchad,arpa,tʃd,CH D,ʃt,0.400
+tchad,arteme,tʃd,CH D,ʃt,0.400
+tchad,ipa,tʃd,CH D,ʃt,0.400
+tchah,arpa,tʃ,CH,ʃ,0.200
+tchah,arteme,tʃ,CH,ʃ,0.200
+tchah,ipa,tʃ,CH,ʃ,0.200
+tchai,arpa,tʃaɪ,CH AY,ʃəə,0.400
+tchai,ipa,tʃaɪ,CH AY,ʃəə,0.400
+tcharanguii,arpa,tʃɝæŋi,CH ER AE NG IY,ʃəɹənə,0.455
+tcharanguii,ipa,tʃɝæŋi,CH ER AE NG IY,ʃəɹənə,0.455
+tchaw,arpa,tʃɔ,CH AO,ʃə,0.400
+tchaw,arteme,tʃɔ,CH AO,ʃə,0.400
+tchaw,ipa,tʃɔ,CH AO,ʃə,0.400
+tchee,arpa,tʃi,CH IY,ʃə,0.400
+tchee,arteme,tʃi,CH IY,ʃə,0.400
+tchee,ipa,tʃi,CH IY,ʃə,0.400
+tchou,arpa,tʃu,CH UW,ʃə,0.400
+tchou,arteme,tʃu,CH UW,ʃə,0.400
+tchou,ipa,tʃu,CH UW,ʃə,0.400
+terreur,arpa,tɝɝ,T ER ER,təɹəɹ,0.429
+terreur,ipa,tɝɝ,T ER ER,təɹəɹ,0.429
+tes,arteme,ts,T S,s,0.333
+tes,ipa,ts,T S,s,0.333
+th'ee,arpa,ti,T IY,tə,0.400
+th'ee,arteme,ti,T IY,tə,0.400
+th'ee,ipa,ti,T IY,tə,0.400
+th'oo,arpa,tu,T UW,tə,0.400
+th'oo,arteme,tu,T UW,tə,0.400
+th'oo,ipa,tu,T UW,tə,0.400
+th'ough,arpa,toʊ,T OW,təə,0.286
+th'ough,arteme,toʊ,T OW,təə,0.429
+th'ough,ipa,toʊ,T OW,təə,0.286
+th'ow,arpa,toʊ,T OW,təə,0.400
+th'ow,ipa,toʊ,T OW,təə,0.400
+th'owed,arpa,toʊd,T OW D,təət,0.429
+th'owed,ipa,toʊd,T OW D,təət,0.429
+thaih,arpa,taɪ,T AY,təə,0.400
+thaih,ipa,taɪ,T AY,təə,0.400
+the'e,arpa,θi,TH IY,θə,0.400
+the'e,arteme,θi,TH IY,θə,0.400
+the'e,ipa,θi,TH IY,θə,0.400
+the'e's,arpa,θiz,TH IY Z,θəs,0.429
+the'e's,arteme,θiz,TH IY Z,θəs,0.429
+the'e's,ipa,θiz,TH IY Z,θəs,0.429
+theae,arpa,θi,TH IY,θə,0.400
+theae,arteme,θi,TH IY,θə,0.400
+theae,ipa,θi,TH IY,θə,0.400
+theaw,arpa,θi,TH IY,θə,0.400
+theaw,arteme,θi,TH IY,θə,0.400
+theaw,ipa,θi,TH IY,θə,0.400
+thee',arpa,θi,TH IY,θə,0.400
+thee',arteme,θi,TH IY,θə,0.400
+thee',ipa,θi,TH IY,θə,0.400
+theor,arpa,θɚ,TH,θəɹ,0.200
+theor,ipa,θɚ,TH,θəɹ,0.400
+ther'll,arpa,θɝl,TH ER L,θəɹl,0.429
+ther'll,ipa,θɝl,TH ER L,θəɹl,0.429
+theraugh,arpa,θɚɔ,TH AO,θəɹə,0.250
+theraugh,ipa,θɚɔ,TH AO,θəɹə,0.375
+they'ld,arpa,ðeɪd,DH EY D,θəət,0.429
+they'ld,ipa,ðeɪd,DH EY D,θəət,0.429
+they'll,arpa,deɪl,D EH L,fəl,0.429
+they'll,arpa,dɛl,D EY L,fəəl,0.429
+they'll,arpa,veɪl,DH EH L,təl,0.429
+they'll,arpa,vɛl,DH EY L,təəl,0.429
+they'll,arpa,ðeɪl,V EH L,θəl,0.429
+they'll,arpa,ðɛl,V EY L,θəəl,0.429
+they'll,arteme,deɪl,D EH L,fəl,0.429
+they'll,arteme,veɪl,DH EH L,təl,0.429
+they'll,arteme,ðeɪl,V EH L,θəl,0.429
+they'll,ipa,deɪl,D EH L,fəl,0.429
+they'll,ipa,dɛl,D EY L,fəəl,0.429
+they'll,ipa,veɪl,DH EH L,təl,0.429
+they'll,ipa,vɛl,DH EY L,təəl,0.429
+they'll,ipa,ðeɪl,V EH L,θəl,0.429
+they'll,ipa,ðɛl,V EY L,θəəl,0.429
+they'se,arpa,ðeɪs,DH EY S,θəəs,0.429
+they'se,ipa,ðeɪs,DH EY S,θəəs,0.429
+they've,arpa,deɪv,D EY V,fəəf,0.429
+they've,arpa,veɪv,DH EY V,təəf,0.429
+they've,arpa,ðeɪv,V EY V,θəəf,0.429
+they've,ipa,deɪv,D EY V,fəəf,0.429
+they've,ipa,veɪv,DH EY V,təəf,0.429
+they've,ipa,ðeɪv,V EY V,θəəf,0.429
+thiebault,arpa,θiboʊ,TH IY B OW,θəpəə,0.444
+thiebault,ipa,θiboʊ,TH IY B OW,θəpəə,0.444
+thierre,arpa,θɪɹ,TH IH R,θəɹ,0.429
+thierre,arteme,θɪɹ,TH IH R,θəɹ,0.429
+thierre,ipa,θɪɹ,TH IH R,θəɹ,0.429
+thighed,arpa,θaɪt,TH AY T,θəət,0.429
+thighed,ipa,θaɪt,TH AY T,θəət,0.429
+thirche,arpa,θɚtʃ,TH CH,θəɹʃ,0.286
+thirche,ipa,θɚtʃ,TH CH,θəɹʃ,0.429
+third's,ipa,θɝdz,TH ER D Z,θəɹs,0.429
+thirsch,arpa,θɚʃ,TH SH,θəɹʃ,0.286
+thirsch,ipa,θɚʃ,TH SH,θəɹʃ,0.429
+thoreau's,arpa,θɝoʊz,TH ER OW Z,θəɹəəs,0.444
+thoreau's,ipa,θɝoʊz,TH ER OW Z,θəɹəəs,0.444
+thoroughg,arpa,θɔɹoʊ,TH AO R OW,θəɹəə,0.444
+thoroughg,ipa,θɔɹoʊ,TH AO R OW,θəɹəə,0.444
+thou',arpa,θaʊ,TH AW,θəə,0.400
+thou',ipa,θaʊ,TH AW,θəə,0.400
+thou'll,arpa,θul,TH UW L,θəl,0.429
+thou'll,arteme,θul,TH UW L,θəl,0.429
+thou'll,ipa,θul,TH UW L,θəl,0.429
+thought's,arpa,θɔts,TH AO T S,θəs,0.444
+thought's,arteme,θɔts,TH AO T S,θəs,0.333
+thought's,ipa,θɔts,TH AO T S,θəs,0.333
+thought'st,arteme,θɔtst,TH AO T S T,θəst,0.400
+thought'st,ipa,θɔtst,TH AO T S T,θəst,0.400
+thoughtbaugh,arpa,θɔtbɔ,TH AO T B AO,θətpə,0.417
+thoughtbaugh,arteme,θɔtbɔ,TH AO T B AO,θətpə,0.417
+thoughtbaugh,ipa,θɔtbɔ,TH AO T B AO,θətpə,0.417
+thoux,arpa,θu,TH UW,θə,0.400
+thoux,arteme,θu,TH UW,θə,0.400
+thoux,ipa,θu,TH UW,θə,0.400
+thowell,arpa,θaʊl,TH AW L,θəəl,0.429
+thowell,ipa,θaʊl,TH AW L,θəəl,0.429
+thure's,arpa,θɝz,TH ER Z,θəɹs,0.429
+thure's,ipa,θɝz,TH ER Z,θəɹs,0.429
+thwaite's,ipa,θweɪts,TH W EY T S,θəəəs,0.444
+tih,arpa,ʃ,SH,ʃ,0.333
+tih,arteme,ʃ,SH,ʃ,0.333
+tih,ipa,ʃ,SH,ʃ,0.333
+tourraine,arpa,tɝeɪn,T ER EY N,təɹəən,0.444
+tourraine,ipa,tɝeɪn,T ER EY N,təɹəən,0.444
+towee,arpa,taʊ,T AW,təə,0.400
+towee,ipa,taʊ,T AW,təə,0.400
+ts'ao,arpa,saʊ,S AW,səə,0.400
+ts'ao,ipa,saʊ,S AW,səə,0.400
+tscheu,arpa,tʃu,CH UW,ʃə,0.333
+tscheu,arteme,tʃu,CH UW,ʃə,0.333
+tscheu,ipa,tʃu,CH UW,ʃə,0.333
+tsh,arpa,ʃ,SH,ʃ,0.333
+tsh,arteme,ʃ,SH,ʃ,0.333
+tsh,ipa,ʃ,SH,ʃ,0.333
+tsz,arpa,ʃ,SH,ʃ,0.333
+tsz,arteme,ʃ,SH,ʃ,0.333
+tsz,ipa,ʃ,SH,ʃ,0.333
+tts,arteme,ts,T S,s,0.333
+tts,ipa,ts,T S,s,0.333
+tyigh,arpa,taɪ,T AY,təə,0.400
+tyigh,ipa,taɪ,T AY,təə,0.400
+tzschirner,arpa,tʃɝnɝ,CH ER N ER,ʃəɹnəɹ,0.400
+tzschirner,ipa,tʃɝnɝ,CH ER N ER,ʃəɹnəɹ,0.400
+urche,arpa,ɚtʃ,CH,əɹʃ,0.200
+urche,ipa,ɚtʃ,CH,əɹʃ,0.400
+urr,arpa,ɝ,ER,əɹ,0.333
+urr,ipa,ɝ,ER,əɹ,0.333
+vaisseaux,arpa,veɪsoʊ,V EY S OW,fəəsəə,0.444
+vaisseaux,ipa,veɪsoʊ,V EY S OW,fəəsəə,0.444
+vaugh,arpa,vɔ,V AO,fə,0.400
+vaugh,arteme,vɔ,V AO,fə,0.400
+vaugh,ipa,vɔ,V AO,fə,0.400
+vaughan,arpa,vɑn,N,fən,0.143
+vaughan,arpa,ʋɒn,V N,,0.286
+vaughan,arpa,vɒn,V AA N,,0.429
+vaughan,arpa,vɔn,V AO N,,0.429
+vaughan,arteme,vɑn,N,fən,0.429
+vaughan,ipa,vɑn,N,fən,0.429
+vaughan,ipa,vɒn,V AA N,,0.429
+vaughan,ipa,vɔn,V AO N,,0.429
+vaughan,ipa,ʋɒn,V N,,0.429
+vaughan's,arpa,vɔnz,V AO N Z,fəns,0.444
+vaughan's,arteme,vɔnz,V AO N Z,fəns,0.444
+vaughan's,ipa,vɔnz,V AO N Z,fəns,0.444
+vaughes,arpa,vɔɪz,V OY Z,fəəs,0.429
+vaughes,ipa,vɔɪz,V OY Z,fəəs,0.429
+veaux,arpa,voʊ,V OW,fəə,0.400
+veaux,ipa,voʊ,V OW,fəə,0.400
+veh,arpa,v,V,f,0.333
+veh,arteme,v,V,f,0.333
+veh,ipa,v,V,f,0.333
+veigh,arpa,veɪ,V EY,fəə,0.400
+veigh,ipa,veɪ,V EY,fəə,0.400
+veigh's,arpa,veɪz,V EY Z,fəəs,0.429
+veigh's,ipa,veɪz,V EY Z,fəəs,0.429
+veult,arpa,vɛ,V EH,fə,0.400
+veult,arteme,vɛ,V EH,fə,0.400
+veult,ipa,vɛ,V EH,fə,0.400
+viewsheds,ipa,vaɪʃts,V AY SH T S,fəəʃs,0.444
+waaaa,arpa,woʊ,W OW,əəə,0.400
+waaaa,ipa,woʊ,W OW,əəə,0.400
+waaaaa,arpa,woʊ,W OW,əəə,0.333
+waaaaa,ipa,woʊ,W OW,əəə,0.333
+waaaaaa,arpa,woʊoʊ,W OW OW,əəəəə,0.429
+waaaaaa,ipa,woʊoʊ,W OW OW,əəəəə,0.429
+waaaaaaa,arpa,woʊoʊ,W OW OW,əəəəə,0.375
+waaaaaaa,ipa,woʊoʊ,W OW OW,əəəəə,0.375
+waaaaaaaa,arpa,woʊoʊoʊ,W OW OW OW,əəəəəəə,0.444
+waaaaaaaa,ipa,woʊoʊoʊ,W OW OW OW,əəəəəəə,0.444
+waaaaaaaaa,arpa,woʊoʊoʊ,W OW OW OW,əəəəəəə,0.400
+waaaaaaaaa,ipa,woʊoʊoʊ,W OW OW OW,əəəəəəə,0.400
+waaaaaaaaaa,arpa,woʊoʊoʊoʊ,W OW OW OW OW,əəəəəəəəə,0.455
+waaaaaaaaaa,ipa,woʊoʊoʊoʊ,W OW OW OW OW,əəəəəəəəə,0.455
+waaaaaaaaaaaa,arpa,woʊoʊoʊoʊoʊ,W OW OW OW OW OW,əəəəəəəəəəə,0.462
+waaaaaaaaaaaa,ipa,woʊoʊoʊoʊoʊ,W OW OW OW OW OW,əəəəəəəəəəə,0.462
+waaaaaaaaaaaaaaaaa,arpa,woʊoʊoʊoʊoʊoʊoʊ,W OW OW OW OW OW OW OW,əəəəəəəəəəəəəəə,0.444
+waaaaaaaaaaaaaaaaa,ipa,woʊoʊoʊoʊoʊoʊoʊ,W OW OW OW OW OW OW OW,əəəəəəəəəəəəəəə,0.444
+waite's,ipa,weɪts,W EY T S,əəəs,0.429
+waugh,arpa,wɒ,W,fə,0.200
+waugh,arpa,wɔ,W AO,əə,0.400
+waugh,arteme,wɒ,W,fə,0.400
+waugh,arteme,wɔ,W AO,əə,0.400
+waugh,ipa,wɒ,W,fə,0.400
+waugh,ipa,wɔ,W AO,əə,0.400
+waugh,ipa,ʋɒ,,,0.400
+waugh's,arpa,wɔz,W AO Z,əəs,0.429
+waugh's,arteme,wɔz,W AO Z,əəs,0.429
+waugh's,ipa,wɔz,W AO Z,əəs,0.429
+wauschirsch,arpa,wɔʃɚʃ,W AO SH SH,əəʃəɹʃ,0.364
+wauschirsch,ipa,wɔʃɚʃ,W AO SH SH,əəʃəɹʃ,0.455
+weigh'd,arpa,weɪd,W EY D,əəət,0.429
+weigh'd,ipa,weɪd,W EY D,əəət,0.429
+weigher,arpa,weɪə,W EY,əəəə,0.286
+weigher,arpa,weɪɚ,W EY ER,əəəəɹ,0.429
+weigher,ipa,weɪə,W EY,əəəə,0.429
+weigher,ipa,weɪɚ,W EY ER,əəəəɹ,0.429
+weigher,ipa,weɪɝ,,,0.429
+weight's,ipa,weɪts,W EY T S,əəəs,0.375
+whaugh,arpa,wɔ,W AO,əə,0.333
+whaugh,arteme,wɔ,W AO,əə,0.333
+whaugh,ipa,wɔ,W AO,əə,0.333
+wheeh,arpa,wi,W IY,əə,0.400
+wheeh,arteme,wi,W IY,əə,0.400
+wheeh,ipa,wi,W IY,əə,0.400
+wheelwright's,ipa,wilɹaɪts,W IY L R AY T S,əəlɹəəs,0.462
+whirr's,arpa,wɝz,W ER Z,əəɹs,0.429
+whirr's,ipa,wɝz,W ER Z,əəɹs,0.429
+whitschurch,arpa,wɪtʃɚtʃ,W IH CH CH,əəʃəɹʃ,0.364
+whitschurch,ipa,wɪtʃɚtʃ,W IH CH CH,əəʃəɹʃ,0.455
+whoax,arpa,woʊ,W OW,əəə,0.400
+whoax,ipa,woʊ,W OW,əəə,0.400
+whooosh,arpa,wuʃ,UH SH,əəʃ,0.286
+whooosh,arpa,wʊʃ,UW SH,,0.286
+whooosh,arpa,ʍuʃ,W UH SH,,0.429
+whooosh,arpa,ʍʊʃ,W UW SH,,0.429
+whooosh,arteme,wuʃ,UH SH,əəʃ,0.429
+whooosh,ipa,wuʃ,UH SH,əəʃ,0.429
+whooosh,ipa,wʊʃ,UW SH,,0.429
+whooosh,ipa,ʍuʃ,W UH SH,,0.429
+whooosh,ipa,ʍʊʃ,W UW SH,,0.429
+whyte's,ipa,waɪts,W AY T S,əəəs,0.429
+wight's,ipa,waɪts,W AY T S,əəəs,0.429
+witte's,arteme,wɪts,W IH T S,əəs,0.429
+witte's,ipa,wɪts,W IH T S,əəs,0.429
+woaaaaaa,arpa,woʊoʊ,W OW OW,əəəəə,0.375
+woaaaaaa,ipa,woʊoʊ,W OW OW,əəəəə,0.375
+woaaaaaaaa,arpa,woʊoʊoʊ,W OW OW OW,əəəəəəə,0.400
+woaaaaaaaa,ipa,woʊoʊoʊ,W OW OW OW,əəəəəəə,0.400
+woolfardisworthy,arpa,wʊlzəɹi,W UH L Z R IY,əəlsəɹə,0.375
+woolfardisworthy,arteme,wʊlzəɹi,W UH L Z R IY,əəlsəɹə,0.438
+woolfardisworthy,ipa,wʊlzəɹi,W UH L Z R IY,əəlsəɹə,0.438
+woooosh,arpa,wuʃ,UH SH,əəʃ,0.286
+woooosh,arpa,wʊʃ,UW SH,,0.286
+woooosh,arpa,ʍuʃ,W UH SH,,0.429
+woooosh,arpa,ʍʊʃ,W UW SH,,0.429
+woooosh,arteme,wuʃ,UH SH,əəʃ,0.429
+woooosh,ipa,wuʃ,UH SH,əəʃ,0.429
+woooosh,ipa,wʊʃ,UW SH,,0.429
+woooosh,ipa,ʍuʃ,W UH SH,,0.429
+woooosh,ipa,ʍʊʃ,W UW SH,,0.429
+wough,arpa,woʊ,W OW,əəə,0.400
+wough,ipa,woʊ,W OW,əəə,0.400
+wraye,arpa,ɹeɪ,R EY,ɹəə,0.400
+wraye,ipa,ɹeɪ,R EY,ɹəə,0.400
+wreathe,arpa,ɹid,R IY D,ɹəf,0.429
+wreathe,arpa,ɹiv,R IY DH,ɹət,0.429
+wreathe,arpa,ɹið,R IY V,ɹəθ,0.429
+wreathe,arteme,ɹid,R IY D,ɹəf,0.429
+wreathe,arteme,ɹiv,R IY DH,ɹət,0.429
+wreathe,arteme,ɹið,R IY V,ɹəθ,0.429
+wreathe,ipa,ɹid,R IY D,ɹəf,0.429
+wreathe,ipa,ɹiv,R IY DH,ɹət,0.429
+wreathe,ipa,ɹið,R IY V,ɹəθ,0.429
+wright's,ipa,ɹaɪts,R AY T S,ɹəəs,0.375
+wrights,ipa,ɹaɪts,R AY T S,ɹəəs,0.429
+wrought,arpa,ɹaʊt,R,ɹət,0.143
+wrought,arpa,ɹɔt,R T,,0.286
+wrought,arpa,ɹɑt,R AA T,ɹəət,0.429
+wrought,arpa,ɹɒt,R AO T,,0.429
+wrought,arpa,ɹɒʈ,R AW T,,0.429
+wrought,arteme,ɹaʊt,R,ɹət,0.429
+wrought,ipa,ɹaʊt,R,ɹət,0.429
+wrought,ipa,ɹɑt,R AA T,ɹəət,0.429
+wrought,ipa,ɹɒt,R AO T,,0.429
+wrought,ipa,ɹɒʈ,R AW T,,0.429
+wrought,ipa,ɹɔt,R T,,0.429
+wth,arpa,θ,TH,θ,0.333
+wth,arteme,θ,TH,θ,0.333
+wth,ipa,θ,TH,θ,0.333
+y'ought,arpa,jɔt,Y AO T,əət,0.429
+y'ought,arteme,jɔt,Y AO T,əət,0.429
+y'ought,ipa,jɔt,Y AO T,əət,0.429
+yacht's,arteme,jɑts,Y AA T S,əəs,0.429
+yacht's,ipa,jɑts,Y AA T S,əəs,0.429
+yeigh,arpa,ji,Y IY,əə,0.400
+yeigh,arteme,ji,Y IY,əə,0.400
+yeigh,ipa,ji,Y IY,əə,0.400
+you'l,arpa,ju,Y UW,əə,0.400
+you'l,arteme,ju,Y UW,əə,0.400
+you'l,ipa,ju,Y UW,əə,0.400
+you'rre,arpa,juɹ,Y UW R,əəɹ,0.429
+you'rre,arteme,juɹ,Y UW R,əəɹ,0.429
+you'rre,ipa,juɹ,Y UW R,əəɹ,0.429
+youde's,arteme,judz,Y UW D Z,əəs,0.429
+youde's,ipa,judz,Y UW D Z,əəs,0.429
+zeuwe,arpa,zu,Z UW,sə,0.400
+zeuwe,arteme,zu,Z UW,sə,0.400
+zeuwe,ipa,zu,Z UW,sə,0.400
+zschokke,arpa,ʒɑk,ZH AA K,ʃək,0.375
+zschokke,arteme,ʒɑk,ZH AA K,ʃək,0.375
+zschokke,ipa,ʒɑk,ZH AA K,ʃək,0.375
