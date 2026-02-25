@@ -51,18 +51,21 @@ class LexiconBuilder:
         """Create SQLite database with schema."""
         db_file = Path(self.db_path)
         
-        # Check if database already exists
-        if db_file.exists():
+        self.conn = sqlite3.connect(self.db_path)
+        self.conn.row_factory = sqlite3.Row
+        
+        # Check if the tables already exist
+        table_exists = self.conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='english'"
+        ).fetchone()
+        
+        if table_exists:
             print(f"📂 Using existing database: {self.db_path}")
-            self.conn = sqlite3.connect(self.db_path)
-            self.conn.row_factory = sqlite3.Row
             print("✓ Database connection established\n")
             return
         
         # Create new database only if it doesn't exist
         print(f"Creating new database: {self.db_path}")
-        self.conn = sqlite3.connect(self.db_path)
-        self.conn.row_factory = sqlite3.Row
         
         # Create schema
         self.conn.executescript("""

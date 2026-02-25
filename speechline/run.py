@@ -144,10 +144,9 @@ class Runner:
         if output_dir is None:
             output_dir = input_dir
             
-        # Access args from module-level variable
-        args = Runner._args
-        Logger.setup(script_name=args.script_name if hasattr(args, 'script_name') else None,
-                     log_dir=args.log_dir if hasattr(args, 'log_dir') else 'logs')
+        args = getattr(Runner, '_args', None)
+        Logger.setup(script_name=getattr(args, 'script_name', None) if args else None,
+                     log_dir=getattr(args, 'log_dir', 'logs') if args else 'logs')
         logger = Logger.get_logger()
 
         # load transcriber model
@@ -213,7 +212,7 @@ class Runner:
                 input_dir,
                 audio_extension=config.audio_extension,
                 filter_empty=filter_empty,
-                max_files=args.max_files,
+                max_files=getattr(args, 'max_files', None) if args else None,
                 folder_filter=getattr(config, 'folder_filter', None)
             )
         else:
@@ -225,7 +224,7 @@ class Runner:
         logger.info(f"📊 DataFrame prepared: {len(df)} files to process")
         
         # Apply batch_size if specified
-        if args.batch_size and len(df) > args.batch_size:
+        if args and args.batch_size and len(df) > args.batch_size:
             logger.warning(
                 f"⚠️  Large dataset detected: {len(df)} files. "
                 f"Processing in batches of {args.batch_size} for memory efficiency."
@@ -266,7 +265,8 @@ class Runner:
             logger.info("Running in alignment validation mode...")
             
             # MEMORY OPTIMIZATION: Process in batches to avoid OOM
-            validation_batch_size = getattr(args, 'batch_size', 100) if args.batch_size else 100
+            validation_batch_size = getattr(args, 'batch_size', None) if args else None
+            validation_batch_size = validation_batch_size or 100
             logger.info(f"Processing validation in batches of {validation_batch_size} files to manage memory")
             
             # Extract ground truth texts from dataframe

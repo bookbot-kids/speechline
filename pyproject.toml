@@ -19,3 +19,6 @@ keywords = ["speech", "audio", "labeling", "pipeline"]
 "Homepage" = "https://github.com/bookbot-kids/speechline"
 "Bug Tracker" = "https://github.com/bookbot-kids/speechline/issues"
 "Documentation" = "https://bookbot-kids.github.io/speechline/"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
