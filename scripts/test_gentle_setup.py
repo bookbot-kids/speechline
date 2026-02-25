@@ -13,7 +13,7 @@ import logging
 from pathlib import Path
 
 # Add Gentle to path
-GENTLE_PATH = "/mnt/Projects/Projects/AudioProcessing/gentle"
+GENTLE_PATH = "/mnt/Store07/Projects/gentle"
 sys.path.insert(0, GENTLE_PATH)
 
 import gentle
@@ -34,8 +34,8 @@ def test_gentle_resources():
 def test_lexicon_file():
     """Test that the custom lexicon file exists"""
     print("\nTesting custom lexicon file...")
-    lexicon_path = Path("/mnt/Projects/Projects/AudioProcessing/gentle/exp/langdir/phones/align_lexicon.txt")
-    backup_path = Path("/mnt/Projects/Projects/AudioProcessing/gentle/exp/langdir/phones/align_lexicon.txt.backup")
+    lexicon_path = Path("/mnt/Store07/Projects/gentle/exp/langdir/phones/align_lexicon.txt")
+    backup_path = Path("/mnt/Store07/Projects/gentle/exp/langdir/phones/align_lexicon.txt.backup")
     
     if lexicon_path.exists():
         size_mb = lexicon_path.stat().st_size / 1024 / 1024

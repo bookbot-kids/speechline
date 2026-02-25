@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 # Add Gentle to Python path
-GENTLE_PATH = "/mnt/Projects/Projects/AudioProcessing/gentle"
+GENTLE_PATH = "/mnt/Store07/Projects/gentle"
 sys.path.insert(0, GENTLE_PATH)
 
 try:
@@ -25,7 +25,7 @@ except ImportError:
 class ErrorFileRetester:
     """Re-test error files with updated lexicon"""
     
-    def __init__(self, gentle_dir: str = "/mnt/Projects/Projects/AudioProcessing/gentle"):
+    def __init__(self, gentle_dir: str = "/mnt/Store07/Projects/gentle"):
         self.gentle_dir = Path(gentle_dir)
         self.errors_dir = Path("errors/common_voice")
         

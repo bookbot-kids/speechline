@@ -5,7 +5,7 @@
 
 set -e
 
-GENTLE_DIR="/mnt/Projects/Projects/AudioProcessing/gentle"
+GENTLE_DIR="/mnt/Store07/Projects/gentle"
 KALDI_UTILS="${GENTLE_DIR}/ext/kaldi/egs/wsj/s5/utils"
 LANGDIR="${GENTLE_DIR}/exp/langdir"
 PHONES_DIR="${LANGDIR}/phones"

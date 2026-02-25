@@ -15,7 +15,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Default values
-INPUT_DIR="${1:-$PROJECT_ROOT/data}"
+INPUT_DIR="/mnt/Store07/Projects/speechline/samples"
 OUTPUT_DIR="${2:-$INPUT_DIR}"
 CONFIG="$PROJECT_ROOT/examples/gentle_config.json"
 
@@ -41,8 +41,12 @@ if [ ! -f "$CONFIG" ]; then
 fi
 
 # Set PYTHONPATH to include project root and Gentle installation
-GENTLE_PATH="/mnt/4090_projects/Projects/AudioProcessing/gentle"
+GENTLE_PATH="/mnt/Store07/Projects/gentle"
 export PYTHONPATH="$PROJECT_ROOT:$GENTLE_PATH:$PYTHONPATH"
+
+# Set library paths for Gentle/Kaldi
+export LD_LIBRARY_PATH="$GENTLE_PATH/ext/kaldi/src/base:$GENTLE_PATH/ext/kaldi/src/util:$GENTLE_PATH/ext/kaldi/src/matrix:$GENTLE_PATH/ext/kaldi/src/fstext:$GENTLE_PATH/ext/kaldi/src/hmm:$GENTLE_PATH/ext/kaldi/src/tree:$GENTLE_PATH/ext/kaldi/tools/openfst-1.7.2/lib:$LD_LIBRARY_PATH"
+
 
 # Run speechline with Gentle transcriber
 cd "$PROJECT_ROOT"

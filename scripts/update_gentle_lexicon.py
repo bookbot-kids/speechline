@@ -21,7 +21,7 @@ from datetime import datetime
 import argparse
 
 # Paths
-GENTLE_DIR = Path("/mnt/Projects/Projects/AudioProcessing/gentle")
+GENTLE_DIR = Path("/mnt/Store07/Projects/gentle")
 SPEECHLINE_LEXICON = Path("data/align_lexicon.txt")
 
 # Gentle locations for lexicon files

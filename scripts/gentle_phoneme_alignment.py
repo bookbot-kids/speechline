@@ -33,7 +33,7 @@ from queue import Queue
 from threading import Thread, Lock
 
 # Add Gentle to Python path
-GENTLE_PATH = "/mnt/Projects/Projects/AudioProcessing/gentle"
+GENTLE_PATH = "/mnt/Store07/Projects/gentle"
 sys.path.insert(0, GENTLE_PATH)
 
 import gentle

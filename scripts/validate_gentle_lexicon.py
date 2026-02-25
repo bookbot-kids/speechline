@@ -15,7 +15,7 @@ from typing import Set, List, Tuple
 import re
 
 # Gentle locations
-GENTLE_DIR = Path("/mnt/Projects/Projects/AudioProcessing/gentle")
+GENTLE_DIR = Path("/mnt/Store07/Projects/gentle")
 SPEECHLINE_LEXICON = Path("data/align_lexicon.txt")
 
 GENTLE_LOCATIONS = [
