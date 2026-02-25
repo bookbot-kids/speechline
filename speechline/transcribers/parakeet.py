@@ -70,9 +70,11 @@ class ParakeetTranscriber:
                     f.write("\n")
 
         # Run Parakeet aligner
+        # Use the NeMo installation path
+        nemo_align_script = "/home/bookbot/NeMo/tools/nemo_forced_aligner/align.py"
         cmd = [
             "python",
-            "/home/s44504/3b01c699-3670-469b-801f-13880b9cac56/NeMo/tools/nemo_forced_aligner/align.py",
+            nemo_align_script,
             f"pretrained_name={self.model_name}",
             f"manifest_filepath={manifest_path}",
             f"output_dir={output_dir}",

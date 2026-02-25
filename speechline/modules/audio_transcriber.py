@@ -33,13 +33,33 @@ class AudioTranscriber(AudioModule):
             HuggingFace Hub model hub checkpoint.
     """
 
-    def __init__(self, model_checkpoint: str, torch_dtype: torch.dtype = None) -> None:
+    def __init__(self, model_checkpoint: str, torch_dtype: torch.dtype = None, device: int = None) -> None:
+        # Determine device: explicit > MPS (Apple Silicon) > CUDA (NVIDIA GPU) > CPU
+        if device is not None:
+            # Explicit device specified (for multi-GPU)
+            selected_device = device
+            print(f"Device set to use cuda:{device} (explicitly specified)")
+        elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            selected_device = "mps"
+            print(f"Device set to use MPS (Apple Silicon)")
+        elif torch.cuda.is_available():
+            selected_device = 0  # Use first GPU
+            gpu_count = torch.cuda.device_count()
+            print(f"Device set to use cuda:0")
+            if gpu_count > 1:
+                print(f"Note: Found {gpu_count} GPUs available: {[f'cuda:{i}' for i in range(gpu_count)]}")
+                print(f"Using cuda:0 for processing. Monitor GPU usage with 'watch -n 1 nvidia-smi'")
+        else:
+            selected_device = -1
+            print(f"Device set to use CPU")
+        
         asr = pipeline(
             "automatic-speech-recognition",
             model=model_checkpoint,
-            device=0 if torch.cuda.is_available() else -1,
+            device=selected_device,
             pipeline_class=AutomaticSpeechRecognitionFilteredPipeline,
             torch_dtype=torch_dtype,
+            batch_size=8,  # Process multiple audio files in parallel for better GPU utilization
         )
         super().__init__(pipeline=asr)
 
@@ -118,8 +138,8 @@ class AudioTranscriber(AudioModule):
             return [
                 {
                     offset_key: o["text"] if keep_whitespace else o["text"].strip(),
-                    "start_time": round(o["timestamp"][0], 3),
-                    "end_time": round(o["timestamp"][1], 3),
+                    "start_time": round(o["timestamp"][0], 3) if o["timestamp"][0] is not None else 0.0,
+                    "end_time": round(o["timestamp"][1], 3) if o["timestamp"][1] is not None else 0.0,
                 }
                 for o in timestamps["chunks"]
                 if o["text"] != " " or keep_whitespace

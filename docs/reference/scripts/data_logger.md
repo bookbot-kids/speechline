@@ -28,5 +28,3 @@ python scripts/data_logger.py --url $AIRTABLE_URL --input_dir training/ --label 
 ```
 
 ---
-
-::: scripts.data_logger.DataLogger

@@ -31,7 +31,11 @@ from speechline.segmenters import (
     SilenceSegmenter,
     WordOverlapSegmenter,
 )
-from speechline.transcribers import Wav2Vec2Transcriber, WhisperTranscriber
+from speechline.transcribers import (
+    Wav2Vec2Transcriber,
+    WhisperTranscriber,
+    ParakeetTDTTranscriber,
+)
 from speechline.utils.dataset import preprocess_audio_transcript
 from speechline.utils.io import export_transcripts_json
 from speechline.utils.tokenizer import WordTokenizer
@@ -145,6 +149,15 @@ class Runner:
             transcriber = Wav2Vec2Transcriber(config.transcriber.model)
         elif config.transcriber.type == "whisper":
             transcriber = WhisperTranscriber(config.transcriber.model)
+        elif config.transcriber.type == "parakeet_tdt":
+            # Get device and torch_dtype from config if available
+            transcriber_device = getattr(config.transcriber, 'transcriber_device', None)
+            torch_dtype = getattr(config.transcriber, 'torch_dtype', None)
+            transcriber = ParakeetTDTTranscriber(
+                model_checkpoint=config.transcriber.model,
+                transcriber_device=transcriber_device,
+                torch_dtype=torch_dtype
+            )
 
         # perform audio transcription
         dataset = dataset.cast_column(audio_column_name, Audio(sampling_rate=transcriber.sampling_rate))

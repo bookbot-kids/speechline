@@ -71,38 +71,80 @@ class TranscriberConfig:
         type (str):
             Transcriber model architecture type.
         model (str):
-            HuggingFace Hub model hub checkpoint.
+            HuggingFace Hub model hub checkpoint (not required for 'gentle').
         return_timestamps (Union[str, bool]):
             `return_timestamps` argument in `AutomaticSpeechRecognitionPipeline`'s
             `__call__` method. Use `"char"` for CTC-based models and
             `True` for Whisper-based models.
         chunk_length_s (int):
             Audio chunk length in seconds.
+        torch_dtype (str, optional):
+            Torch dtype for model weights (e.g., 'float16'). Used by Canary transcriber.
+        validate_alignment (bool, optional):
+            Enable alignment validation mode. Defaults to False.
+        token_confidence_threshold (float, optional):
+            Minimum confidence for token acceptance (0-1). Defaults to 0.7.
+        min_alignment_ratio (float, optional):
+            Minimum fraction of tokens that must align (0-1). Defaults to 0.8.
+        nfa_model (str, optional):
+            NeMo model for forced alignment. Defaults to "nvidia/parakeet-ctc-1.1b".
+        gentle_path (str, optional):
+            Path to Gentle installation. Only used when type is "gentle".
+            Defaults to "/mnt/Projects/Projects/AudioProcessing/gentle".
+        output_phonemes (bool, optional):
+            Include phoneme sequences in Gentle output. Defaults to True.
+        output_word_boundaries (bool, optional):
+            Include word boundary timestamps in Gentle output. Defaults to True.
     """
 
     type: str
-    model: str
-    return_timestamps: Union[str, bool]
-    chunk_length_s: Optional[int] = None 
+    model: str = None
+    return_timestamps: Union[str, bool] = None
+    chunk_length_s: Optional[int] = None
     transcriber_device: str = "cuda"
+    torch_dtype: Optional[str] = None
+    validate_alignment: bool = False
+    token_confidence_threshold: float = 0.7
+    min_alignment_ratio: float = 0.8
+    nfa_model: str = "nvidia/parakeet-ctc-1.1b"
+    gentle_path: str = "/mnt/4090_projects/Projects/AudioProcessing/gentle"
+    output_phonemes: bool = True
+    output_word_boundaries: bool = True
 
     def __post_init__(self):
-        SUPPORTED_MODELS = {"wav2vec2", "whisper", "parakeet"}
+        SUPPORTED_MODELS = {"wav2vec2", "whisper", "parakeet", "parakeet_tdt", "canary", "gentle"}
         WAV2VEC_TIMESTAMPS = {"word", "char"}
         PARAKEET_TIMESTAMPS = {"word"}
+        PARAKEET_TDT_TIMESTAMPS = {"word", "char"}
+        GENTLE_TIMESTAMPS = {"word"}
         
         if self.type not in SUPPORTED_MODELS:
             raise ValueError(f"Transcriber of type {self.type} is not yet supported!")
+
+        # Gentle has different requirements
+        if self.type == "gentle":
+            # Gentle doesn't need model checkpoint
+            if self.return_timestamps is None:
+                self.return_timestamps = "word"
+            if self.return_timestamps not in GENTLE_TIMESTAMPS:
+                raise ValueError("gentle only supports `'word'` timestamps!")
+            return
+
+        # All other transcribers require model
+        if self.model is None:
+            raise ValueError(f"model is required for {self.type} transcriber")
 
         if self.type == "wav2vec2" and self.return_timestamps not in WAV2VEC_TIMESTAMPS:
             raise ValueError("wav2vec2 only supports `'word'` or `'char'` timestamps!")
         elif self.type == "parakeet" and self.return_timestamps not in PARAKEET_TIMESTAMPS:
             raise ValueError("parakeet only supports `word` timestamps!")
-        elif self.type == "whisper" and self.return_timestamps is not True:
-            raise ValueError("Whisper only supports `True` timestamps!")
+        elif self.type == "parakeet_tdt" and self.return_timestamps not in PARAKEET_TDT_TIMESTAMPS:
+            raise ValueError("parakeet_tdt only supports `'word'` or `'char'` timestamps!")
+        elif self.type in {"whisper", "canary"} and self.return_timestamps is not True:
+            raise ValueError(f"{self.type} only supports `True` timestamps!")
         
         # Add validation for chunk_length_s requirement
-        if self.type in {"wav2vec2", "whisper"} and self.chunk_length_s is None:
+        if self.type in {"wav2vec2", "whisper", "canary", "parakeet_tdt"} and self.chunk_length_s is None:
             raise ValueError(f"chunk_length_s is required for {self.type} models")
 
 
@@ -155,6 +197,8 @@ class Config:
         self.do_classify = config.get("do_classify", False)
         self.do_noise_classify = config.get("do_noise_classify", False)
         self.filter_empty_transcript = config.get("filter_empty_transcript", False)
+        self.audio_extension = config.get("audio_extension", "wav")
+        self.folder_filter = config.get("folder_filter", None)
 
         if self.do_classify:
             self.classifier = ClassifierConfig(**config["classifier"])

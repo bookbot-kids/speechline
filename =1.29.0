@@ -1,0 +1,31 @@
+Requirement already satisfied: boto3 in /home/bookbot/miniconda3/lib/python3.13/site-packages (1.18.37)
+Collecting boto3
+  Downloading boto3-1.40.63-py3-none-any.whl.metadata (6.6 kB)
+Requirement already satisfied: botocore in /home/bookbot/miniconda3/lib/python3.13/site-packages (1.21.37)
+Collecting botocore
+  Downloading botocore-1.40.63-py3-none-any.whl.metadata (5.7 kB)
+Requirement already satisfied: jmespath<2.0.0,>=0.7.1 in /home/bookbot/miniconda3/lib/python3.13/site-packages (from boto3) (0.10.0)
+Collecting s3transfer<0.15.0,>=0.14.0 (from boto3)
+  Downloading s3transfer-0.14.0-py3-none-any.whl.metadata (1.7 kB)
+Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in /home/bookbot/miniconda3/lib/python3.13/site-packages (from botocore) (2.9.0.post0)
+Requirement already satisfied: urllib3!=2.2.0,<3,>=1.25.4 in /home/bookbot/miniconda3/lib/python3.13/site-packages (from botocore) (1.26.20)
+Requirement already satisfied: six>=1.5 in /home/bookbot/miniconda3/lib/python3.13/site-packages (from python-dateutil<3.0.0,>=2.1->botocore) (1.17.0)
+Downloading boto3-1.40.63-py3-none-any.whl (139 kB)
+Downloading botocore-1.40.63-py3-none-any.whl (14.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.1/14.1 MB 71.4 MB/s  0:00:00
+Downloading s3transfer-0.14.0-py3-none-any.whl (85 kB)
+Installing collected packages: botocore, s3transfer, boto3
+  Attempting uninstall: botocore
+    Found existing installation: botocore 1.21.37
+    Uninstalling botocore-1.21.37:
+      Successfully uninstalled botocore-1.21.37
+  Attempting uninstall: s3transfer
+    Found existing installation: s3transfer 0.5.2
+    Uninstalling s3transfer-0.5.2:
+      Successfully uninstalled s3transfer-0.5.2
+  Attempting uninstall: boto3
+    Found existing installation: boto3 1.18.37
+    Uninstalling boto3-1.18.37:
+      Successfully uninstalled boto3-1.18.37
+
+Successfully installed boto3-1.40.63 botocore-1.40.63 s3transfer-0.14.0

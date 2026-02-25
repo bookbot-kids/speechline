@@ -91,5 +91,5 @@ class WhisperTranscriber(AudioTranscriber):
             offset_key="text",
             return_timestamps=return_timestamps,
             keep_whitespace=keep_whitespace,
-            generate_kwargs={"max_new_tokens": 448},
+            generate_kwargs={"max_new_tokens": 445},  # Reduced from 448 to avoid exceeding max_target_positions
         )

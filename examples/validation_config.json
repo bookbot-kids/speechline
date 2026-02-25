@@ -1,0 +1,25 @@
+{
+    "audio_extension": "aac",
+    "do_classify": false,
+    "filter_empty_transcript": true,
+    "folder_filter": "en",
+    "transcriber": {
+        "type": "parakeet_tdt",
+        "model": "nvidia/parakeet-tdt-0.6b-v2",
+        "return_timestamps": "word",
+        "chunk_length_s": 30,
+        "transcriber_device": "cuda",
+        "torch_dtype": "float16",
+        "validate_alignment": true,
+        "token_confidence_threshold": 0.7,
+        "min_alignment_ratio": 0.8,
+        "nfa_model": "nvidia/parakeet-ctc-1.1b"
+    },
+    "do_noise_classify": false,
+    "segmenter": {
+        "type": "word_overlap",
+        "silence_duration": 0.3,
+        "minimum_chunk_duration": 0.2,
+        "keep_whitespace": false
+    }
+}

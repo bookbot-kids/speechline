@@ -28,5 +28,3 @@ python scripts/upload_s3_bucket.py --bucket="my_bucket" --prefix="recordings/" -
 ```
 
 ---
-
-::: scripts.upload_s3_bucket

@@ -3,6 +3,21 @@ tmp/
 dropbox/
 training*/
 *_audio_data*
+# Raw wiktextract data
+data/raw-wiktextract-data.jsonl
+
+# Archive folder for experimentation/debugging scripts
+archive/
+scripts/archive/
+# Sample audio files and storage data
+sample/
+storage/
+labels/
+# Kilocode project rules
+.kilocode/
+
+
+
 
 .DS_Store
 */.DS_Store
@@ -133,8 +148,12 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+assets/
 
 # Pyre type checker
 .pyre/
 
-.vscode/
+.vscode/.qdrant_storage/
+experiments/
+sampler/
+errors/

@@ -82,6 +82,7 @@ nav:
       - Transcribers:
           - Wav2Vec2 Transcriber: reference/transcribers/wav2vec2.md
           - Whisper Transcriber: reference/transcribers/whisper.md
+          - Parakeet TDT Transcriber: reference/transcribers/parakeet_tdt.md
       - Base Modules:
           - Audio Classifier: reference/modules/audio_classifier.md
           - Audio Multilabel Classifier: reference/modules/audio_multilabel_classifier.md

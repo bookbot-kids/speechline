@@ -1,0 +1,13 @@
+Robust class,Class symbol,Included base classes,Representative phonemes,Example words,Rationale
+V,ə,['V'],"i, e, a, o, u, ə, aɪ, eɪ, oʊ, aʊ, ɔɪ",seat | bed | go | about,All vowels/diphthongs/glides collapsed
+SIB-ALV,s,['SIB-ALV'],"s, z",see | zoo | easy,Keep alveolar sibilants distinct from postalveolars
+SIB-POST*,ʃ,"['SIB-POST', 'AFF-SIB']","ʃ, ʒ, tʃ, dʒ",she (ʃ) | vision (ʒ) | chair (tʃ) | judge (dʒ),Affricates merged into postalveolar sibilant family
+FR-LAB,f,['FR-LAB'],"f, v",fine | voice | very | safe,Labiodental fricatives kept separate
+FR-DENT,θ,['FR-DENT'],"θ, ð",thin | this | both | father,Dental fricatives kept separate to track TH-processes
+FR-GLOT,h,['FR-GLOT'],h,hat | ahead,Optional drop in many accents
+ST-LAB,p,['ST-LAB'],"p, b",pen | bat,Labial stops
+ST-COR,t,['ST-COR'],"t, d, ɾ",two | day | water,Flaps included
+ST-DOR,k,['ST-DOR'],"k, g",cat | go,Velar stops
+NAS,n,"['NAS-LAB', 'NAS-COR', 'NAS-DOR']","m, n, ŋ",map | button | sing,All nasals collapsed to one class
+LAT,l,['LAT'],"l, l̩",light | bottle,Keep laterals distinct
+RHO,ɹ,['RHO'],"ɹ, r, ɻ",red | arrive,Tracks linking/intrusive r

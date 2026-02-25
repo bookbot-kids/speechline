@@ -1,0 +1,20 @@
+{
+  "do_classify": false,
+  "do_noise_classify": false,
+  "filter_empty_transcript": true,
+  "audio_extension": "mp3",
+  "transcriber": {
+    "type": "gentle",
+    "gentle_path": "/mnt/Store07/Projects/gentle",
+    "return_timestamps": "word",
+    "output_phonemes": true,
+    "output_word_boundaries": true
+  },
+  "segmenter": {
+    "type": "word_overlap",
+    "silence_duration": 0.0,
+    "minimum_chunk_duration": 0.2,
+    "segment_with_ground_truth": true,
+    "keep_whitespace": false
+  }
+}

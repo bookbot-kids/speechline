@@ -21,8 +21,8 @@ def test_g2p():
     g2p_en = get_g2p("en")
     g2p_id = get_g2p("id")
 
-    assert g2p_en("hello world!") == "h ɛ l ˈoʊ w ˈɚ l d !"
-    assert g2p_id("halo dunia!") == "h a l o d u n i a !"
+    assert g2p_en("hello world!") == ["h ɛ l ˈoʊ", "w ˈɚ l d", "!"]
+    assert g2p_id("halo dunia!") == ["h a l o", "d u n i ʔ a", "!"]
 
 
 def test_unsupported_g2p():

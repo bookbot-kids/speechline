@@ -1,0 +1,19 @@
+{
+    "do_classify": false,
+    "filter_empty_transcript": true,
+    "transcriber": {
+        "type": "parakeet_tdt",
+        "model": "nvidia/parakeet-tdt-0.6b-v2",
+        "return_timestamps": "word",
+        "chunk_length_s": 30,
+        "transcriber_device": "cuda",
+        "torch_dtype": "float16"
+    },
+    "do_noise_classify": false,
+    "segmenter": {
+        "type": "word_overlap",
+        "silence_duration": 0.3,
+        "minimum_chunk_duration": 0.2,
+        "keep_whitespace": false
+    }
+}

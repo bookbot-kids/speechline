@@ -25,5 +25,3 @@ python scripts/aac_to_wav.py --input_dir="dropbox/" -c 1 -r 16000
 ```
 
 ---
-
-::: scripts.aac_to_wav
