@@ -15,6 +15,7 @@ levenshtein
 nltk
 g2p_id_py
 lexikos
+inflect
 gruut
 pydantic<2
 optimum[onnxruntime]

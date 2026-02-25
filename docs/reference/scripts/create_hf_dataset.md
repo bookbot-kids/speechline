@@ -31,5 +31,3 @@ python scripts/create_hf_dataset.py \
 ```
 
 ---
-
-::: scripts.create_hf_dataset
